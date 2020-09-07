@@ -1,5 +1,5 @@
 Package: biovizR
-Title: What the Package Does (One Line, Title Case)
+Title: A Package to Visualize Biological Data Designed for Wet Lab Scientists.
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Erkut",

@@ -7,10 +7,10 @@
 #' and creates pdf file but the file doesnt open.
 #'
 #' @param ip_data Path to the input file
-#' @return A dot plot of the  ip_data
+#' @return A dot plot of the ip_data
 #' @export
 
-plot_ipms <- function(ip_data) {
+dotplot_ipms <- function(ip_data) {
 
 #data import
 ip_1 <- read_xlsx(ip_data,
@@ -76,7 +76,8 @@ final_plot <- ip_plot + geom_point() +
                                  as.character(HGNC),
                                  "")),
                   hjust = 0, vjust = 0)
-plot(final_plot)
 
+plot(final_plot)
+return(final_plot)
 }
 

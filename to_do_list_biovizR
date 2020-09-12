@@ -1,0 +1,21 @@
+- add dependencies
+
+- solve the bubble plot desc issue
+
+- correct all function calls to library::function format
+
+- add automoatic mapping to HGNC for all identifiers inside the functions.
+
+- add barplot_qpcr function that takes qpcr results performs analysis and visualization.
+
+- add mod parameter to all functions. this parameter indicates what kind of output is the
+  data is generated from. for example selecting deseq2 or edger enables proper data wrangling
+  to generate plot.
+
+- Try saving plots with ggsave() function.
+
+- in the bubble plot make the size is y axis and p value is the bubble size.
+  this might not be possible because the "scale" of difference in p-values might not be
+  proper for good visualization as size of bubble.
+
+- Add a function that will save plots. 2 modes = pdf and pneg.

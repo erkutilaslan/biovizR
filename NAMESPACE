@@ -3,4 +3,5 @@
 export(barplot_go)
 export(bubbleplot_go)
 export(dotplot_ipms)
+export(heatmap_dge)
 export(maplot_rnaseq)

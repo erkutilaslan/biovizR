@@ -11,7 +11,8 @@
 maplot_rnaseq <- function(rnaseq_data, FDR = 0.01, FC = 0.5) {
 
 #data import
-rnaseq_data <- read.table(file = rnaseq_data, header = TRUE, sep = ",", dec = ".")
+rnaseq_data <- read.table(file = rnaseq_data,
+			  header = TRUE, sep = ",", dec = ".")
 
 #head(dat)
 
@@ -23,7 +24,7 @@ rnaseq_data$x <- NULL
 
 # Visuzalization
 
-final_plot <- ggmaplot(rnaseq_data, main = " ",
+final_plot <- ggpubr::ggmaplot(rnaseq_data, main = " ",
          fdr = FDR, fc = FC, size = 1.5,
          palette = c("#B31B21", "#1465AC", "darkgray"),
          genenames = as.vector(rnaseq_data$HGNC),

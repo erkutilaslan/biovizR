@@ -9,9 +9,9 @@ bubbleplot_go(go_data, top = " ", go_process = " ")
 \arguments{
 \item{go_data}{Input GO data to visualize.}
 
-\item{top}{Turned off by default. Parameter to set top amount of processes to be visualized.}
+\item{top}{Parameter to set top amount of processes to be visualized.}
 
-\item{go_process}{Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.}
+\item{go_process}{Parameter to add a specific keyword to only visuzalize GO terms that contains it.}
 }
 \value{
 A bubble plot of gene ontology results.

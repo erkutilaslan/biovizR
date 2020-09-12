@@ -2,8 +2,6 @@
 
 - solve the bubble plot desc issue
 
-- correct all function calls to library::function format
-
 - add automoatic mapping to HGNC for all identifiers inside the functions.
 
 - add barplot_qpcr function that takes qpcr results performs analysis and visualization.

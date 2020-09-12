@@ -1,26 +1,22 @@
-#' Dot plot for IP-MS experiment visualization.
+#' Heatmap for differential gene expression data.
 #'
-#' This function visualizes IP-MS results with 2 axis
-#' for number of validated peptides in NANOS-IP vs pCMV6-IP
-#' when i run the script manually it generates proper plot
-#' but when i run it as a function, it proceeds without error
-#' and creates pdf file but the file doesnt open.
+#' This function visualizes differential gene expresion data
+#' as heatmap.
 #'
 #' @param heatmap_data Path to the input file.
 #' @param List Path to the list of genes file which will be visualized.
-#' @return A heatmap of heatmap_data
+#' @return A heatmap of heatmap_data.
 #' @export
 
-library(tidyverse)
 #library(ggthemes)
 #library(ggpubr)
-library(ComplexHeatmap)
-library(circlize)
-library(colorspace)
-library(GetoptLong)
-library(dendextend)
+#library(circlize)
+#library(colorspace)
+#library(GetoptLong)
+#library(dendextend)
 
 heatmap_dge <- function(heatmap_data, List = " ") {
+
 #data import
 
 heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
@@ -31,14 +27,14 @@ heatmap_data  <- na.omit(heatmap_data)
 
 #removing row names
 
-heatmap_data <- remove_rownames(heatmap_data)
+heatmap_data <- dplyr::remove_rownames(heatmap_data)
 
 #moving HGNC to rownames
 #this is an issue point here. because we need to able to move HGNC to the first row.
 #probably i should name the first row into something automatically as HGNC and it should
 #accept such data for now and later on we will make sure that it will accept
 # all kind of identifiersssss!
-heatmap_data <- column_to_rownames(heatmap_data, var = "hgnc_symbol")
+heatmap_data <- dplyr::column_to_rownames(heatmap_data, var = "hgnc_symbol")
 
 #z-score calculation
 
@@ -46,8 +42,8 @@ heatmap_data <- t(scale(t(heatmap_data)))
 
 #selecing of genes to visualize e.g. infertility vectors
 if (List != " ") {
-  
-List <- read.table(List, header = FALSE, sep = ' ')
+
+List <- read.table(List, header = FALSE, sep = " ")
 
 List <- List$V1
 
@@ -58,13 +54,13 @@ heatmap_data <- heatmap_data[as.character(List), ]
 }
 
 #removing na values once a mfing time
-heatmap_data  <- na.omit(heatmap_data)
+heatmap_data  <- dplyr::na.omit(heatmap_data)
 # Visualization
 
-final_plot <- Heatmap(
+final_plot <- ComplexHeatmap::Heatmap(
   heatmap_data,
   #column_title = "NANOS1: Male Infertility",
-  heatmap_legend_param = list(title = "z-score", 
+  heatmap_legend_param = list(title = "z-score",
                               legend_height = unit(5, "cm"),
                               grid_width = unit(0.75, "cm"),
                               labels_gp = gpar(fontsize = 12),

@@ -14,8 +14,5 @@ A dot plot of the ip_data
 }
 \description{
 This function visualizes IP-MS results with 2 axis
-for number of validated peptides in NANOS-IP vs pCMV6-IP
-when i run the script manually it generates proper plot
-but when i run it as a function, it proceeds without error
-and creates pdf file but the file doesnt open.
+for number of validated peptides in 2 samples.
 }

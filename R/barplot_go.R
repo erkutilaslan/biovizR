@@ -3,7 +3,7 @@
 #' This function visualizes gene ontology results from ClueGO as bar plot.
 #'
 #' @param go_data Input GO data to visualize.
-#' @param top Turned off by default. Parameter to set top amount of processes to be visualized. 
+#' @param top Turned off by default. Parameter to set top amount of processes to be visualized.
 #' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
 #' @return A bar plot of gene ontology results.
 #' @export
@@ -40,7 +40,7 @@ colnames(go_data)[5] <- "padj"
 # -log10 conversion of padj by mutate
 
 go_data %>%
-  mutate("log10_padj" = -log10(padj)) -> go_data
+ dplyr::mutate("log10_padj" = -log10(padj)) -> go_data
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command
@@ -49,13 +49,13 @@ go_data %>%
 if (top != " ") {
 go_data %>%
   arrange(desc(log10_padj)) %>%
-  slice(1:top) -> go_data
+ dplyr::slice(1:top) -> go_data
 
 }
 
  #visualization
 
-final_plot <- ggbarplot(go_data,
+final_plot <- ggpubr::ggbarplot(go_data,
           x = "GOTerm",
           y = "-log10 padj",
           fill = "darkgray",
@@ -75,4 +75,3 @@ plot(final_plot)
 return(final_plot)
 
 }
-

@@ -3,8 +3,8 @@
 #' This function visualizes gene ontology results from ClueGO as bubble plot.
 #'
 #' @param go_data Input GO data to visualize.
-#' @param top Turned off by default. Parameter to set top amount of processes to be visualized. 
-#' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
+#' @param top Parameter to set top amount of processes to be visualized.
+#' @param go_process Parameter to add a specific keyword to only visuzalize GO terms that contains it.
 #' @return A bubble plot of gene ontology results.
 #' @export
 
@@ -43,23 +43,23 @@ colnames(go_data)[5] <- "padj"
 # -log10 conversion of padj by mutate
 
 go_data %>%
-  mutate(log10_padj = -log10(padj)) -> go_data
+  dplyr::mutate(log10_padj = -log10(padj)) -> go_data
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command
 # while generating plots. so i will generate new tables of top 10 top 20.
 
-go_data <- arrange(go_data, desc(log10_padj))
+go_data <- dplyr::arrange(go_data, desc(log10_padj))
 
 if (top != " ") {
 
-go_data <- slice(go_data, 1:top) 
+go_data <- dplyr::slice(go_data, 1:top) 
 
 }
 
  #visualization
 
-final_plot <- ggscatter(go_data, x = "log10_padj", y = "GOTerm",
+final_plot <- ggpubr::ggscatter(go_data, x = "log10_padj", y = "GOTerm",
           size = "Nr. Genes",
           color = "#00AFBB"
           ) +

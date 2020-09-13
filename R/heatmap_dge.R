@@ -16,7 +16,7 @@
 #library(dendextend)
 
 heatmap_dge <- function(heatmap_data, List = " ") {
-
+library(tidyverse)
 #data import
 
 heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
@@ -27,14 +27,14 @@ heatmap_data  <- na.omit(heatmap_data)
 
 #removing row names
 
-heatmap_data <- dplyr::remove_rownames(heatmap_data)
+heatmap_data <- tibble::remove_rownames(heatmap_data)
 
 #moving HGNC to rownames
 #this is an issue point here. because we need to able to move HGNC to the first row.
 #probably i should name the first row into something automatically as HGNC and it should
 #accept such data for now and later on we will make sure that it will accept
 # all kind of identifiersssss!
-heatmap_data <- dplyr::column_to_rownames(heatmap_data, var = "hgnc_symbol")
+heatmap_data <- tibble::column_to_rownames(heatmap_data, var = "hgnc_symbol")
 
 #z-score calculation
 
@@ -54,7 +54,7 @@ heatmap_data <- heatmap_data[as.character(List), ]
 }
 
 #removing na values once a mfing time
-heatmap_data  <- dplyr::na.omit(heatmap_data)
+heatmap_data  <- ::na.omit(heatmap_data)
 # Visualization
 
 final_plot <- ComplexHeatmap::Heatmap(

@@ -69,11 +69,11 @@ ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
 
 ip_plot <- ggplot2::ggplot(ipms, ggplot2::aes(avg.ip, avg.ctrl), label = HGNC)
 final_plot <- ip_plot + ggplot2::geom_point() +
-    ggplot2::geom_text(aes(label = ifelse(avg.ctrl < 2,
+    ggplot2::geom_text(ggplot2::aes(label = ifelse(avg.ctrl < 2,
                                  as.character(HGNC),
                                  "")),
                   hjust = 0, vjust = 0)
-
+library(ggplot2)
 plot(final_plot)
 return(final_plot)
 }

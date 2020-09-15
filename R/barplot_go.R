@@ -39,7 +39,8 @@ colnames(go_data)[5] <- "padj"
 
 # -log10 conversion of padj by mutate
 
-go_data <- dplyr::mutate("log10_padj" = -log10(go_data$padj))
+go_data %>%
+	dplyr::mutate(log10_padj = -log10(padj)) -> go_data
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command

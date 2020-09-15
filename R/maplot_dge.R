@@ -4,11 +4,11 @@
 #'
 #' @param dge_data Path to the input file.
 #' @param FDR Default 0.01. Adjust FDR value.
-#' @param log2FC Default 0.5. Adjust log2FC threshold.
+#' @param FC Default 0.5. Adjust log2FC threshold.
 #' @return An ma-plot of RNA-Seq DGE data.
 #' @export
 
-maplot_dge <- function(dge_data, FDR = 0.01, log2FC = 0.5) {
+maplot_dge <- function(dge_data, FDR = 0.01, FC = 0.5) {
 
 #data import
 dge_data <- read.table(file = dge_data,
@@ -25,7 +25,7 @@ dge_data$x <- NULL
 # Visuzalization
 
 final_plot <- ggpubr::ggmaplot(dge_data, main = " ",
-         fdr = FDR, fc = as.number(log2(FC)), size = 1.5,
+         fdr = FDR, fc = (FC), size = 1.5,
          palette = c("#B31B21", "#1465AC", "darkgray"),
          genenames = as.vector(dge_data$HGNC),
          legend = "top", top = 0,

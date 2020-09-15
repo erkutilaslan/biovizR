@@ -9,7 +9,6 @@
 #' @import tidyverse
 #' @export
 
-go_data <- readxl::read_excel("~/go_data.xls", sheet =1) 
 barplot_go <- function(go_data, top = " ", go_process = " ") {
 
 # import data

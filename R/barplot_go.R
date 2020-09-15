@@ -39,26 +39,27 @@ colnames(go_data)[5] <- "padj"
 
 # -log10 conversion of padj by mutate
 
-go_data %>%
- dplyr::mutate("log10_padj" = -log10(padj)) -> go_data
+go_data <- dplyr::mutate("log10_padj" = -log10(padj)) -> go_data
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command
 # while generating plots. so i will generate new tables of top 10 top 20.
 
+go_data <- dplyr::arrange(go_data, dplyr::desc(log10_padj))
+
 if (top != " ") {
-go_data %>%
-  arrange(desc(log10_padj)) %>%
- dplyr::slice(1:top) -> go_data
+
+go_data <- dplyr::slice(go_data, 1:top)
 
 }
 
  #visualization
-
 final_plot <- ggpubr::ggbarplot(go_data,
           x = "GOTerm",
           y = "-log10 padj",
           fill = "darkgray",
+          xlab = "GO Term",
+	  ylab = "p-adjusted(-log10)",
           size = 0.5,
           palette = "jco",            # jco journal color palett. see ?ggpar
           label = go_data$`Nr. Genes`,
@@ -69,7 +70,7 @@ final_plot <- ggpubr::ggbarplot(go_data,
           sort.val = "asc",          # Sort the value in dscending order
           sort.by.groups = FALSE,     # Don't sort inside each group
           rotate = TRUE,
-          ggtheme = theme_pubr(base_size = 18))
+          ggtheme = ggpubr::theme_pubr(base_size = 18))
 
 plot(final_plot)
 return(final_plot)

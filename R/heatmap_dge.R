@@ -54,7 +54,7 @@ heatmap_data <- heatmap_data[as.character(List), ]
 }
 
 #removing na values once a mfing time
-heatmap_data  <- ::na.omit(heatmap_data)
+heatmap_data  <- na.omit(heatmap_data)
 # Visualization
 
 final_plot <- ComplexHeatmap::Heatmap(

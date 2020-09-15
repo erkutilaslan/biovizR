@@ -49,19 +49,24 @@ go_data %>%
 # this is not possible with top = 10 command
 # while generating plots. so i will generate new tables of top 10 top 20.
 
-go_data <- dplyr::arrange(go_data, desc(log10_padj))
+go_data <- dplyr::arrange(go_data, dplyr::desc(log10_padj))
 
 if (top != " ") {
 
-go_data <- dplyr::slice(go_data, 1:top) 
+go_data <- dplyr::slice(go_data, 1:top)
 
 }
 
  #visualization
 
-final_plot <- ggpubr::ggscatter(go_data, x = "log10_padj", y = "GOTerm",
-          size = "Nr. Genes",
-          color = "#00AFBB"
+final_plot <- ggpubr::ggscatter(go_data,
+                 	       	x = "log10_padj",
+      			       	y = "GOTerm",
+	                        xlab = "p-adjusted(-log10)",
+                         	ylab = "GO Term",
+				sort.val = "asc",
+				size = "Nr. Genes",
+                                color = "#00AFBB"
           ) +
           scale_size(range = c(2, 12))    # Adjust the range of points size
 

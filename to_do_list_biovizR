@@ -1,6 +1,13 @@
-- add dependencies
+- bugfixes:
+	- maplot_dge doesnt show gene names
+	- FC is FC not log2FC
+	- barplot_go: undefined columns selected
+	- bubbleplot_go works properly needs to solve desc issue
+	- add dplyr:: in front of %>%
 
-- solve the bubble plot desc issue
+- rename maplot_rnaseq to maplot_dge
+
+- add dependencies
 
 - add automoatic mapping to HGNC for all identifiers inside the functions.
 

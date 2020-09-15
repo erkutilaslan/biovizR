@@ -23,4 +23,4 @@
   this might not be possible because the "scale" of difference in p-values might not be
   proper for good visualization as size of bubble.
 
-- Add a function that will save plots. 2 modes = pdf and pneg.
+- Add a function that will save plots. 2 modes = pdf and tiff.

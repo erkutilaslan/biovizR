@@ -57,7 +57,7 @@ go_data <- dplyr::slice(go_data, 1:top)
  #visualization
 final_plot <- ggpubr::ggbarplot(go_data,
           x = "GOTerm",
-          y = "-log10 padj",
+          y = "log10_padj",
           fill = "darkgray",
           xlab = "GO Term",
 	  ylab = "p-adjusted(-log10)",

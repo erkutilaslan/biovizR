@@ -25,7 +25,7 @@ dge_data$x <- NULL
 # Visuzalization
 
 final_plot <- ggpubr::ggmaplot(dge_data, main = " ",
-         fdr = FDR, fc = (FC), size = 1.5,
+         fdr = FDR, fc = FC, size = 1.5,
          palette = c("#B31B21", "#1465AC", "darkgray"),
          genenames = as.vector(dge_data$HGNC),
          legend = "top", top = 0,

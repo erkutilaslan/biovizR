@@ -51,7 +51,7 @@ ipms <- dplyr::full_join(ipms, ctrl_2, "HGNC")
 ipms <- dplyr::full_join(ipms, ctrl_3, "HGNC")
 
 #dropna to remove NA from only one column
-ipms <- ipms %>% tidyr::drop_na(HGNC)
+ipms <- tidyr::drop_na(ipms, HGNC)
 
 #replace NA in peptide numbers with 0
 ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
@@ -62,14 +62,14 @@ ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
                               ctrl_3 = 0))
 
 #taking the average of peptide numbers using mutate
-ipms <- ipms %>% dplyr::mutate("avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
-ipms <- ipms %>% dplyr::mutate("avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
+ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
 
 #generating ma-plot
 
 ip_plot <- ggplot2::ggplot(ipms, ggplot2::aes(avg.ip, avg.ctrl), label = HGNC)
-final_plot <- ip_plot + geom_point() +
-    geom_text(aes(label = ifelse(avg.ctrl < 2,
+final_plot <- ip_plot + ggplot2::geom_point() +
+    ggplot2::geom_text(aes(label = ifelse(avg.ctrl < 2,
                                  as.character(HGNC),
                                  "")),
                   hjust = 0, vjust = 0)

@@ -12,8 +12,8 @@
 #library(circlize)
 #library(colorspace)
 #library(GetoptLong)
-library(dendextend)
-heatmap_data <- read.csv("~/heatmap_data.csv", header = TRUE)
+#library(dendextend)
+
 heatmap_dge <- function(heatmap_data, List = " ") {
 
 #data import

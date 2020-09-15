@@ -66,7 +66,7 @@ final_plot <- ggpubr::ggscatter(go_data,
 				size = "Nr. Genes",
                                 color = "#00AFBB"
           ) +
-          scale_size(range = c(2, 12))    # Adjust the range of points size
+          ggplot2::scale_size(range = c(2, 12))    # Adjust the range of points size
 
 plot(final_plot)
 return(final_plot)

@@ -1,13 +1,7 @@
 - bugfixes:
 	- maplot_dge doesnt show gene names
 	- FC is FC not log2FC
-	- barplot_go: undefined columns selected
 	- bubbleplot_go works properly needs to solve desc issue
-	- add dplyr:: in front of %>%
-
-- rename maplot_rnaseq to maplot_dge
-
-- add dependencies
 
 - add automoatic mapping to HGNC for all identifiers inside the functions.
 
@@ -17,10 +11,8 @@
   data is generated from. for example selecting deseq2 or edger enables proper data wrangling
   to generate plot.
 
-- Try saving plots with ggsave() function.
-
 - in the bubble plot make the size is y axis and p value is the bubble size.
   this might not be possible because the "scale" of difference in p-values might not be
   proper for good visualization as size of bubble.
 
-- Add a function that will save plots. 2 modes = pdf and tiff.
+- Try saving plots with ggsave() function.

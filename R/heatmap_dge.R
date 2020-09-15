@@ -9,12 +9,11 @@
 #' @export
 
 #library(ggthemes)
-#library(ggpubr)
 #library(circlize)
 #library(colorspace)
 #library(GetoptLong)
-#library(dendextend)
-
+library(dendextend)
+heatmap_data <- read.csv("~/heatmap_data.csv", header = TRUE)
 heatmap_dge <- function(heatmap_data, List = " ") {
 
 #data import
@@ -65,12 +64,12 @@ final_plot <- ComplexHeatmap::Heatmap(
                               grid_width = unit(0.75, "cm"),
                               labels_gp = gpar(fontsize = 12),
                               title_gp = gpar(fontsize = 14)),
-  column_title_gp = ComplexHeatmap::gpar(fontsize = 18),
+  column_title_gp = gpar(fontsize = 18),
   #col = greenred(75),
   #show_row_names = TRUE,
   row_names_side = "left",
-  row_names_gp = ComplexHeatmap::gpar(fontsize = 14),
-  column_names_gp = ComplexHeatmap::gpar(fontsize = 16),
+  row_names_gp = gpar(fontsize = 14),
+  column_names_gp = gpar(fontsize = 16),
   #show_column_names = TRUE
   #cluster_rows = FALSE,
   cluster_columns = FALSE,

@@ -5,6 +5,7 @@
 #'
 #' @param ip_data Path to the input file
 #' @return A dot plot of the ip_data
+#' @import tidyverse
 #' @export
 
 dotplot_ipms <- function(ip_data) {

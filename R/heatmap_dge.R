@@ -6,6 +6,7 @@
 #' @param heatmap_data Path to the input file.
 #' @param List Path to the list of genes file which will be visualized.
 #' @return A heatmap of heatmap_data.
+#' @import ComplexHeatmap
 #' @export
 
 #library(ggthemes)

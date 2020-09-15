@@ -6,7 +6,9 @@
 #' @param top Turned off by default. Parameter to set top amount of processes to be visualized.
 #' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
 #' @return A bar plot of gene ontology results.
+#' @import tidyverse
 #' @export
+
 
 barplot_go <- function(go_data, top = " ", go_process = " ") {
 
@@ -39,8 +41,7 @@ colnames(go_data)[5] <- "padj"
 
 # -log10 conversion of padj by mutate
 
-go_data %>%
-	dplyr::mutate(log10_padj = -log10(padj)) -> go_data
+go_data <- dplyr::mutate(log10_padj = -log10(padj))
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command

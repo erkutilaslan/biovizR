@@ -16,7 +16,7 @@
 #library(dendextend)
 
 heatmap_dge <- function(heatmap_data, List = " ") {
-library(tidyverse)
+
 #data import
 
 heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
@@ -61,16 +61,16 @@ final_plot <- ComplexHeatmap::Heatmap(
   heatmap_data,
   #column_title = "NANOS1: Male Infertility",
   heatmap_legend_param = list(title = "z-score",
-                              legend_height = unit(5, "cm"),
-                              grid_width = unit(0.75, "cm"),
-                              labels_gp = gpar(fontsize = 12),
-                              title_gp = gpar(fontsize = 14)),
-  column_title_gp = gpar(fontsize = 18),
+                              legend_height = ComplexHeatmap::unit(5, "cm"),
+                              grid_width = ComplexHeatmap::unit(0.75, "cm"),
+                              labels_gp = ComplexHeatmap::gpar(fontsize = 12),
+                              title_gp = ComplexHeatmap::gpar(fontsize = 14)),
+  column_title_gp = ComplexHeatmap::gpar(fontsize = 18),
   #col = greenred(75),
   #show_row_names = TRUE,
   row_names_side = "left",
-  row_names_gp = gpar(fontsize = 14),
-  column_names_gp = gpar(fontsize = 16),
+  row_names_gp = ComplexHeatmap::gpar(fontsize = 14),
+  column_names_gp = ComplexHeatmap::gpar(fontsize = 16),
   #show_column_names = TRUE
   #cluster_rows = FALSE,
   cluster_columns = FALSE,

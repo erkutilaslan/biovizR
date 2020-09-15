@@ -39,13 +39,13 @@ colnames(go_data)[5] <- "padj"
 
 # -log10 conversion of padj by mutate
 
-go_data <- dplyr::mutate("log10_padj" = -log10(padj)) -> go_data
+go_data <- dplyr::mutate("log10_padj" = -log10(go_data$padj))
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command
 # while generating plots. so i will generate new tables of top 10 top 20.
 
-go_data <- dplyr::arrange(go_data, dplyr::desc(log10_padj))
+go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
 
 if (top != " ") {
 

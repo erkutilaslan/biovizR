@@ -1,18 +1,17 @@
 - bugfixes:
 	- maplot_dge doesnt show gene names
-	- FC is FC not log2FC
-	- bubbleplot_go works properly needs to solve desc issue
 
-- add automoatic mapping to HGNC for all identifiers inside the functions.
+- I will probably remove bubbleplot_go function its useless
+
+- make dotplot_ipms prettier and input data intake proper
+
+- make maplot_dge input intake proper
 
 - add barplot_qpcr function that takes qpcr results performs analysis and visualization.
 
-- add mod parameter to all functions. this parameter indicates what kind of output is the
+- add type parameter to all functions. this parameter indicates what kind of output is the
   data is generated from. for example selecting deseq2 or edger enables proper data wrangling
   to generate plot.
 
-- in the bubble plot make the size is y axis and p value is the bubble size.
-  this might not be possible because the "scale" of difference in p-values might not be
-  proper for good visualization as size of bubble.
+- add automatic mapping to HGNC for all identifiers inside functions.
 
-- Try saving plots with ggsave() function.

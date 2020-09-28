@@ -8,22 +8,23 @@
 #' @import tidyverse
 #' @export
 
+
 dotplot_ipms <- function(ip_data) {
 
 #data import
 ip_1 <- readxl::read_xlsx(ip_data,
-                  sheet = 3)
+                  sheet = 1)
 ip_2 <- readxl::read_xlsx(ip_data,
-                  sheet = 4)
+                  sheet = 2)
 ip_3 <- readxl::read_xlsx(ip_data,
-                  sheet = 5)
+                  sheet = 3)
 
 ctrl_1 <- readxl::read_xlsx(ip_data,
-                  sheet = 6)
+                  sheet = 4)
 ctrl_2 <- readxl::read_xlsx(ip_data,
-                  sheet = 7)
+                  sheet = 5)
 ctrl_3 <- readxl::read_xlsx(ip_data,
-                  sheet = 8)
+                  sheet = 6)
 
 #data cleanup and process
 
@@ -55,11 +56,11 @@ ipms <- tidyr::drop_na(ipms, HGNC)
 
 #replace NA in peptide numbers with 0
 ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
-                              ip_2 = 0,
-                              ip_3 = 0,
-                              ctrl_1 = 0,
-                              ctrl_2 = 0,
-                              ctrl_3 = 0))
+                                     ip_2 = 0,
+                                     ip_3 = 0,
+                                     ctrl_1 = 0,
+                                     ctrl_2 = 0,
+                                     ctrl_3 = 0))
 
 #taking the average of peptide numbers using mutate
 ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
@@ -67,14 +68,17 @@ ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
 
 #generating ma-plot
 
-ip_plot <- ggplot2::ggplot(ipms, ggplot2::aes(avg.ip, avg.ctrl), label = HGNC)
+
+ip_plot <- ggplot2::ggplot(ipms, ggplot2::aes(avg.ip, avg.ctrl))
+
 final_plot <- ip_plot + ggplot2::geom_point() +
-    ggplot2::geom_text(ggplot2::aes(label = ifelse(avg.ctrl < 2,
-                                 as.character(HGNC),
-                                 "")),
-                  hjust = 0, vjust = 0)
-library(ggplot2)
+              ggplot2::geom_text(ggplot2::aes(label = ifelse(avg.ip / avg.ctrl > 3,
+                                              as.character(HGNC), "")),
+                                 hjust = -0.1, vjust = 0) +
+              ggplot2::theme_classic(base_size = 14)
+
+
 plot(final_plot)
 return(final_plot)
-}
 
+}

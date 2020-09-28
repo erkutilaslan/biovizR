@@ -1,12 +1,3 @@
-- bugfixes:
-	- maplot_dge doesnt show gene names
-
-- I will probably remove bubbleplot_go function its useless
-
-- make dotplot_ipms prettier and input data intake proper
-
-- make maplot_dge input intake proper
-
 - add barplot_qpcr function that takes qpcr results performs analysis and visualization.
 
 - add type parameter to all functions. this parameter indicates what kind of output is the

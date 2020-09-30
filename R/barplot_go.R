@@ -9,6 +9,7 @@
 #' @import tidyverse
 #' @export
 
+
 barplot_go <- function(go_data, top = " ", go_process = " ") {
 
 # import data
@@ -25,29 +26,24 @@ go_data <- go_data[grep(go_process,
 # GO groups they are duplicated
 
 # first removing 'group' columns they interfere with deduplication
-
 go_data <- dplyr::select(go_data, -6, -7, -8, -9)
 
 # deduplication
-
 go_data <- dplyr::distinct(go_data)
 
-# before visualization I need to convert adj-p by -log10 for visualization
 
-# first converting column name so its easier to mutate
-
+#converting column name so its easier to mutate
 colnames(go_data)[5] <- "padj"
 
 # -log10 conversion of padj by mutate
-
 go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
 # for long GO lists I want to visualize only top 10/20.
 # this is not possible with top = 10 command
 # while generating plots. so i will generate new tables of top 10 top 20.
-
 go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
 
+#top parameter to select top processes for visualization
 if (top != " ") {
 
 go_data <- dplyr::slice(go_data, 1:top)

@@ -8,7 +8,8 @@
 #' @param TOP Default 10. Adjust top number of DE genes to visualize.
 #' @return An ma-plot of RNA-Seq DGE data.
 #' @export
-maplot_dge("~/biovizR/data/maplot_data.csv")
+
+
 maplot_dge <- function(dge_data, FDR = 0.01, FC = 0.5, TOP = 10) {
 
 #data import

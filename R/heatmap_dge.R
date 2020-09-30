@@ -9,11 +9,6 @@
 #' @import ComplexHeatmap
 #' @export
 
-#library(ggthemes)
-#library(circlize)
-#library(colorspace)
-#library(GetoptLong)
-#library(dendextend)
 
 heatmap_dge <- function(heatmap_data, List = " ") {
 

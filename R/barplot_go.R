@@ -10,7 +10,9 @@
 #' @import tidyverse
 #' @export
 
+
 barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ") {
+
 
 # import data
 go_data <- readxl::read_excel(go_data, sheet = 1)
@@ -76,6 +78,7 @@ go_data <- go_data[grep(go_process,
 }
 
 #selecting top processes for visualization
+
 if (top != " ") {
 
 go_data <- dplyr::slice(go_data, 1:top)

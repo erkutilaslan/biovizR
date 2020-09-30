@@ -4,10 +4,12 @@
 \alias{barplot_go}
 \title{Bar plot for gene ontology visualization.}
 \usage{
-barplot_go(go_data, top = " ", go_process = " ")
+barplot_go(go_data, type = "cluego", top = " ", go_process = " ")
 }
 \arguments{
 \item{go_data}{Input GO data to visualize.}
+
+\item{type}{Default cluego. Parameter to specify input data source.}
 
 \item{top}{Turned off by default. Parameter to set top amount of processes to be visualized.}
 

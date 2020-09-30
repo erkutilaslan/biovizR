@@ -4,7 +4,7 @@
 \alias{maplot_dge}
 \title{MA-plot visualization of DGE analysis.}
 \usage{
-maplot_dge(dge_data, FDR = 0.01, FC = 0.5)
+maplot_dge(dge_data, FDR = 0.01, FC = 0.5, TOP = 10)
 }
 \arguments{
 \item{dge_data}{Path to the input file.}
@@ -12,6 +12,8 @@ maplot_dge(dge_data, FDR = 0.01, FC = 0.5)
 \item{FDR}{Default 0.01. Adjust FDR value.}
 
 \item{FC}{Default 0.5. Adjust log2FC threshold.}
+
+\item{TOP}{Default 10. Adjust top number of DE genes to visualize.}
 }
 \value{
 An ma-plot of RNA-Seq DGE data.

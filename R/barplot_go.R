@@ -17,7 +17,7 @@ barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ") {
 # import data
 go_data <- readxl::read_excel(go_data, sheet = 1)
 
-if (type = "cluego") {
+if (type == "cluego") {
 
 # first removing unnecessary columns they interfere with deduplication
 go_data <- dplyr::select(go_data, -6, -7, -8, -9)
@@ -36,7 +36,7 @@ go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
 
 }
 
-if (type = "panther") {
+if (type == "panther") {
 
 # first removing unnecessary columns they interfere with deduplication
 
@@ -47,7 +47,7 @@ if (type = "panther") {
 
 }
 
-if (type = "david") {
+if (type == "david") {
 
 # first removing unnecessary columns they interfere with deduplication
 
@@ -58,7 +58,7 @@ if (type = "david") {
 
 }
 
-if (type = "gprofiler") {
+if (type == "gprofiler") {
 
 # first removing unnecessary columns they interfere with deduplication
 

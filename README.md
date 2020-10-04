@@ -1,5 +1,5 @@
 Test build.
-Heavily inspired and relies on by ggplot2, ggpubr ComplexHeatmap packages.
+Heavily inspired and relies on ggplot2, ggpubr and ComplexHeatmap packages.
 
 Installation:
 devtools::instal_github("erkutilaslan/biovizR")

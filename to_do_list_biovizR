@@ -1,5 +1,3 @@
-- add barplot_qpcr function that takes qpcr results performs analysis and visualization.
-
 - finish up violin plot function.
 
 - add type parameter to all functions. this parameter indicates what kind of output is the

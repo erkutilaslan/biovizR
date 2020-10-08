@@ -1,5 +1,3 @@
-- finish up violin plot function.
-
 - add type parameter to all functions. this parameter indicates what kind of output is the
   data is generated from. for example selecting deseq2 or edger enables proper data wrangling
   to generate plot.

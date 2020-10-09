@@ -21,32 +21,24 @@ barplot_qpcr <- function(qpcr_data,
 
 #data import
 qpcr_data <- readxl::read_xlsx(qpcr_data, sheet = 1)
-actb <- read.csv("~/ACTB.csv")
-gapdh <- read.csv("~/GAPDH.csv")
-nanos1 <- read.csv("~/NANOS1.csv")
+
+actb <- read.csv("~/biovizR_data/ACTB.csv")
+gapdh <- read.csv("~/biovizR_data/GAPDH.csv")
+nanos1 <- read.csv("~/biovizR_data/NANOS1.csv")
 
 #data wrangling
-#Detector = Gene 1, Gene2, ...
-#Platename = name of the Plate ran for analysis
-#Sample is sample the same
 
 #merging all files
 qpcr_data <- dplyr::bind_rows(actb, gapdh, nanos1)
+
 #naming columns
-colnames(qpcr_data)[8] <- "Ct"
-colnames(qpcr_data)[4] <- "Detector"
-colnames(qpcr_data)[3] <- "Platename"
 qpcr_data <- qpcr_data[, c(-1, -2, -7, -9:-16)]
 qpcr_data <- na.omit(qpcr_data)
 
-#setting parameters
-ctrlsamples <- c("- control 24", "- control 48", "- control 72")
-hkgenes <- c("GAPDH", "Actin")
-
 #analysis
-qpcr_results <- ddCtExpression(qpcr_data,
-                            calibrationSample = ctrlsamples,
-                            housekeepingGenes = hkgenes)
+#for each sample average the ct values of the 3 ref genes --> ct[ref] = mean( ct[ref1], ct[ref[2], ct[ref3] )
+# for each sample, calculate the dct as the difference dct = ct[ref] - ct[goi]
+
 
 #visualization
 final_plot <- ggpubr::ggbarplot(qpcr_results,

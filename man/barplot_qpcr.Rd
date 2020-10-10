@@ -15,12 +15,14 @@ barplot_qpcr(
 \arguments{
 \item{qpcr_data}{Input qPCR data to visualize.}
 
-\item{top}{Turned off by default. Parameter to set top amount of processes to be visualized.}
+\item{type}{}
 
-\item{go_process}{Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.}
+\item{ref}{}
+
+\item{stat}{Default t-test.}
 }
 \value{
-A bar plot of gene ontology results.
+A bar plot of qPCR results.
 }
 \description{
 This function visualizes qPCR results as bar plot.

@@ -91,7 +91,7 @@ final_plot <- ggpubr::ggbarplot(go_data,
           y = "log10_padj",
           fill = "darkgray",
           xlab = "GO Term",
-	  ylab = "p-adjusted(-log10)",
+          ylab = "p-adjusted(-log10)",
           size = 0.5,
           palette = "jco",            # jco journal color palett. see ?ggpar
           label = go_data$`Nr. Genes`,

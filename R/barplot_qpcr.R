@@ -3,42 +3,56 @@
 #' This function visualizes qPCR results as bar plot.
 #'
 #' @param qpcr_data Input qPCR data to visualize.
-#' @param top Turned off by default. Parameter to set top amount of processes to be visualized.
-#' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
-#' @return A bar plot of gene ontology results.
+#' @param type 
+#' @param ref 
+#' @param target
+#' @param stat Default t-test.
+#' @return A bar plot of qPCR results.
 #' @import tidyverse
 #' @export
 
+library(ddCt)
 barplot_qpcr <- function(qpcr_data,
-			 type = "biorad",
-			 ref = "",
-			 target = "",
-			 stat = "t-test") {
+                         type = "biorad",
+                         ref = "",
+                         target = "",
+                         stat = "t-test") {
 
-#data import 
+#data import
 qpcr_data <- readxl::read_xlsx(qpcr_data, sheet = 1)
 
-#data process
+actb <- read.csv("~/biovizR_data/ACTB.csv")
+gapdh <- read.csv("~/biovizR_data/GAPDH.csv")
+nanos1 <- read.csv("~/biovizR_data/NANOS1.csv")
 
-#statistical analysis
+#data wrangling
+
+#merging all files
+qpcr_data <- dplyr::bind_rows(actb, gapdh, nanos1)
+
+#naming columns
+qpcr_data <- qpcr_data[, c(-1, -2, -7, -9:-16)]
+qpcr_data <- na.omit(qpcr_data)
+
+#analysis
+#for each sample average the ct values of the 3 ref genes --> ct[ref] = mean( ct[ref1], ct[ref[2], ct[ref3] )
+# for each sample, calculate the dct as the difference dct = ct[ref] - ct[goi]
+
 
 #visualization
-final_plot <- ggpubr::ggbarplot(qpcr_data,
-          x = "GOTerm",
-          y = "log10_padj",
+final_plot <- ggpubr::ggbarplot(qpcr_results,
+          x = "Samples",
+          y = "Ct mean",
           fill = "darkgray",
-          xlab = "GO Term",
-	  ylab = "p-adjusted(-log10)",
+          xlab = "Samples",
+          ylab = "Relative mRNA level",
           size = 0.5,
           palette = "jco",            # jco journal color palett. see ?ggpar
-          label = go_data$`Nr. Genes`,
-          title = "",
+          title = "RT-qPCR",
           lab.size = 5,
           lab.vjust = 0.5,
           lab.hjust = 1.2,
-          sort.val = "asc",          # Sort the value in dscending order
           sort.by.groups = FALSE,     # Don't sort inside each group
-          rotate = FALSE,
           ggtheme = ggpubr::theme_pubr(base_size = 18))
 
 plot(final_plot)

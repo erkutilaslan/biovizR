@@ -1,4 +1,6 @@
-- add barplot_qpcr function that takes qpcr results performs analysis and visualization.
+- clean up example datasets to make example plots appear prettier
+
+- finish the documentation on github page.
 
 - add type parameter to all functions. this parameter indicates what kind of output is the
   data is generated from. for example selecting deseq2 or edger enables proper data wrangling

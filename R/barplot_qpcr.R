@@ -16,6 +16,7 @@ barplot_qpcr <- function(qpcr_data,
 			 stat = "t-test") {
 
 #data import 
+qpcr_data <- readxl::read_xlsx(qpcr_data, sheet = 1)
 
 #data process
 

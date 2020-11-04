@@ -1,11 +1,11 @@
-#' Analyze and visualize qPCR results with barplot.
+
 #'
 #' This function visualizes qPCR results as bar plot.
 #'
 #' @param qpcr_data Input qPCR data to visualize.
 #' @param type 
 #' @param ref 
-#' @param target
+#' @param goi
 #' @param stat Default t-test.
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
@@ -15,12 +15,12 @@
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
                          ref = "",
-                         target = "",
+                         goi = "",
                          stat = "t-test") {
 
 #data import
 qpcr_data <- read.csv(qpcr_data)
-qpcr_data <- read.csv("~/qpcr_data.csv")
+qpcr_data <- read.csv("~/biovizR_data/qpcr_data.csv")
 
 #data wrangling
 qpcr_data <- qpcr_data[, c(4, 6, 9)]
@@ -64,24 +64,51 @@ qpcr_data <- dplyr::mutate(qpcr_data, avg.exp = dplyr::coalesce(qpcr_data$target
 #statistical analysis
 stats <- t.test(target_exp$NOS1, control_exp$NOS1)
 stats$p.value
+ggpubr::compare_means()
+my_comparison <- list(c("- control 24", "N1-1 24"))
+
+
+#percentage expression taking control sample 100% for better visualization
+qpcr_data[3, 1] <- "N1-1 24"
+qpcr_data[4, 1] <- "- control 24"
+qpcr_data[5, 1] <- "- control 24"
+qpcr_data[6, 1] <- "N1-1 24" 
+
+#data wrangling for visualization
+qpcr_results <- tidyr::pivot_longer()
+
 
 #visualization
-final_plot <- ggpubr::ggbarplot(test2,
-          x = "Sample",
-          y = "avg.exp",
-#          fill = "darkgray",
-          xlab = "Sample",
-          ylab = "Relative mRNA level",
-          size = 0.5,
-          palette = "jco",
-          title = "RT-qPCR",
-          lab.size = 5,
-          lab.vjust = 0.5,
-          lab.hjust = 1.2,
-          sort.by.groups = FALSE,
-          ggtheme = ggpubr::theme_pubr(base_size = 18))
+final_plot <- ggpubr::ggbarplot(qpcr_data,
+                                x = "Sample",
+                                y = "avg.exp",
+                                add = "mean.se",
+                                fill = "Sample",
+                                xlab = "Sample",
+                                ylab = "Relative mRNA level",
+                                size = 0.5,
+                                palette = "npg",
+                                lab.size = 5,
+                                lab.vjust = 0.5,
+                                lab.hjust = 1.2,
+                                sort.by.groups = FALSE,
+                                ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                                ggsignif::geom_signif(comparisons = my_comparison,
+			        test = "t.test")
+
+plot(final_plot)
+
+geom_signif()
+
+data("ToothGrowth")
+
+ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se",
+          color = "supp", palette = "jco", 
+          position = position_dodge(0.8))+
+  stat_compare_means(aes(group = supp), label = "p.signif", label.y = 29)
 
 plot(final_plot)
 return(final_plot)
 
+head(ToothGrowth)
 }

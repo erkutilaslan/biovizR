@@ -10,8 +10,8 @@
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
 #' @export
-
-
+install.packages("tidyverse")
+install.packages("xml2")
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
                          ref = "",
@@ -21,7 +21,9 @@ barplot_qpcr <- function(qpcr_data,
 #data import
 qpcr_data <- read.csv(qpcr_data)
 qpcr_data <- read.csv("~/biovizR_data/qpcr_data.csv")
+qpcr_data <- read.csv("~/qpcr_data.csv")
 
+#try not to remove "Target" and I will use it as fill parameter in the barplot
 #data wrangling
 qpcr_data <- qpcr_data[, c(4, 6, 9)]
 qpcr_data$Sample[qpcr_data$Sample == ""] <- NA

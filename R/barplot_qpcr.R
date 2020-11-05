@@ -23,7 +23,6 @@ barplot_qpcr <- function(qpcr_data,
 #data import
 qpcr_data <- read.csv(qpcr_data)
 qpcr_data <- read.csv("~/biovizR_data/qpcr_data.csv")
-qpcr_data <- read.csv("~/qpcr_data.csv")
 
 #data wrangling
 qpcr_data <- qpcr_data[, c(4, 6, 9)]
@@ -64,15 +63,25 @@ target_exp <- dplyr::mutate(target_exp, target_avg.exp = mean(expression))
 qpcr_data <- plyr::join_all(list(qpcr_data, control_exp, target_exp))
 qpcr_data <- dplyr::mutate(qpcr_data, avg.exp = dplyr::coalesce(qpcr_data$target_avg.exp, control_avg.exp))
 
+#here try to generate qpcr_data2 in a way that t_test function from rstatix can process and calculate
+
 #converting raw expression to percentage for better visualization
 qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$avg.exp))
 qpcr_data <- dplyr::mutate(qpcr_data, percent.exp = qpcr_data$avg.exp/qpcr_data$avg.exp[1]*100)
 
-#calculating p-value and sd
+#calculating p-value
 stats <- t.test(target_exp$NOS1, control_exp$NOS1)
+pvalue <- stats$p.value
+qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+                              "N1-1 24", "- control 24", pvalue)
+
+#calculating sd
 target_sd <- sd(target_exp$expression)
 control_sd <- sd(control_exp$expression)
-final_sd <- c(target_sd, control_sd)
+
+#qpcr_data <- qpcr_data[c(-2,-3,-5,-6), ]
+#converting raw sd into percentage
+
 
 #visualization
 final_plot <- ggpubr::ggbarplot(qpcr_data,
@@ -81,13 +90,13 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
                                 fill = "Sample",
                                 xlab = "Sample",
                                 ylab = "Relative mRNA level",
-#                                size = 0.5,
-#                                palette = "npg",
-#                                lab.size = 5,
-#                                lab.vjust = 0.5,
-#                                lab.hjust = 1.2,
-#                                sort.by.groups = FALSE,
-                                ggtheme = ggpubr::theme_pubr(base_size = 14)) + 
+                                size = 0.5,
+                                palette = "npg",
+                                lab.size = 5,
+                                lab.vjust = 0.5,
+                                lab.hjust = 1.2,
+                                sort.by.groups = FALSE,
+                                ggtheme = ggpubr::theme_pubr(base_size = 14)) +
               ggplot2::geom_errorbar(aes(x = "N1-1 24",
 					 ymin = percent.exp[1] - target_sd,
 					 ymax = percent.exp[1] + target_sd,
@@ -96,7 +105,7 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
 					 ymin = percent.exp[1] - control_sd,
 					 ymax = percent.exp[1] + control_sd,
 					 width = 0.25)) +
-              ggpubr::stat_pvalue_manual()
+              ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue", y.position = 30)
 
 plot(final_plot)
 return(final_plot)

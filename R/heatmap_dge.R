@@ -10,7 +10,7 @@
 #' @export
 
 
-heatmap_dge <- function(heatmap_data, List = " ") {
+heatmap_dge <- function(heatmap_data, List = "") {
 
 #data import
 
@@ -36,7 +36,7 @@ heatmap_data <- tibble::column_to_rownames(heatmap_data, var = "hgnc_symbol")
 heatmap_data <- t(scale(t(heatmap_data)))
 
 #selecing of genes to visualize e.g. infertility vectors
-if (List != " ") {
+if (List != "") {
 
 List <- read.table(List, header = FALSE, sep = " ")
 

@@ -4,7 +4,7 @@
 \alias{heatmap_dge}
 \title{Heatmap for differential gene expression data.}
 \usage{
-heatmap_dge(heatmap_data, List = " ")
+heatmap_dge(heatmap_data, List = "")
 }
 \arguments{
 \item{heatmap_data}{Path to the input file.}

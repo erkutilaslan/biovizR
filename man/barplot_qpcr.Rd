@@ -2,24 +2,35 @@
 % Please edit documentation in R/barplot_qpcr.R
 \name{barplot_qpcr}
 \alias{barplot_qpcr}
-\title{Analyze and visualize qPCR results with barplot.}
+\title{This function visualizes qPCR results as bar plot.}
 \usage{
 barplot_qpcr(
   qpcr_data,
   type = "biorad",
-  ref = "",
-  target = "",
+  group1 = "",
+  group2 = "",
+  ref1 = "",
+  ref2 = "",
+  goi = "",
   stat = "t-test"
 )
 }
 \arguments{
 \item{qpcr_data}{Input qPCR data to visualize.}
 
-\item{type}{}
+\item{type}{Default Bio-rad. Specify model of thermocycler.}
 
-\item{ref}{}
+\item{group1}{Control group.}
 
-\item{stat}{Default t-test.}
+\item{group2}{Target group.}
+
+\item{ref1}{Reference gene one.}
+
+\item{ref2}{Reference gene two.}
+
+\item{goi}{Gene of interest.}
+
+\item{stat}{Default t-test. Select statistical testing method.}
 }
 \value{
 A bar plot of qPCR results.

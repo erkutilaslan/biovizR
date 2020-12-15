@@ -13,6 +13,12 @@
 #' @import tidyverse
 #' @export
 
+qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/rip_pum1.csv")
+group1 = "RIP NC"
+group2 = "RIP P1"
+ref1 = "Fluc"
+ref2 = "Rluc"
+goi = "FOXM1"
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -39,7 +45,7 @@ qpcr_data <- dplyr::group_by(qpcr_data, Sample, Biological.Set.Name)
 qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
 
 #pivot_wider for analysis
-qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq)
+qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq_mean)
 
 }
 
@@ -65,6 +71,7 @@ qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - avg_ref))
 #dCt calculation for only 1 ref
 if (ref2 == "") {
 qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - ref1))
+
 }
 
 #avg.dCt of target gene value in control biological replicates

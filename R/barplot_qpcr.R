@@ -13,7 +13,6 @@
 #' @import tidyverse
 #' @export
 
-
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -25,8 +24,7 @@ barplot_qpcr <- function(qpcr_data,
 
 #data import
 qpcr_data <- read.csv(qpcr_data)
-qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/RIP_qPCR.csv")
-qpcr_data <- read.csv("~/biovizR_data/qpcr_data.csv")
+
 #data wrangling
 if (type == "biorad") {
 

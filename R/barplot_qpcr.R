@@ -13,7 +13,7 @@
 #' @import tidyverse
 #' @export
 
-qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/rip_pum1.csv")
+qpcr_data <- read.csv("~/rip_pum1.csv")
 group1 = "RIP NC"
 group2 = "RIP P1"
 ref1 = "Fluc"

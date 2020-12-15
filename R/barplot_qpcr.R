@@ -13,6 +13,7 @@
 #' @import tidyverse
 #' @export
 
+
 qpcr_data <- read.csv("~/rip_pum1.csv")
 group1 = "RIP NC"
 group2 = "RIP P1"
@@ -39,10 +40,12 @@ qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
 qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
 qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
 qpcr_data <- na.omit(qpcr_data)
-qpcr_data <- dplyr::distinct(qpcr_data)
 qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
-qpcr_data <- dplyr::group_by(qpcr_data, Sample, Biological.Set.Name)
+qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
 qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
+qpcr_data <- dplyr::ungroup(qpcr_data)
+qpcr_data <- qpcr_data[ ,-4]
+qpcr_data <- dplyr::distinct(qpcr_data)
 
 #pivot_wider for analysis
 qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq_mean)
@@ -89,7 +92,8 @@ ref_exp <- qpcr_data[grep(group1, qpcr_data$Sample), ]
 target_exp <- qpcr_data[grep(group2, qpcr_data$Sample), ]
 ref_exp <- dplyr::mutate(ref_exp, ref_avg_exp = mean(expression))
 target_exp <- dplyr::mutate(target_exp, target_avg_exp = mean(expression))
-qpcr_data <- plyr::join_all(list(qpcr_data, ref_exp, target_exp))
+qpcr_data <- dplyr::left_join(qpcr_data, ref_exp)
+qpcr_data <- dplyr::left_join(qpcr_data, target_exp)
 qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp, ref_avg_exp))
 
 #converting raw expression to percentage for better visualization
@@ -149,16 +153,16 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
 				sort.by.groups = FALSE,
 				ggtheme = ggpubr::theme_pubr(base_size = 14)) +
               ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp[2] - target_sd,
-	                		 ymax = percent_exp[2] + target_sd,
+	        			 ymin = percent_exp[1] - target_sd,
+	                		 ymax = percent_exp[1] + target_sd,
 		                	 width = 0.1)) +
               ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp[1] - ref_sd,
-     					 ymax = percent_exp[1] + ref_sd,
+	    				 ymin = percent_exp[2] - ref_sd,
+     					 ymax = percent_exp[2] + ref_sd,
      					 width = 0.1)) +
               ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
 					 y.position = qpcr_data$percent_exp[1] + ref_sd + 10,
-					 bracket.size = 0.6)
+					 bracket.size = 0.6, label.size = 6)
 
 plot(final_plot)
 return(final_plot)

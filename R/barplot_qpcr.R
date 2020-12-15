@@ -28,6 +28,9 @@
 #ref1 = "Fluc"
 #ref2 = "Rluc"
 #goi = "FOXM1"
+#tech_rep = 3
+
+#barplot_qpcr("~/rip_pum1.csv", group1 = "RIP NC", group2 = "RIP P1", ref1 = "Fluc", ref2 = "Rluc", goi = "FOXM1", tech_rep = 3)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -36,7 +39,7 @@ barplot_qpcr <- function(qpcr_data,
                          ref1 = "",
 			 ref2 = "",
                          goi = "",
-			 tech_rep = "4"
+			 tech_rep = 4,
                          stat = "t-test") {
 
 #data import
@@ -151,7 +154,7 @@ ref_sd <- ref_sd/qpcr_data$ref_avg_exp[1]*100
 
 #distinct only 1 column
 qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
-
+head(qpcr_data)
 #visualization
 final_plot <- ggpubr::ggbarplot(qpcr_data,
 				x = "Sample",
@@ -167,15 +170,15 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
 				sort.by.groups = FALSE,
 				ggtheme = ggpubr::theme_pubr(base_size = 14)) +
               ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = qpcr_data[as.character(group2), as.character(percent_exp)] - target_sd,
-	                		 ymax = qpcr_data[as.character(group2), as.character(percent_exp)] + target_sd,
+	        			 ymin = percent_exp[2] - target_sd,
+	                		 ymax = percent_exp[2] + target_sd,
 		                	 width = 0.1)) +
               ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = qpcr_data[as.character(group1), as.character(percent_exp)] - ref_sd,
-     					 ymax = qpcr_data[as.character(group1), as.character(percent_exp)] + ref_sd,
+	    				 ymin = percent_exp[1] - ref_sd,
+     					 ymax = percent_exp[1] + ref_sd,
      					 width = 0.1)) +
               ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-					 y.position = qpcr_data$percent_exp[1] + ref_sd + 10,
+					 y.position = qpcr_data$percent_exp[2] + ref_sd + 10,
 					 bracket.size = 0.6, label.size = 6)
 
 plot(final_plot)

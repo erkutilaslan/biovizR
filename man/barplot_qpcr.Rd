@@ -12,6 +12,7 @@ barplot_qpcr(
   ref1 = "",
   ref2 = "",
   goi = "",
+  tech_rep = 4,
   stat = "t-test"
 )
 }
@@ -29,6 +30,8 @@ barplot_qpcr(
 \item{ref2}{Reference gene two.}
 
 \item{goi}{Gene of interest.}
+
+\item{tech_rep}{Number of technical replicates. Necessary for accurate statistical calculation}
 
 \item{stat}{Default t-test. Select statistical testing method.}
 }

@@ -1,5 +1,3 @@
-- clean up example datasets to make example plots appear prettier
-
 - finish the documentation on github page.
 
 - add type parameter to all functions. this parameter indicates what kind of output is the
@@ -8,3 +6,14 @@
 
 - add automatic mapping to HGNC for all identifiers inside functions.
 
+- heatmap should accept a list rather than a List file.
+
+- make sure both excel and csv file formats are ssupported as input
+
+- add custom leveling to ma plot function. this can be done by manually changing the pvalue inside if it is lower than the FDR!!
+
+- add cell cycle and proliferation analysis and visualization from flow cytometry data
+
+- add dual luciferase results analysis
+
+- solve windows compatibility issues: violin plot x_lab y_lab

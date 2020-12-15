@@ -22,6 +22,13 @@
 #goi = "FOXM1"
 #tech_rep = "4"
 
+qpcr_data <- read.csv("~/rip_pum1.csv")
+group1 = "RIP NC"
+group2 = "RIP P1"
+ref1 = "Fluc"
+ref2 = "Rluc"
+goi = "FOXM1"
+
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -169,7 +176,7 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
      					 width = 0.1)) +
               ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
 					 y.position = qpcr_data$percent_exp[1] + ref_sd + 10,
-					 bracket.size = 0.6)
+					 bracket.size = 0.6, label.size = 6)
 
 plot(final_plot)
 return(final_plot)

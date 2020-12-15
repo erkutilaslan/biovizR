@@ -22,12 +22,12 @@
 #goi = "FOXM1"
 #tech_rep = "4"
 
-qpcr_data <- read.csv("~/rip_pum1.csv")
-group1 = "RIP NC"
-group2 = "RIP P1"
-ref1 = "Fluc"
-ref2 = "Rluc"
-goi = "FOXM1"
+#qpcr_data <- read.csv("~/rip_pum1.csv")
+#group1 = "RIP NC"
+#group2 = "RIP P1"
+#ref1 = "Fluc"
+#ref2 = "Rluc"
+#goi = "FOXM1"
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",

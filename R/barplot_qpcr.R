@@ -25,11 +25,12 @@ barplot_qpcr <- function(qpcr_data,
 
 #data import
 qpcr_data <- read.csv(qpcr_data)
-
+qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/RIP_qPCR.csv")
+qpcr_data <- read.csv("~/biovizR_data/qpcr_data.csv")
 #data wrangling
 if (type == "biorad") {
 
-qpcr_data <- qpcr_data[, c(4, 6, 7, 9)]
+qpcr_data <- qpcr_data[, c(3, 5, 6, 8)]
 qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
 qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
 qpcr_data <- na.omit(qpcr_data)

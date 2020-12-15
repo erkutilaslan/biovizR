@@ -13,6 +13,7 @@
 #' @import tidyverse
 #' @export
 
+
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -28,15 +29,17 @@ qpcr_data <- read.csv(qpcr_data)
 #data wrangling
 if (type == "biorad") {
 
-qpcr_data <- qpcr_data[, c(3, 5, 6, 8)]
+qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
 qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
 qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
 qpcr_data <- na.omit(qpcr_data)
 qpcr_data <- dplyr::distinct(qpcr_data)
-qpcr_data$Cq.Mean <- as.numeric(as.character(qpcr_data$Cq.Mean))
+qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
+qpcr_data <- dplyr::group_by(qpcr_data, Sample, Biological.Set.Name)
+qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
 
 #pivot_wider for analysis
-qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq.Mean)
+qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq)
 
 }
 

@@ -8,11 +8,19 @@
 #' @param ref1 Reference gene one.
 #' @param ref2 Reference gene two.
 #' @param goi Gene of interest.
+#' @param tech_rep Number of technical replicates. Necessary for accurate statistical calculation
 #' @param stat Default t-test. Select statistical testing method.
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
 #' @export
 
+#qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/RIP_qPCR.csv")
+#group1 = "RIP NC"
+#group2 = "RIP P1"
+#ref1 = "Rluc"
+#ref2 = "Fluc"
+#goi = "FOXM1"
+#tech_rep = "4"
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -21,6 +29,7 @@ barplot_qpcr <- function(qpcr_data,
                          ref1 = "",
 			 ref2 = "",
                          goi = "",
+			 tech_rep = "4"
                          stat = "t-test") {
 
 #data import
@@ -90,11 +99,18 @@ qpcr_data <- dplyr::left_join(qpcr_data, target_exp)
 qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp, ref_avg_exp))
 
 #converting raw expression to percentage for better visualization
-qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$avg_exp))
-qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$avg_exp[1]*100)
+qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$ref_avg_exp))
+qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$ref_avg_exp[1]*100)
+
+#duplicating rows for accurate p-value calculation
+idx <- rep(1:nrow(target_exp), tech_rep)
+target_exp <- target_exp[idx, ]
+
+idx2 <- rep(1:nrow(ref_exp), tech_rep)
+ref_exp <- ref_exp[idx2, ]
 
 #calculating p-value
-stats <- t.test(target_exp$goi, ref_exp$goi)
+stats <- t.test(target_exp$expression, ref_exp$expression, alternative = "two.sided")
 
 #converting pvalues to *
 if (stats$p.value > 0.05) {
@@ -122,11 +138,9 @@ qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
 target_sd <- sd(target_exp$expression)
 ref_sd <- sd(ref_exp$expression)
 
-#qpcr_data <- qpcr_data[c(-2,-3,-5,-6), ]
-
 #converting raw sd into percentage
-target_sd <- target_sd/qpcr_data$avg_exp[1]*100
-ref_sd <- ref_sd/qpcr_data$avg_exp[1]*100
+target_sd <- target_sd/qpcr_data$target_avg_exp[4]*100
+ref_sd <- ref_sd/qpcr_data$ref_avg_exp[1]*100
 
 #distinct only 1 column
 qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
@@ -146,12 +160,12 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
 				sort.by.groups = FALSE,
 				ggtheme = ggpubr::theme_pubr(base_size = 14)) +
               ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp[2] - target_sd,
-	                		 ymax = percent_exp[2] + target_sd,
+	        			 ymin = qpcr_data[as.character(group2), as.character(percent_exp)] - target_sd,
+	                		 ymax = qpcr_data[as.character(group2), as.character(percent_exp)] + target_sd,
 		                	 width = 0.1)) +
               ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp[1] - ref_sd,
-     					 ymax = percent_exp[1] + ref_sd,
+	    				 ymin = qpcr_data[as.character(group1), as.character(percent_exp)] - ref_sd,
+     					 ymax = qpcr_data[as.character(group1), as.character(percent_exp)] + ref_sd,
      					 width = 0.1)) +
               ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
 					 y.position = qpcr_data$percent_exp[1] + ref_sd + 10,

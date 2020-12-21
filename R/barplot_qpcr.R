@@ -41,7 +41,7 @@ barplot_qpcr <- function(qpcr_data,
 			 ref2 = "",
                          goi = "",
 			 tech_rep = 4,
-			 test = TRUE
+			 test = TRUE,
                          stat = "t-test") {
 
 #data import

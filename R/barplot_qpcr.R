@@ -9,6 +9,7 @@
 #' @param ref2 Reference gene two.
 #' @param goi Gene of interest.
 #' @param tech_rep Number of technical replicates. Necessary for accurate statistical calculation
+#' @param test Default TRUE. Enable or disable statistical analysis.
 #' @param stat Default t-test. Select statistical testing method.
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
@@ -40,6 +41,7 @@ barplot_qpcr <- function(qpcr_data,
 			 ref2 = "",
                          goi = "",
 			 tech_rep = 4,
+			 test = TRUE
                          stat = "t-test") {
 
 #data import
@@ -112,6 +114,9 @@ qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp, 
 qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$ref_avg_exp))
 qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$ref_avg_exp[1]*100)
 
+if (test = TRUE) {
+
+
 #duplicating rows for accurate p-value calculation
 idx <- rep(1:nrow(target_exp), tech_rep)
 target_exp <- target_exp[idx, ]
@@ -143,7 +148,7 @@ if (stats$p.value < 0.001) {
 #this is the supported df layout for ggpubr::stat_pvalue_manuel()
 qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
                               group1, group2, pvalue)
-
+}
 #calculating sd
 target_sd <- sd(target_exp$expression)
 ref_sd <- sd(ref_exp$expression)

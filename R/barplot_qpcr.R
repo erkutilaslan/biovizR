@@ -41,7 +41,7 @@ barplot_qpcr <- function(qpcr_data,
 			 ref2 = "",
                          goi = "",
 			 tech_rep = 4,
-			 test = TRUE,
+			 test == TRUE,
                          stat = "t-test") {
 
 #data import
@@ -114,7 +114,7 @@ qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp, 
 qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$ref_avg_exp))
 qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$ref_avg_exp[1]*100)
 
-if (test = TRUE) {
+if (test == TRUE) {
 
 
 #duplicating rows for accurate p-value calculation

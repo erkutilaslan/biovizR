@@ -16,22 +16,30 @@
 #' @export
 
 #qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/RIP_qPCR.csv")
-#group1 = "RIP NC"
-#group2 = "RIP P1"
-#ref1 = "Rluc"
-#ref2 = "Fluc"
-#goi = "FOXM1"
-#tech_rep = "4"
+#group1 <- "RIP NC"
+#group2 <- "RIP P1"
+#ref1 <- "Rluc"
+#ref2 <- "Fluc"
+#goi <- "FOXM1"
+#tech_rep <- "4"
 
 #qpcr_data <- read.csv("~/rip_pum1.csv")
-#group1 = "RIP NC"
-#group2 = "RIP P1"
-#ref1 = "Fluc"
-#ref2 = "Rluc"
-#goi = "FOXM1"
-#tech_rep = 3
+#group1 <- "RIP NC"
+#group2 <- "RIP P1"
+#ref1 <- "Fluc"
+#ref2 <- "Rluc"
+#goi <- "FOXM1"
+#tech_rep <- 3
+#test <- FALSE
 
-#barplot_qpcr("~/rip_pum1.csv", group1 = "RIP NC", group2 = "RIP P1", ref1 = "Fluc", ref2 = "Rluc", goi = "FOXM1", tech_rep = 3)
+#barplot_qpcr("~/rip_pum1.csv",
+#	     group1 = "RIP NC",
+#	     group2 = "RIP P1",
+#	     ref1 = "Fluc",
+#	     ref2 = "Rluc",
+#	     goi = "FOXM1",
+#	     tech_rep = 3,
+#            test = TRUE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -159,8 +167,9 @@ ref_sd <- ref_sd/qpcr_data$ref_avg_exp[1]*100
 
 #distinct only 1 column
 qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
-head(qpcr_data)
+
 #visualization
+if (test == TRUE) {
 final_plot <- ggpubr::ggbarplot(qpcr_data,
 				x = "Sample",
 				y = "percent_exp",
@@ -185,6 +194,32 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
               ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
 					 y.position = qpcr_data$percent_exp[2] + ref_sd + 10,
 					 bracket.size = 0.6, label.size = 6)
+}
+
+if (test == FALSE) {
+
+final_plot <- ggpubr::ggbarplot(qpcr_data,
+				x = "Sample",
+				y = "percent_exp",
+				fill = "808080",
+				xlab = "Sample",
+				ylab = "Relative mRNA level",
+				size = 0.5,
+				palette = "npg",
+				lab.size = 5,
+				lab.vjust = 0.5,
+				lab.hjust = 1.2,
+				sort.by.groups = FALSE,
+				ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+              ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+	        			 ymin = percent_exp[2] - target_sd,
+	                		 ymax = percent_exp[2] + target_sd,
+		                	 width = 0.1)) +
+              ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+	    				 ymin = percent_exp[1] - ref_sd,
+     					 ymax = percent_exp[1] + ref_sd,
+     					 width = 0.1))
+}
 
 plot(final_plot)
 return(final_plot)

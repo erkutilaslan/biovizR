@@ -24,13 +24,22 @@
 #tech_rep <- "4"
 
 #qpcr_data <- read.csv("~/rip_pum1.csv")
-#group1 <- "RIP NC"
-#group2 <- "RIP P1"
-#ref1 <- "Fluc"
-#ref2 <- "Rluc"
-#goi <- "FOXM1"
+#group1 <- ""
+#group2 <- ""
+#ref1 <- ""
+#ref2 <- ""
+#goi <- ""
 #tech_rep <- 3
-#test <- FALSE
+#test <- TRUE
+
+qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
+group1 <- "siCTRL 1"
+group2 <- "siFOXM1 1"
+ref1 <- "GARS1"
+ref2 <- "DTD1"
+goi <- "FOXM1"
+tech_rep <- 4
+test <- FALSE
 
 #barplot_qpcr("~/rip_pum1.csv",
 #	     group1 = "RIP NC",
@@ -58,15 +67,31 @@ qpcr_data <- read.csv(qpcr_data)
 #data wrangling
 if (type == "biorad") {
 
+if (test == TRUE) {
 qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
+}
+if (test == FALSE) {
+qpcr_data <- qpcr_data[, c(3, 5, 7)]
+}
 qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
 qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
 qpcr_data <- na.omit(qpcr_data)
+
 qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
+if (test == TRUE) {
 qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
+}
+if (test == FALSE) {
+qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample)
+}
 qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
 qpcr_data <- dplyr::ungroup(qpcr_data)
+if (test == TRUE) {
 qpcr_data <- qpcr_data[ ,-4]
+}
+if (test == FALSE) {
+qpcr_data <- qpcr_data[ ,-3]
+}
 qpcr_data <- dplyr::distinct(qpcr_data)
 
 #pivot_wider for analysis

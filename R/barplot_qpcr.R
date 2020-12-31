@@ -33,16 +33,17 @@
 #test <- TRUE
 
 #qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
+#type <- "Bio-rad"
 #group1 <- "siCTRL 1"
 #group2 <- "siFOXM1 1"
 #ref1 <- "GARS1"
-#ref2 <- "DTD1"
+#ref2 <- ""
 #goi <- "FOXM1"
 #tech_rep <- 4
 #test <- FALSE
 
 #barplot_qpcr("~/Cq siFOXM1 siPUM1.csv",
-#	     group1 = "siCTRL 2",
+#	     group1 = "siCTRL 1",
 #	     group2 = "siFOXM1 1",
 #	     ref1 = "GARS1",
 #	     ref2 = "DTD1",
@@ -119,7 +120,12 @@ if (type == "biorad") {
 
 #annotating ref and goi names
 colnames(qpcr_data)[grep(ref1, colnames(qpcr_data))] <- "ref1"
-colnames(qpcr_data)[grep(ref2, colnames(qpcr_data))] <- "ref2"
+
+if (ref2 != "") {
+
+  colnames(qpcr_data)[grep(ref2, colnames(qpcr_data))] <- "ref2"
+}
+
 colnames(qpcr_data)[grep(goi, colnames(qpcr_data))] <- "goi"
 
 #avg of refs for multiple refs

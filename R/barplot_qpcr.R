@@ -44,7 +44,7 @@
 
 #barplot_qpcr("~/Cq siFOXM1 siPUM1.csv",
 #	     group1 = "siCTRL 1",
-#	     group2 = "siFOXM1 1",
+#             group2 = "siFOXM1 1",
 #	     ref1 = "GARS1",
 #	     ref2 = "DTD1",
 #	     goi = "FOXM1",
@@ -124,6 +124,7 @@ colnames(qpcr_data)[grep(ref1, colnames(qpcr_data))] <- "ref1"
 if (ref2 != "") {
 
   colnames(qpcr_data)[grep(ref2, colnames(qpcr_data))] <- "ref2"
+
 }
 
 colnames(qpcr_data)[grep(goi, colnames(qpcr_data))] <- "goi"

@@ -20,7 +20,7 @@ barplot_qpcr(
 \arguments{
 \item{qpcr_data}{Input qPCR data to visualize.}
 
-\item{type}{Default Bio-rad. Specify model of thermocycler.}
+\item{type}{Default biorad. Specify model of thermocycler.}
 
 \item{group1}{Control group.}
 

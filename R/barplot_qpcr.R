@@ -2,7 +2,7 @@
 #' This function visualizes qPCR results as bar plot.
 #'
 #' @param qpcr_data Input qPCR data to visualize.
-#' @param type Default Bio-rad. Specify model of thermocycler.
+#' @param type Default biorad. Specify model of thermocycler.
 #' @param group1 Control group.
 #' @param group2 Target group.
 #' @param ref1 Reference gene one.

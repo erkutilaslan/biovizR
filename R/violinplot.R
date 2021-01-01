@@ -14,7 +14,6 @@ violinplot <- function(violin_data, x_lab = "conditions", y_lab = "values") {
 #data import
 violin_data <- readxl::read_xlsx(violin_data, sheet = 1)
 
-
 #data wrangling.
 col_names <- colnames(violin_data)
 col_length <- length(colnames(violin_data))
@@ -40,7 +39,6 @@ final_plot <- ggpubr::ggviolin(violin_data,
 
 plot(final_plot)
 return(final_plot)
-
 
 }
 

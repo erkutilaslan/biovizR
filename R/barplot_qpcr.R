@@ -108,7 +108,7 @@ if (type == "biorad") {
 
   qpcr_data <- dplyr::distinct(qpcr_data)
 
-#pivot_wider for analysis
+  #pivot_wider for analysis
   qpcr_data <- tidyr::pivot_wider(qpcr_data,
                                   names_from = Target, values_from = Cq_mean)
 
@@ -133,12 +133,12 @@ colnames(qpcr_data)[grep(goi, colnames(qpcr_data))] <- "goi"
 if (ref2 != "") {
 
   qpcr_data <- dplyr::mutate(qpcr_data, avg_ref = (ref1 + ref2) / 2)
-#dCt calculation for avg of refs
+  #dCt calculation for avg of refs
   qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - avg_ref))
 
 } else {
 
-#dCt calculation for only 1 ref
+  #dCt calculation for only 1 ref
 
   qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - ref1))
 
@@ -169,36 +169,36 @@ qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$
 
 if (test == TRUE) {
 
-#duplicating rows for accurate p-value calculation
+  #duplicating rows for accurate p-value calculation
   idx <- rep(1:nrow(target_exp), tech_rep)
   target_exp <- target_exp[idx, ]
 
   idx2 <- rep(1:nrow(ref_exp), tech_rep)
   ref_exp <- ref_exp[idx2, ]
 
-#calculating p-value
+  #calculating p-value
   stats <- t.test(target_exp$expression, ref_exp$expression, alternative = "two.sided")
 
-#converting pvalues to *
+  #converting pvalues to *
   if (stats$p.value > 0.05) {
     pvalue <- "ns"
   }
 
   if (stats$p.value < 0.05) {
-  pvalue <- "*"
+    pvalue <- "*"
   }
 
   if (stats$p.value < 0.01) {
-  pvalue <- "**"
+    pvalue <- "**"
   }
 
   if (stats$p.value < 0.001) {
-  pvalue <- "***"
+    pvalue <- "***"
   }
 
-#we need to change group names to represent the data automatically
-#this is the supported df layout for ggpubr::stat_pvalue_manuel()
-qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+  #we need to change group names to represent the data automatically
+  #this is the supported df layout for ggpubr::stat_pvalue_manuel()
+  qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
                               group1, group2, pvalue)
 
 }

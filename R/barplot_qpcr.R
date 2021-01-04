@@ -69,7 +69,7 @@ if (is.character(qpcr_data) == TRUE) {
 
 } else {
 
-  qpcr_data <- tibble(qpcr_data)
+  qpcr_data <- dplyr::tibble(qpcr_data)
   
   }
 

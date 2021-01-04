@@ -67,11 +67,7 @@ if (is.character(qpcr_data) == TRUE) {
 
   qpcr_data <- read.csv(qpcr_data)
 
-} else {
-
-  qpcr_data <- dplyr::tibble(qpcr_data)
-  
-  }
+}
 
 #data wrangling
 if (type == "biorad") {

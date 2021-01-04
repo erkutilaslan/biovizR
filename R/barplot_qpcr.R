@@ -44,12 +44,12 @@
 
 #barplot_qpcr("~/Cq siFOXM1 siPUM1.csv",
 #	     group1 = "siCTRL 1",
-#             group2 = "siFOXM1 1",
+#            group2 = "siFOXM1 1",
 #	     ref1 = "GARS1",
 #	     ref2 = "DTD1",
 #	     goi = "FOXM1",
 #	     tech_rep = 4,
-#             test = FALSE)
+#            test = FALSE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -63,7 +63,15 @@ barplot_qpcr <- function(qpcr_data,
                          stat = "t-test") {
 
 #data import
-qpcr_data <- read.csv(qpcr_data)
+if (is.character(qpcr_data) == TRUE) {
+
+  qpcr_data <- read.csv(qpcr_data)
+
+} else {
+
+  qpcr_data <- tibble(qpcr_data)
+  
+  }
 
 #data wrangling
 if (type == "biorad") {

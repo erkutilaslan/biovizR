@@ -72,6 +72,12 @@ if (is.character(qpcr_data) == TRUE) {
 #data wrangling
 if (type == "biorad") {
 
+  if (colnames(qpcr_data[1]) == "X") {
+     
+    qpcr_data <- qpcr_data[ , -1]
+  
+    }
+
   if (test == TRUE) {
 
     qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]

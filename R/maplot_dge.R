@@ -14,8 +14,13 @@
 maplot_dge <- function(dge_data, FDR = 0.01, FC = 0.5, TOP = 10, type = "deseq2") {
 
 #data import
-dge_data <- read.table(file = dge_data,
-			  header = TRUE, sep = ",", dec = ".")
+if (is.character(dge_data) == TRUE) {
+
+  dge_data <- read.table(file = dge_data,
+                         header = TRUE, sep = ",", dec = ".")
+
+}
+
 if (type == "deseq2") {
 
   #processing colnames for visualization

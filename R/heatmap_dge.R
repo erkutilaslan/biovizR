@@ -13,7 +13,11 @@
 heatmap_dge <- function(heatmap_data, List = "") {
 
 #data import
-heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
+if (is.character(heatmap_data) == TRUE) {
+
+  heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
+
+}
 
 #NA omit otherwise we can't move HGNC to rownames
 heatmap_data  <- na.omit(heatmap_data)

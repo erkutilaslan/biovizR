@@ -12,6 +12,8 @@
 dotplot_ipms <- function(ip_data) {
 
 #data import
+if (is.character(ip_data) == TRUE) {
+
 ip_1 <- readxl::read_xlsx(ip_data,
                   sheet = 1)
 ip_2 <- readxl::read_xlsx(ip_data,
@@ -25,6 +27,8 @@ ctrl_2 <- readxl::read_xlsx(ip_data,
                   sheet = 5)
 ctrl_3 <- readxl::read_xlsx(ip_data,
                   sheet = 6)
+
+}
 
 #data cleanup and process
 

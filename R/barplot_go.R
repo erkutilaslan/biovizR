@@ -15,7 +15,11 @@ barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ") {
 
 
 # import data
-go_data <- readxl::read_excel(go_data, sheet = 1)
+if (is.character(go_data) == TRUE) {
+
+  go_data <- readxl::read_excel(go_data, sheet = 1)
+
+}
 
 if (type == "cluego") {
 

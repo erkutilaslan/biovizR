@@ -19,73 +19,70 @@ go_data <- readxl::read_excel(go_data, sheet = 1)
 
 if (type == "cluego") {
 
-# first removing unnecessary columns they interfere with deduplication
-go_data <- dplyr::select(go_data, -6, -7, -8, -9)
+  # first removing unnecessary columns they interfere with deduplication
+  go_data <- dplyr::select(go_data, -6, -7, -8, -9)
 
-# deduplication
-go_data <- dplyr::distinct(go_data)
+  # deduplication
+  go_data <- dplyr::distinct(go_data)
 
-# converting column name so its easier to mutate
-colnames(go_data)[5] <- "padj"
+  # converting column name so its easier to mutate
+  colnames(go_data)[5] <- "padj"
 
-# -log10 conversion of padj by mutate
-go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
+  # -log10 conversion of padj by mutate
+  go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
-# arranging the GO Terms in descanding order
-go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
+  # arranging the GO Terms in descanding order
+  go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
 
 }
 
 if (type == "panther") {
 
-# first removing unnecessary columns they interfere with deduplication
+  # first removing unnecessary columns they interfere with deduplication
 
-# deduplication
+  # deduplication
 
-# converting column name so its easier to mutate
-
+  # converting column name so its easier to mutate
 
 }
 
 if (type == "david") {
 
-# first removing unnecessary columns they interfere with deduplication
+  # first removing unnecessary columns they interfere with deduplication
 
-# deduplication
+  # deduplication
 
-# converting column name so its easier to mutate
-
+  # converting column name so its easier to mutate
 
 }
 
 if (type == "gprofiler") {
 
-# first removing unnecessary columns they interfere with deduplication
+  # first removing unnecessary columns they interfere with deduplication
 
-# deduplication
+  # deduplication
 
-# converting column name so its easier to mutate
-
+  # converting column name so its easier to mutate
 
 }
 
-
 # selecting GOTerms for visualization
 if (go_process != " ") {
-go_data <- go_data[grep(go_process,
-                       go_data$GOTerm,
-                       ignore.case = TRUE), ]
+
+  go_data <- go_data[grep(go_process,
+                          go_data$GOTerm,
+                          ignore.case = TRUE), ]
 }
 
 #selecting top processes for visualization
 
 if (top != " ") {
 
-go_data <- dplyr::slice(go_data, 1:top)
+  go_data <- dplyr::slice(go_data, 1:top)
 
 }
 
- #visualization
+#visualization
 final_plot <- ggpubr::ggbarplot(go_data,
           x = "GOTerm",
           y = "log10_padj",

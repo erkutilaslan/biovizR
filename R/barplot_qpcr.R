@@ -2,7 +2,7 @@
 #' This function visualizes qPCR results as bar plot.
 #'
 #' @param qpcr_data Input qPCR data to visualize.
-#' @param type Default Bio-rad. Specify model of thermocycler.
+#' @param type Default biorad. Specify model of thermocycler.
 #' @param group1 Control group.
 #' @param group2 Target group.
 #' @param ref1 Reference gene one.
@@ -30,16 +30,26 @@
 #ref2 <- "Rluc"
 #goi <- "FOXM1"
 #tech_rep <- 3
+#test <- TRUE
+
+#qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
+#type <- "Bio-rad"
+#group1 <- "siCTRL 1"
+#group2 <- "siFOXM1 1"
+#ref1 <- "GARS1"
+#ref2 <- ""
+#goi <- "FOXM1"
+#tech_rep <- 4
 #test <- FALSE
 
-#barplot_qpcr("~/rip_pum1.csv",
-#	     group1 = "RIP NC",
-#	     group2 = "RIP P1",
-#	     ref1 = "Fluc",
-#	     ref2 = "Rluc",
+#barplot_qpcr("~/Cq siFOXM1 siPUM1.csv",
+#	     group1 = "siCTRL 1",
+#            group2 = "siFOXM1 1",
+#	     ref1 = "GARS1",
+#	     ref2 = "DTD1",
 #	     goi = "FOXM1",
-#	     tech_rep = 3,
-#            test = TRUE)
+#	     tech_rep = 4,
+#            test = FALSE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -53,24 +63,64 @@ barplot_qpcr <- function(qpcr_data,
                          stat = "t-test") {
 
 #data import
-qpcr_data <- read.csv(qpcr_data)
+if (is.character(qpcr_data) == TRUE) {
+
+  qpcr_data <- read.csv(qpcr_data)
+
+}
 
 #data wrangling
 if (type == "biorad") {
 
-qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
-qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
-qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
-qpcr_data <- na.omit(qpcr_data)
-qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
-qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
-qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
-qpcr_data <- dplyr::ungroup(qpcr_data)
-qpcr_data <- qpcr_data[ ,-4]
-qpcr_data <- dplyr::distinct(qpcr_data)
+  if (colnames(qpcr_data[1]) == "X") {
+     
+    qpcr_data <- qpcr_data[ , -1]
+  
+    }
 
-#pivot_wider for analysis
-qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq_mean)
+  if (test == TRUE) {
+
+    qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
+
+  } else {
+
+    qpcr_data <- qpcr_data[, c(3, 5, 7)]
+
+  }
+
+  qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
+  qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
+  qpcr_data <- na.omit(qpcr_data)
+  qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
+
+  if (test == TRUE) {
+
+    qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
+
+  } else {
+
+    qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample)
+
+  }
+
+  qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
+  qpcr_data <- dplyr::ungroup(qpcr_data)
+
+  if (test == TRUE) {
+
+    qpcr_data <- qpcr_data[ ,-4]
+
+  } else {
+
+    qpcr_data <- qpcr_data[ ,-3]
+
+  }
+
+  qpcr_data <- dplyr::distinct(qpcr_data)
+
+  #pivot_wider for analysis
+  qpcr_data <- tidyr::pivot_wider(qpcr_data,
+                                  names_from = Target, values_from = Cq_mean)
 
 }
 
@@ -80,22 +130,27 @@ qpcr_data <- tidyr::pivot_wider(qpcr_data, names_from = Target, values_from = Cq
 
 #annotating ref and goi names
 colnames(qpcr_data)[grep(ref1, colnames(qpcr_data))] <- "ref1"
-colnames(qpcr_data)[grep(ref2, colnames(qpcr_data))] <- "ref2"
+
+if (ref2 != "") {
+
+  colnames(qpcr_data)[grep(ref2, colnames(qpcr_data))] <- "ref2"
+
+}
+
 colnames(qpcr_data)[grep(goi, colnames(qpcr_data))] <- "goi"
 
 #avg of refs for multiple refs
 if (ref2 != "") {
 
-qpcr_data <- dplyr::mutate(qpcr_data, avg_ref = (ref1 + ref2) / 2)
+  qpcr_data <- dplyr::mutate(qpcr_data, avg_ref = (ref1 + ref2) / 2)
+  #dCt calculation for avg of refs
+  qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - avg_ref))
 
-#dCt calculation for avg of refs
-qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - avg_ref))
+} else {
 
-}
+  #dCt calculation for only 1 ref
 
-#dCt calculation for only 1 ref
-if (ref2 == "") {
-qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - ref1))
+  qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - ref1))
 
 }
 
@@ -124,39 +179,40 @@ qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$
 
 if (test == TRUE) {
 
+  #duplicating rows for accurate p-value calculation
+  idx <- rep(1:nrow(target_exp), tech_rep)
+  target_exp <- target_exp[idx, ]
 
-#duplicating rows for accurate p-value calculation
-idx <- rep(1:nrow(target_exp), tech_rep)
-target_exp <- target_exp[idx, ]
+  idx2 <- rep(1:nrow(ref_exp), tech_rep)
+  ref_exp <- ref_exp[idx2, ]
 
-idx2 <- rep(1:nrow(ref_exp), tech_rep)
-ref_exp <- ref_exp[idx2, ]
+  #calculating p-value
+  stats <- t.test(target_exp$expression, ref_exp$expression, alternative = "two.sided")
 
-#calculating p-value
-stats <- t.test(target_exp$expression, ref_exp$expression, alternative = "two.sided")
+  #converting pvalues to *
+  if (stats$p.value > 0.05) {
+    pvalue <- "ns"
+  }
 
-#converting pvalues to *
-if (stats$p.value > 0.05) {
-	pvalue <- "ns"
-}
+  if (stats$p.value < 0.05) {
+    pvalue <- "*"
+  }
 
-if (stats$p.value < 0.05) {
-	pvalue <- "*"
-}
+  if (stats$p.value < 0.01) {
+    pvalue <- "**"
+  }
 
-if (stats$p.value < 0.01) {
-	pvalue <- "**"
-}
+  if (stats$p.value < 0.001) {
+    pvalue <- "***"
+  }
 
-if (stats$p.value < 0.001) {
-	pvalue <- "***"
-}
-
-#we need to change group names to represent the data automatically
-#this is the supported df layout for ggpubr::stat_pvalue_manuel()
-qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+  #we need to change group names to represent the data automatically
+  #this is the supported df layout for ggpubr::stat_pvalue_manuel()
+  qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
                               group1, group2, pvalue)
+
 }
+
 #calculating sd
 target_sd <- sd(target_exp$expression)
 ref_sd <- sd(ref_exp$expression)
@@ -168,9 +224,13 @@ ref_sd <- ref_sd/qpcr_data$ref_avg_exp[1]*100
 #distinct only 1 column
 qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
 
+#removing na to only visualize sample of interest
+qpcr_data <- qpcr_data[!is.na(qpcr_data$percent_exp), ]
+
 #visualization
 if (test == TRUE) {
-final_plot <- ggpubr::ggbarplot(qpcr_data,
+
+  final_plot <- ggpubr::ggbarplot(qpcr_data,
 				x = "Sample",
 				y = "percent_exp",
 				fill = "808080",
@@ -194,11 +254,10 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
               ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
 					 y.position = qpcr_data$percent_exp[2] + ref_sd + 10,
 					 bracket.size = 0.6, label.size = 6)
-}
 
-if (test == FALSE) {
+} else {
 
-final_plot <- ggpubr::ggbarplot(qpcr_data,
+  final_plot <- ggpubr::ggbarplot(qpcr_data,
 				x = "Sample",
 				y = "percent_exp",
 				fill = "808080",
@@ -219,9 +278,11 @@ final_plot <- ggpubr::ggbarplot(qpcr_data,
 	    				 ymin = percent_exp[1] - ref_sd,
      					 ymax = percent_exp[1] + ref_sd,
      					 width = 0.1))
+
 }
 
 plot(final_plot)
 return(final_plot)
 
 }
+

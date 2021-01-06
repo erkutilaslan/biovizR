@@ -13,45 +13,35 @@
 heatmap_dge <- function(heatmap_data, List = "") {
 
 #data import
-
 heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
 
 #NA omit otherwise we can't move HGNC to rownames
-
 heatmap_data  <- na.omit(heatmap_data)
 
 #removing row names
-
 heatmap_data <- tibble::remove_rownames(heatmap_data)
 
 #moving HGNC to rownames
-#this is an issue point here. because we need to able to move HGNC to the first row.
-#probably i should name the first row into something automatically as HGNC and it should
-#accept such data for now and later on we will make sure that it will accept
-# all kind of identifiersssss!
 heatmap_data <- tibble::column_to_rownames(heatmap_data, var = "hgnc_symbol")
 
 #z-score calculation
-
 heatmap_data <- t(scale(t(heatmap_data)))
 
 #selecing of genes to visualize e.g. infertility vectors
 if (List != "") {
 
-List <- read.table(List, header = FALSE, sep = " ")
+  List <- read.table(List, header = FALSE, sep = " ")
+  List <- List$V1
 
-List <- List$V1
-
-#need to take the columns with the genes i want to visualize
-
-heatmap_data <- heatmap_data[as.character(List), ]
+  #need to take the columns with the genes i want to visualize
+  heatmap_data <- heatmap_data[as.character(List), ]
 
 }
 
 #removing na values once a mfing time
 heatmap_data  <- na.omit(heatmap_data)
-# Visualization
 
+# Visualization
 final_plot <- ComplexHeatmap::Heatmap(
   heatmap_data,
   #column_title = "NANOS1: Male Infertility",
@@ -80,6 +70,7 @@ final_plot <- ComplexHeatmap::Heatmap(
   #height = unit(130, "mm")
 )
 
+plot(final_plot)
 return(final_plot)
 
 }

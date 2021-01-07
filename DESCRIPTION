@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "erkutilaslan@gmail.com",
            comment = c(ORCID = "0000-0002-1024-7491"))
-Description: biovizR is an easy to use publication/report ready biological data visualization package. This package provides easy to use functions for wetlab scientists to explore and  visualize their data. It performs data wrangling and data visualization. It heavily relies on tidyverse package and  enables a simplified easier to use version rather than relying on ggplot2 grammar which tends to get very complex if you want to generate good looking plots.
+Description: biovizR is an easy to use publication/report ready biological data visualization package. This package provides easy to use functions for wetlab scientists to explore and  visualize their data. It performs data wrangling and data visualization. It heavily relies on tidyverse package and enables a simplified easier to use version rather than relying on ggplot2 grammar which tends to get very complex if you want to generate good looking plots.
 License: GPL-2.0
 Encoding: UTF-8
 LazyData: true

@@ -42,14 +42,14 @@
 #tech_rep <- 4
 #test <- FALSE
 
-#barplot_qpcr("~/Cq siFOXM1 siPUM1.csv",
-#	     group1 = "siCTRL 1",
-#            group2 = "siFOXM1 1",
-#	     ref1 = "GARS1",
-#	     ref2 = "DTD1",
-#	     goi = "FOXM1",
-#	     tech_rep = 4,
-#            test = FALSE)
+#barplot_qpcr("~/rip_pum1.csv",
+#             group1 = "RIP NC",
+#             group2 = "RIP P1",
+#             ref1 = "Rluc",
+#             ref2 = "Fluc",
+#             goi = "FOXM1",
+#             tech_rep = 3,
+#             test = TRUE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",

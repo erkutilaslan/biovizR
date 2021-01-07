@@ -37,18 +37,17 @@ if (List != "") {
   List <- read.table(List, header = FALSE, sep = " ")
   List <- List$V1
 
+
   #need to take the columns with the genes i want to visualize
   heatmap_data <- heatmap_data[as.character(List), ]
 
-}
+  }
 
 #removing na values once a mfing time
 heatmap_data  <- na.omit(heatmap_data)
 
 # Visualization
-final_plot <- ComplexHeatmap::Heatmap(
-  heatmap_data,
-  #column_title = "NANOS1: Male Infertility",
+final_plot <- ComplexHeatmap::Heatmap(heatmap_data,
   heatmap_legend_param = list(title = "z-score",
                               legend_height = grid::unit(5, "cm"),
                               grid_width = grid::unit(0.75, "cm"),

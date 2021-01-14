@@ -7,13 +7,53 @@ This package  relies on already available packages like ggplot2, ggpubr and Comp
 
 # Requirements
 
+- R version 3.6 or higher
 
+- devtools package
+
+```r
+install.packages("devtools")
+```
+
+- tidyverse package
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("tidyverse")
+```
+- ggpubr package
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("ggpubr")
+```
+- ComplexHeatmap package
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("ComplexHeatmap")
+```
 # Installation
 
 ```r
 devtools::install_github("erkutilaslan/biovizR")
 ```
 # Usage
+
+- MA-plot visualization of RNA-Seq
+
+- Analysis and visualization of qPCR
+
+- Barplot visualization of GO Analysis
+
+- Heatmap visualization
+
+- Violinplot visualization
+
+- Dotplot visualization of IP-MS
 
 # Examples
 

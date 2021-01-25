@@ -12,7 +12,7 @@
 #' @export
 
 
-barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ", min_genes " ") {
+barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ", min_genes = " ") {
 
 
 # import data
@@ -89,7 +89,7 @@ if (top != " ") {
 
 if (min_genes != " ") {
 
-go_data <- filter(go_data, `Nr. Genes` => min_genes)  
+go_data <- filter(go_data, `Nr. Genes` >= min_genes)  
 
 }
 

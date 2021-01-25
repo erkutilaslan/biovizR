@@ -6,12 +6,13 @@
 #' @param type Default cluego. Parameter to specify input data source.
 #' @param top Turned off by default. Parameter to set top amount of processes to be visualized.
 #' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
+#' @param min_genes Turned off by default. Parameter to set threshold for biological processes containing minimum number of genes.
 #' @return A bar plot of gene ontology results.
 #' @import tidyverse
 #' @export
 
 
-barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ") {
+barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ", min_genes " ") {
 
 
 # import data
@@ -83,6 +84,12 @@ if (go_process != " ") {
 if (top != " ") {
 
   go_data <- dplyr::slice(go_data, 1:top)
+
+}
+
+if (min_genes != " ") {
+
+go_data <- filter(go_data, `Nr. Genes` => min_genes)  
 
 }
 

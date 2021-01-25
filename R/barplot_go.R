@@ -89,7 +89,7 @@ if (top != " ") {
 
 if (min_genes != " ") {
 
-go_data <- filter(go_data, `Nr. Genes` >= min_genes)  
+go_data <- filter(go_data, go_data$`Nr. Genes` >= min_genes)  
 
 }
 

@@ -11,7 +11,7 @@
 #' @import tidyverse
 #' @export
 
-go_data <- readxl::read_excel("~/biovizR_data/go_data.xls", sheet = 1)
+barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ", min_genes = " ") {
 
 # import data
 if (is.character(go_data) == TRUE) {

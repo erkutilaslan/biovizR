@@ -11,9 +11,7 @@
 #' @import tidyverse
 #' @export
 
-
-barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ", min_genes = " ") {
-
+go_data <- readxl::read_excel("~/biovizR_data/go_data.xls", sheet = 1)
 
 # import data
 if (is.character(go_data) == TRUE) {
@@ -89,7 +87,7 @@ if (top != " ") {
 
 if (min_genes != " ") {
 
-go_data <- filter(go_data, go_data$`Nr. Genes` >= min_genes)  
+go_data <- dplyr::filter(go_data, go_data$`Nr. Genes` >= min_genes)
 
 }
 

@@ -5,6 +5,9 @@
 #' @param type Default biorad. Specify model of thermocycler.
 #' @param group1 Control group.
 #' @param group2 Target group.
+#' @param group3 Target group.
+#' @param group4 Target group.
+#' @param group5 Target group.
 #' @param ref1 Reference gene one.
 #' @param ref2 Reference gene two.
 #' @param goi Gene of interest.
@@ -26,6 +29,7 @@
 #qpcr_data <- read.csv("~/rip_pum1.csv")
 #group1 <- "RIP NC"
 #group2 <- "RIP P1"
+#group3 <- "RIP N3"
 #ref1 <- "Fluc"
 #ref2 <- "Rluc"
 #goi <- "FOXM1"
@@ -33,7 +37,7 @@
 #test <- TRUE
 
 #qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
-#type <- "Bio-rad"
+#type <- "biorad"
 #group1 <- "siCTRL 1"
 #group2 <- "siFOXM1 1"
 #ref1 <- "GARS1"
@@ -55,6 +59,9 @@ barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
 			 group2 = "",
+			 group3 = "",
+			 group4 = "",
+			 group5 = "",
                          ref1 = "",
 			 ref2 = "",
                          goi = "",
@@ -167,6 +174,9 @@ qpcr_data <- dplyr::mutate(qpcr_data, expression = 2^-ddCt)
 #mean the expression in biological replicates
 ref_exp <- qpcr_data[grep(group1, qpcr_data$Sample), ]
 target_exp <- qpcr_data[grep(group2, qpcr_data$Sample), ]
+
+#probably here rest of the groups with if statements
+
 ref_exp <- dplyr::mutate(ref_exp, ref_avg_exp = mean(expression))
 target_exp <- dplyr::mutate(target_exp, target_avg_exp = mean(expression))
 qpcr_data <- dplyr::left_join(qpcr_data, ref_exp)
@@ -185,6 +195,11 @@ if (test == TRUE) {
 
   idx2 <- rep(1:nrow(ref_exp), tech_rep)
   ref_exp <- ref_exp[idx2, ]
+
+  if (stat == "t-test") {
+  #here add pairwise t-test with an if statement for multiple comparisons
+
+
 
   #calculating p-value
   stats <- t.test(target_exp$expression, ref_exp$expression, alternative = "two.sided")
@@ -210,6 +225,20 @@ if (test == TRUE) {
   #this is the supported df layout for ggpubr::stat_pvalue_manuel()
   qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
                               group1, group2, pvalue)
+  }
+
+  #anova test here
+
+  if (stat == "anova") {
+
+  #first data wrangling for anova function
+
+
+  #anova test
+  stats <- aov()
+  stats_anova <- TukeyHSD(stats)
+
+  }
 
 }
 

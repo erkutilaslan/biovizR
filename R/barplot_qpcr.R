@@ -50,6 +50,16 @@
 #tech_rep <- 4
 #test <- FALSE
 
+barplot_qpcr("~/multipe_test_qpcr.xlsx",
+             group1 = "1",
+             group2 = "2",
+	     group3 = "3",
+             ref1 = "GAPDH",
+             goi = "DAZL",
+             tech_rep = 3,
+             test = FALSE)
+
+
 barplot_qpcr("~/rip_pum1.csv",
              group1 = "RIP NC",
              group2 = "RIP P1",
@@ -364,56 +374,158 @@ qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
 qpcr_data <- qpcr_data[!is.na(qpcr_data$percent_exp), ]
 
 #visualization
-if (test == TRUE) {
+if (group3 == "" && group4 == "" && group5 == "") {
 
-  final_plot <- ggpubr::ggbarplot(qpcr_data,
-				x = "Sample",
-				y = "percent_exp",
-				fill = "808080",
-				xlab = "Sample",
-				ylab = "Relative mRNA level",
-				size = 0.5,
-				palette = "npg",
-				lab.size = 5,
-				lab.vjust = 0.5,
-				lab.hjust = 1.2,
-				sort.by.groups = FALSE,
-				ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-              ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+  if (test == TRUE) {
+
+    final_plot <- ggpubr::ggbarplot(qpcr_data,
+       	                            x = "Sample",
+                                    y = "percent_exp",
+			            fill = "808080",
+				    xlab = "Sample",
+				    ylab = "Relative mRNA level",
+				    size = 0.5,
+				    palette = "npg",
+				    lab.size = 5,
+				    lab.vjust = 0.5,
+				    lab.hjust = 1.2,
+				    sort.by.groups = FALSE,
+				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 	        			 ymin = percent_exp2 - target_sd1,
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
-              ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
 	    				 ymin = percent_exp1 - ref_sd,
      					 ymax = percent_exp1 + ref_sd,
      					 width = 0.1)) +
-              ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-					 y.position = percent_exp2 + ref_sd + 20,
-					 bracket.size = 0.6, label.size = 6)
+                  ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
+					     y.position = percent_exp2 + ref_sd + 20,
+					     bracket.size = 0.6, label.size = 6)
 
-} else {
+  } else {
 
-  final_plot <- ggpubr::ggbarplot(qpcr_data,
-				x = "Sample",
-				y = "percent_exp",
-				fill = "808080",
-				xlab = "Sample",
-				ylab = "Relative mRNA level",
-				size = 0.5,
-				palette = "npg",
-				lab.size = 5,
-				lab.vjust = 0.5,
-				lab.hjust = 1.2,
-				sort.by.groups = FALSE,
-				ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-              ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+    final_plot <- ggpubr::ggbarplot(qpcr_data,
+				    x = "Sample",
+				    y = "percent_exp",
+				    fill = "808080",
+				    xlab = "Sample",
+				    ylab = "Relative mRNA level",
+				    size = 0.5,
+				    palette = "npg",
+				    lab.size = 5,
+				    lab.vjust = 0.5,
+				    lab.hjust = 1.2,
+				    sort.by.groups = FALSE,
+				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 	        			 ymin = percent_exp2 - target_sd1,
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
-              ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
 	    				 ymin = percent_exp1 - ref_sd,
      					 ymax = percent_exp1 + ref_sd,
      					 width = 0.1))
+
+  }
+
+} else if (group4 == "" && group5 == "") {
+print("group 1-2-3")
+	if (test == TRUE) {
+
+print("test positive")
+
+	} else {
+
+print("test negative")
+    final_plot <- ggpubr::ggbarplot(qpcr_data,
+				    x = "Sample",
+				    y = "percent_exp",
+				    fill = "808080",
+				    xlab = "Sample",
+				    ylab = "Relative mRNA level",
+				    size = 0.5,
+				    palette = "npg",
+				    lab.size = 5,
+				    lab.vjust = 0.5,
+				    lab.hjust = 1.2,
+				    sort.by.groups = FALSE,
+				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+	        			 ymin = percent_exp2 - target_sd1,
+	                		 ymax = percent_exp2 + target_sd1,
+		                	 width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+	    				 ymin = percent_exp1 - ref_sd,
+     					 ymax = percent_exp1 + ref_sd,
+     					 width = 0.1))
+
+	}
+
+} else if (group5 == "") {
+print("group1-2-3-4")
+	if (test == TRUE) {
+
+print("test positive")
+	} else {
+
+print("test negative")
+    final_plot <- ggpubr::ggbarplot(qpcr_data,
+				    x = "Sample",
+				    y = "percent_exp",
+				    fill = "808080",
+				    xlab = "Sample",
+				    ylab = "Relative mRNA level",
+				    size = 0.5,
+				    palette = "npg",
+				    lab.size = 5,
+				    lab.vjust = 0.5,
+				    lab.hjust = 1.2,
+				    sort.by.groups = FALSE,
+				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+	        			 ymin = percent_exp2 - target_sd1,
+	                		 ymax = percent_exp2 + target_sd1,
+		                	 width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+	    				 ymin = percent_exp1 - ref_sd,
+     					 ymax = percent_exp1 + ref_sd,
+     					 width = 0.1))
+
+
+	}
+
+} else {
+print("group1-2-3-4-5")
+  if (test == TRUE) {
+	  print("test positive")
+    final_plot <- ggpubr::ggbarplot(qpcr_data,
+				    x = "Sample",
+				    y = "percent_exp",
+				    fill = "808080",
+				    xlab = "Sample",
+				    ylab = "Relative mRNA level",
+				    size = 0.5,
+				    palette = "npg",
+				    lab.size = 5,
+				    lab.vjust = 0.5,
+				    lab.hjust = 1.2,
+				    sort.by.groups = FALSE,
+				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+	        			 ymin = percent_exp2 - target_sd1,
+	                		 ymax = percent_exp2 + target_sd1,
+		                	 width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+	    				 ymin = percent_exp1 - ref_sd,
+     					 ymax = percent_exp1 + ref_sd,
+     					 width = 0.1))
+
+  } else {
+
+	  print("test negative")
+
+  }
 
 }
 

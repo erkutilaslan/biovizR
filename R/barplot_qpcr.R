@@ -40,15 +40,29 @@
 #type <- "biorad"
 #stat <- "t.test"
 
-#qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
-#type <- "biorad"
-#group1 <- "siCTRL 1"
-#group2 <- "siFOXM1 1"
-#ref1 <- "GARS1"
-#ref2 <- ""
-#goi <- "FOXM1"
-#tech_rep <- 4
-#test <- FALSE
+qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
+type <- "biorad"
+group1 <- "siCTRL 1"
+group2 <- "siFOXM1 1"
+ref1 <- "GARS1"
+ref2 <- ""
+goi <- "FOXM1"
+tech_rep <- 4
+test <- FALSE
+
+qpcr_data <- read_xlsx("~/multipe_test_qpcr.xlsx", sheet =1)
+type <- "biorad"
+group1 <- "1"
+group2 <- "2"
+group3 <- "3"
+group4 <- "4"
+group5 <- ""
+ref1 <- "GAPDH"
+ref2 <- ""
+goi <- "DAZL"
+tech_rep <- 3
+test <- FALSE
+
 
 barplot_qpcr("~/multipe_test_qpcr.xlsx",
              group1 = "1",

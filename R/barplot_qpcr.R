@@ -40,22 +40,22 @@
 #type <- "biorad"
 #stat <- "t.test"
 
-qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
-type <- "biorad"
-group1 <- "siCTRL 1"
-group2 <- "siFOXM1 1"
-ref1 <- "GARS1"
-ref2 <- ""
-goi <- "FOXM1"
-tech_rep <- 4
-test <- FALSE
+#qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
+#type <- "biorad"
+#group1 <- "siCTRL 1"
+#group2 <- "siFOXM1 1"
+#ref1 <- "GARS1"
+#ref2 <- ""
+#goi <- "FOXM1"
+#tech_rep <- 4
+#test <- FALSE
 
-qpcr_data <- read_xlsx("~/multipe_test_qpcr.xlsx", sheet =1)
+qpcr_data <- read.csv("~/multipe_test_qpcr.csv")
 type <- "biorad"
-group1 <- "1"
-group2 <- "2"
-group3 <- "3"
-group4 <- "4"
+group1 <- "5"
+group2 <- "6"
+group3 <- "7"
+group4 <- "8"
 group5 <- ""
 ref1 <- "GAPDH"
 ref2 <- ""
@@ -64,10 +64,12 @@ tech_rep <- 3
 test <- FALSE
 
 
-barplot_qpcr("~/multipe_test_qpcr.xlsx",
-             group1 = "1",
-             group2 = "2",
-	     group3 = "3",
+barplot_qpcr("~/multipe_test_qpcr.csv",
+             group1 = "5",
+             group2 = "6",
+	     group3 = "7",
+	     group4 = "8",
+	     group5 = "9",
              ref1 = "GAPDH",
              goi = "DAZL",
              tech_rep = 3,
@@ -82,7 +84,7 @@ barplot_qpcr("~/rip_pum1.csv",
              ref2 = "Fluc",
              goi = "FOXM1",
              tech_rep = 3,
-             test = FALSE)
+             test = TRUE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -190,17 +192,17 @@ if (ref2 != "") {
 }
 
 #avg.dCt of target gene value in control biological replicates
-ref_ct <- qpcr_data[grep(group1, qpcr_data$Sample), ]
-qpcr_data <- dplyr::mutate(qpcr_data, avg_ref_dCt = mean(ref_ct$goi))
+control_ct <- qpcr_data[grep(group1, qpcr_data$Sample), ]
+qpcr_data <- dplyr::mutate(qpcr_data, avg_control_dCt = mean(control_ct$goi))
 
 #ddCt calculation
-qpcr_data <- dplyr::mutate(qpcr_data, ddCt = dCt - avg_ref_dCt)
+qpcr_data <- dplyr::mutate(qpcr_data, ddCt = dCt - avg_control_dCt)
 
 #2^-ddCt calculation
 qpcr_data <- dplyr::mutate(qpcr_data, expression = 2^-ddCt)
 
 #mean the expression in biological replicates
-ref_exp <- qpcr_data[grep(group1, qpcr_data$Sample), ]
+control_exp <- qpcr_data[grep(group1, qpcr_data$Sample), ]
 target_exp1 <- qpcr_data[grep(group2, qpcr_data$Sample), ]
 
 if (group3 != "") {
@@ -221,7 +223,7 @@ if (group5 != "") {
   
 }
 
-ref_exp <- dplyr::mutate(ref_exp, ref_avg_exp = mean(expression))
+control_exp <- dplyr::mutate(control_exp, control_avg_exp = mean(expression))
 target_exp1 <- dplyr::mutate(target_exp1, target_avg_exp1 = mean(expression))
 
 if (group3 != "") {
@@ -242,7 +244,7 @@ if (group5 != "") {
 
 }
 
-qpcr_data <- dplyr::left_join(qpcr_data, ref_exp)
+qpcr_data <- dplyr::left_join(qpcr_data, control_exp)
 qpcr_data <- dplyr::left_join(qpcr_data, target_exp1)
 
 if (group3 != "") {
@@ -263,13 +265,13 @@ if (group5 != "") {
 
 }
 
-qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1, ref_avg_exp))
+qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1, control_avg_exp))
 
 if (group3 != "") {
 
   qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
 								  target_avg_exp2,
-								  ref_avg_exp))
+								  control_avg_exp))
 
 }
 
@@ -278,7 +280,7 @@ if (group4 != "") {
   qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
 								  target_avg_exp2,
 								  target_avg_exp3,
-								  ref_avg_exp))
+								  control_avg_exp))
 
 }
 
@@ -288,13 +290,13 @@ if (group5 != "") {
 								  target_avg_exp2,
 								  target_avg_exp3,
 								  target_avg_exp4,
-								  ref_avg_exp))
+								  control_avg_exp))
 
 }
 
 #converting raw expression to percentage for better visualization
-qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$ref_avg_exp))
-qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$ref_avg_exp[1]*100)
+qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$control_avg_exp))
+qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$control_avg_exp[1]*100)
 
 if (test == TRUE) {
 
@@ -302,14 +304,14 @@ if (test == TRUE) {
   idx <- rep(1:nrow(target_exp1), tech_rep)
   target_exp1 <- target_exp1[idx, ]
 
-  idx2 <- rep(1:nrow(ref_exp), tech_rep)
-  ref_exp <- ref_exp[idx2, ]
+  idx2 <- rep(1:nrow(control_exp), tech_rep)
+  control_exp <- control_exp[idx2, ]
 
   if (stat == "t-test") {
     #here add pairwise t-test with an if statement for multiple comparisons
 
     #calculating p-value
-    stats <- t.test(target_exp1$expression, ref_exp$expression, alternative = "two.sided")
+    stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
 
     #converting pvalues to *
     if (stats$p.value < 0.001) {
@@ -366,7 +368,7 @@ if (test == TRUE) {
 
 #calculating sd
 target_sd1 <- sd(target_exp1$expression)
-ref_sd <- sd(ref_exp$expression)
+control_sd <- sd(control_exp$expression)
 
 #distinct only 1 column
 qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
@@ -374,7 +376,7 @@ qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
 #converting raw sd into percentage
 qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
 target_sd1 <- target_sd1/qpcr_data[group2, 9]*100
-ref_sd <- ref_sd/qpcr_data[group1, 9]*100
+control_sd <- control_sd/qpcr_data[group1, 9]*100
 if (ref2 != "") {
   percent_exp1 <- qpcr_data[group1, 13]
   percent_exp2 <- qpcr_data[group2, 13]
@@ -410,11 +412,11 @@ if (group3 == "" && group4 == "" && group5 == "") {
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - ref_sd,
-     					 ymax = percent_exp1 + ref_sd,
+	    				 ymin = percent_exp1 - control_sd,
+     					 ymax = percent_exp1 + control_sd,
      					 width = 0.1)) +
                   ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-					     y.position = percent_exp2 + ref_sd + 20,
+					     y.position = percent_exp2 + control_sd + 20,
 					     bracket.size = 0.6, label.size = 6)
 
   } else {
@@ -437,8 +439,8 @@ if (group3 == "" && group4 == "" && group5 == "") {
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - ref_sd,
-     					 ymax = percent_exp1 + ref_sd,
+	    				 ymin = percent_exp1 - control_sd,
+     					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
 
   }
@@ -470,8 +472,8 @@ print("test negative")
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - ref_sd,
-     					 ymax = percent_exp1 + ref_sd,
+	    				 ymin = percent_exp1 - control_sd,
+     					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
 
 	}
@@ -502,8 +504,8 @@ print("test negative")
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - ref_sd,
-     					 ymax = percent_exp1 + ref_sd,
+	    				 ymin = percent_exp1 - control_sd,
+     					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
 
 
@@ -531,8 +533,8 @@ print("group1-2-3-4-5")
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - ref_sd,
-     					 ymax = percent_exp1 + ref_sd,
+	    				 ymin = percent_exp1 - control_sd,
+     					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
 
   } else {

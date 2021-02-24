@@ -54,8 +54,8 @@ qpcr_data <- read.csv("~/multipe_test_qpcr.csv")
 type <- "biorad"
 group1 <- "5"
 group2 <- "6"
-group3 <- "7"
-group4 <- "8"
+group3 <- ""
+group4 <- ""
 group5 <- ""
 ref1 <- "GAPDH"
 ref2 <- ""
@@ -79,7 +79,7 @@ barplot_qpcr("~/multipe_test_qpcr.csv",
 barplot_qpcr("~/rip_pum1.csv",
              group1 = "RIP NC",
              group2 = "RIP P1",
-	     group3 = "RIP N3",
+	     group3 = "",
              ref1 = "Rluc",
              ref2 = "Fluc",
              goi = "FOXM1",
@@ -96,7 +96,7 @@ barplot_qpcr <- function(qpcr_data,
                          ref1 = "",
 			 ref2 = "",
                          goi = "",
-			 tech_rep = 4,
+			 tech_rep = 3,
 			 test = TRUE,
                          stat = "t-test") {
 
@@ -370,20 +370,66 @@ if (test == TRUE) {
 target_sd1 <- sd(target_exp1$expression)
 control_sd <- sd(control_exp$expression)
 
+if (group3 != "") {
+
+	target_sd2 <- sd(target_exp2$expression)
+}
+
+if (group4 != "") {
+
+	target_sd3 <- sd(target_exp3$expression)
+}
+
+if (group5 != "") {
+
+	target_sd4 <- sd(target_exp4$expression)
+
+}
+
 #distinct only 1 column
 qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
 
 #converting raw sd into percentage
 qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
-target_sd1 <- target_sd1/qpcr_data[group2, 9]*100
-control_sd <- control_sd/qpcr_data[group1, 9]*100
+target_sd1 <- target_sd1/qpcr_data[group2, "avg_exp"]*100
+control_sd <- control_sd/qpcr_data[group1, "avg_exp"]*100
+
 if (ref2 != "") {
-  percent_exp1 <- qpcr_data[group1, 13]
-  percent_exp2 <- qpcr_data[group2, 13]
+
+  percent_exp1 <- qpcr_data[group1, "percent_exp"]
+  percent_exp2 <- qpcr_data[group2, "percent_exp"]
+
+  if (group3 != "") {
+    percent_exp3 <- qpcr_data[group3, "percent_exp"]
+    }
+
+  if (group4 != "") {
+    percent_exp4 <- qpcr_data[group4, "percent_exp"]
+    }
+
+  if (group5 != "") {
+    percent_exp5 <- qpcr_data[group5, "percent_exp"]
+    }
+
   } else {
-  percent_exp1 <- qpcr_data[group1, 12]
-  percent_exp2 <- qpcr_data[group2, 12]
+
+  percent_exp1 <- qpcr_data[group1, "percent_exp"]
+  percent_exp2 <- qpcr_data[group2, "percent_exp"]
+
+  if (group3 != "") {
+    percent_exp3 <- qpcr_data[group3, "percent_exp"]
+    }
+
+  if (group4 != "") {
+    percent_exp4 <- qpcr_data[group4, "percent_exp"]
+    }
+
+  if (group5 != "") {
+    percent_exp5 <- qpcr_data[group5, "percent_exp"]
+    }
+
 }
+
 qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
 
 #removing na to only visualize sample of interest
@@ -468,21 +514,28 @@ print("test negative")
 				    sort.by.groups = FALSE,
 				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp2 - target_sd1,
-	                		 ymax = percent_exp2 + target_sd1,
-		                	 width = 0.1)) +
+	        			              ymin = percent_exp2 - target_sd1,
+	                		              ymax = percent_exp2 + target_sd1,
+		                	              width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						      ymin = percent_exp3 - target_sd2,
+						      ymax = percent_exp3 + target_sd2,
+						      width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - control_sd,
-     					 ymax = percent_exp1 + control_sd,
-     					 width = 0.1))
+	    				              ymin = percent_exp1 - control_sd,
+     					              ymax = percent_exp1 + control_sd,
+     					              width = 0.1))
 
 	}
 
 } else if (group5 == "") {
+
 print("group1-2-3-4")
+
 	if (test == TRUE) {
 
 print("test positive")
+
 	} else {
 
 print("test negative")
@@ -503,6 +556,14 @@ print("test negative")
 	        			 ymin = percent_exp2 - target_sd1,
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						      ymin = percent_exp3 - target_sd2,
+						      ymax = percent_exp3 + target_sd2,
+						      width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group4,
+						      ymin = percent_exp4 - target_sd3,
+						      ymax = percent_exp4 + target_sd3,
+						      width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
 	    				 ymin = percent_exp1 - control_sd,
      					 ymax = percent_exp1 + control_sd,
@@ -514,7 +575,10 @@ print("test negative")
 } else {
 print("group1-2-3-4-5")
   if (test == TRUE) {
+
 	  print("test positive")
+
+  } else {
     final_plot <- ggpubr::ggbarplot(qpcr_data,
 				    x = "Sample",
 				    y = "percent_exp",
@@ -532,12 +596,22 @@ print("group1-2-3-4-5")
 	        			 ymin = percent_exp2 - target_sd1,
 	                		 ymax = percent_exp2 + target_sd1,
 		                	 width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						      ymin = percent_exp3 - target_sd2,
+						      ymax = percent_exp3 + target_sd2,
+						      width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						      ymin = percent_exp4 - target_sd3,
+						      ymax = percent_exp4 + target_sd3,
+						      width = 0.1)) +
+                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						      ymin = percent_exp5 - target_sd4,
+						      ymax = percent_exp5 + target_sd4,
+						      width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
 	    				 ymin = percent_exp1 - control_sd,
      					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
-
-  } else {
 
 	  print("test negative")
 

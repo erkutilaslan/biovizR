@@ -63,6 +63,16 @@ goi <- "DAZL"
 tech_rep <- 3
 test <- FALSE
 
+barplot_qpcr("~/qpcr_foxm1.csv",
+             group1 = "siCTRL",
+             group2 = "siPUM1",
+	     group3 = "siNANOS3",
+	     group4 = "siPUM1/NANOS3",
+	     group5 = "siFOXM1",
+             ref1 = "GARS1",
+             goi = "FOXM1",
+	     tech_rep = 3,
+             test = FALSE)
 
 barplot_qpcr("~/multipe_test_qpcr.csv",
              group1 = "5",
@@ -79,12 +89,11 @@ barplot_qpcr("~/multipe_test_qpcr.csv",
 barplot_qpcr("~/rip_pum1.csv",
              group1 = "RIP NC",
              group2 = "RIP P1",
-	     group3 = "",
              ref1 = "Rluc",
              ref2 = "Fluc",
              goi = "FOXM1",
              tech_rep = 3,
-             test = TRUE)
+             test = FALSE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -167,15 +176,15 @@ if (type == "biorad") {
 #for each sample, calculate the dct as the difference dct = ct[ref] - ct[goi]
 
 #annotating ref and goi names
-colnames(qpcr_data)[grep(ref1, colnames(qpcr_data))] <- "ref1"
+colnames(qpcr_data)[match(ref1, colnames(qpcr_data))] <- "ref1"
 
 if (ref2 != "") {
 
-  colnames(qpcr_data)[grep(ref2, colnames(qpcr_data))] <- "ref2"
+  colnames(qpcr_data)[match(ref2, colnames(qpcr_data))] <- "ref2"
 
 }
 
-colnames(qpcr_data)[grep(goi, colnames(qpcr_data))] <- "goi"
+colnames(qpcr_data)[match(goi, colnames(qpcr_data))] <- "goi"
 
 #avg of refs for multiple refs
 if (ref2 != "") {
@@ -192,7 +201,7 @@ if (ref2 != "") {
 }
 
 #avg.dCt of target gene value in control biological replicates
-control_ct <- qpcr_data[grep(group1, qpcr_data$Sample), ]
+control_ct <- qpcr_data[match(group1, qpcr_data$Sample), ]
 qpcr_data <- dplyr::mutate(qpcr_data, avg_control_dCt = mean(control_ct$goi))
 
 #ddCt calculation
@@ -202,24 +211,24 @@ qpcr_data <- dplyr::mutate(qpcr_data, ddCt = dCt - avg_control_dCt)
 qpcr_data <- dplyr::mutate(qpcr_data, expression = 2^-ddCt)
 
 #mean the expression in biological replicates
-control_exp <- qpcr_data[grep(group1, qpcr_data$Sample), ]
-target_exp1 <- qpcr_data[grep(group2, qpcr_data$Sample), ]
+control_exp <- qpcr_data[match(group1, qpcr_data$Sample), ]
+target_exp1 <- qpcr_data[match(group2, qpcr_data$Sample), ]
 
 if (group3 != "") {
   
- target_exp2 <- qpcr_data[grep(group3, qpcr_data$Sample), ] 
+ target_exp2 <- qpcr_data[match(group3, qpcr_data$Sample), ] 
   
 }
 
 if (group4 != "") {
   
- target_exp3 <- qpcr_data[grep(group4, qpcr_data$Sample), ] 
+ target_exp3 <- qpcr_data[match(group4, qpcr_data$Sample), ] 
   
 }
 
 if (group5 != "") {
   
- target_exp4 <- qpcr_data[grep(group5, qpcr_data$Sample), ] 
+ target_exp4 <- qpcr_data[match(group5, qpcr_data$Sample), ] 
   
 }
 
@@ -446,6 +455,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 			            fill = "808080",
 				    xlab = "Sample",
 				    ylab = "Relative mRNA level",
+				    title = goi,
 				    size = 0.5,
 				    palette = "npg",
 				    lab.size = 5,
@@ -474,6 +484,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    xlab = "Sample",
 				    ylab = "Relative mRNA level",
 				    size = 0.5,
+				    title = goi,
 				    palette = "npg",
 				    lab.size = 5,
 				    lab.vjust = 0.5,
@@ -507,6 +518,7 @@ print("test negative")
 				    xlab = "Sample",
 				    ylab = "Relative mRNA level",
 				    size = 0.5,
+				    title = goi,
 				    palette = "npg",
 				    lab.size = 5,
 				    lab.vjust = 0.5,
@@ -545,6 +557,7 @@ print("test negative")
 				    fill = "808080",
 				    xlab = "Sample",
 				    ylab = "Relative mRNA level",
+				    title = goi,
 				    size = 0.5,
 				    palette = "npg",
 				    lab.size = 5,
@@ -586,6 +599,7 @@ print("group1-2-3-4-5")
 				    xlab = "Sample",
 				    ylab = "Relative mRNA level",
 				    size = 0.5,
+				    title = goi,
 				    palette = "npg",
 				    lab.size = 5,
 				    lab.vjust = 0.5,

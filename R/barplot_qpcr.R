@@ -29,7 +29,7 @@
 #goi <- "FOXM1"
 #tech_rep <- "3"
 #type <- "biorad"
-#test <- FALSE
+#test <- TRUE
 
 #qpcr_data <- read.csv("~/RIP_qPCR.csv")
 #group1 <- "RIP NC"
@@ -68,16 +68,16 @@
 #tech_rep <- 3
 #test <- FALSE
 
-#barplot_qpcr("~/qpcr_foxm1.csv",
-#             group1 = "siCTRL",
-#             group2 = "siPUM1",
-#	     group3 = "siNANOS3",
-#	     group4 = "siPUM1/NANOS3",
-#	     group5 = "siFOXM1",
-#             ref1 = "GARS1",
-#             goi = "FOXM1",
-#	     tech_rep = 3,
-#             test = FALSE)
+barplot_qpcr("~/qpcr_foxm1.csv",
+             group1 = "siCTRL",
+             group2 = "siPUM1",
+	     group3 = "siNANOS3",
+             group4 = "siPUM1/NANOS3",
+             group5 = "siFOXM1",
+             ref1 = "GARS1",
+             goi = "RAD21",
+	     tech_rep = 3,
+             test = FALSE)
 
 #barplot_qpcr("~/multipe_test_qpcr.csv",
 #             group1 = "5",
@@ -206,7 +206,7 @@ if (ref2 != "") {
 }
 
 #avg.dCt of target gene value in control biological replicates
-control_ct <- qpcr_data[match(group1, qpcr_data$Sample), ]
+control_ct <- dplyr::filter(qpcr_data, Sample == group1)
 qpcr_data <- dplyr::mutate(qpcr_data, avg_control_dCt = mean(control_ct$goi))
 
 #ddCt calculation
@@ -216,24 +216,24 @@ qpcr_data <- dplyr::mutate(qpcr_data, ddCt = dCt - avg_control_dCt)
 qpcr_data <- dplyr::mutate(qpcr_data, expression = 2^-ddCt)
 
 #mean the expression in biological replicates
-control_exp <- qpcr_data[match(group1, qpcr_data$Sample), ]
-target_exp1 <- qpcr_data[match(group2, qpcr_data$Sample), ]
+control_exp <- dplyr::filter(qpcr_data, Sample == group1)
+target_exp1 <- dplyr::filter(qpcr_data, Sample == group2)
 
 if (group3 != "") {
   
- target_exp2 <- qpcr_data[match(group3, qpcr_data$Sample), ] 
+  target_exp2 <- dplyr::filter(qpcr_data, Sample == group3)
   
 }
 
 if (group4 != "") {
   
- target_exp3 <- qpcr_data[match(group4, qpcr_data$Sample), ] 
+  target_exp3 <- dplyr::filter(qpcr_data, Sample == group4)
   
 }
 
 if (group5 != "") {
   
- target_exp4 <- qpcr_data[match(group5, qpcr_data$Sample), ] 
+  target_exp4 <- dplyr::filter(qpcr_data, Sample == group5)
   
 }
 
@@ -315,14 +315,34 @@ qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$
 if (test == TRUE) {
 
   #duplicating rows for accurate p-value calculation
-  idx <- rep(1:nrow(target_exp1), tech_rep)
-  target_exp1 <- target_exp1[idx, ]
+  idx1 <- rep(1:nrow(control_exp), tech_rep)
+  control_exp <- control_exp[idx1, ]
 
-  idx2 <- rep(1:nrow(control_exp), tech_rep)
-  control_exp <- control_exp[idx2, ]
+  idx2 <- rep(1:nrow(target_exp1), tech_rep)
+  target_exp1 <- target_exp1[idx2, ]
 
-  if (stat == "t-test") {
-    #here add pairwise t-test with an if statement for multiple comparisons
+  if (group3 != "") {
+
+    idx3 <- rep(1:nrow(target_exp2), tech_rep)
+    target_exp2 <- target_exp2[idx3, ]
+
+  }
+
+  if (group4 != "") {
+
+    idx4 <- rep(1:nrow(target_exp3), tech_rep)
+    target_exp3 <- target_exp3[idx4, ]
+
+  }
+
+  if (group5 != "") {
+
+    idx5 <- rep(1:nrow(target_exp4), tech_rep)
+    target_exp4 <- target_exp4[idx5, ]
+
+  }
+
+  if (stat == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 
     #calculating p-value
     stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
@@ -347,24 +367,89 @@ if (test == TRUE) {
              }
 
   #this is the supported df layout for ggpubr::stat_pvalue_manuel()
-  if (group3 == "" & group4 == "" & group5 == "") {
-
-    qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+  qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
                                   group1, group2, pvalue)
+  }
 
-    } else if (group4 == "" & group5 == "") {
+  if (stat == "t-test" & group3 != "" & group4 == "" & group5 == "") {
+
+stats <- t.test()
+
+    if (stats$p.value < 0.001) {
+
+      pvalue <- "***"
+
+      } else if (stats$p.value < 0.01) {
+
+        pvalue <- "**"
+
+        } else if (stats$p.value < 0.05) {
+
+          pvalue <- "*"
+
+          } else {
+
+             pvalue <- "ns"
+
+             }
 
       qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~pvalue,
                                     group1, group2, group3, pvalue)
 
-      } else if (group5 == "") {
+  }
 
-        qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~pvalue,
-                                      group1, group2, group3, group4, pvalue)
+  if (stat == "t-test" & group3 != "" & group4 != "" & group5 == "") {
 
-        }
+  stats <- t.test()
+
+    if (stats$p.value < 0.001) {
+
+      pvalue <- "***"
+
+      } else if (stats$p.value < 0.01) {
+
+        pvalue <- "**"
+
+        } else if (stats$p.value < 0.05) {
+
+          pvalue <- "*"
+
+          } else {
+
+             pvalue <- "ns"
+
+             }
+    qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~pvalue,
+                                  group1, group2, group3, group4, pvalue)
+
 
   }
+
+  if (stat == "t-test" & group3 != "" & group4 != "" & group5 != "") {
+
+  stats <- t.test()
+
+    if (stats$p.value < 0.001) {
+
+      pvalue <- "***"
+
+      } else if (stats$p.value < 0.01) {
+
+        pvalue <- "**"
+
+        } else if (stats$p.value < 0.05) {
+
+          pvalue <- "*"
+
+          } else {
+
+             pvalue <- "ns"
+    }
+
+    qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~group5, ~pvalue,
+                                      group1, group2, group3, group4, group5, pvalue)
+
+    }
 
   #anova test here
   if (stat == "anova") {
@@ -405,8 +490,27 @@ qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
 
 #converting raw sd into percentage
 qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
-target_sd1 <- target_sd1/qpcr_data[group2, "avg_exp"]*100
 control_sd <- control_sd/qpcr_data[group1, "avg_exp"]*100
+target_sd1 <- target_sd1/qpcr_data[group2, "avg_exp"]*100
+
+if (group3 != "") {
+	
+	target_sd2 <- target_sd2/qpcr_data[group3, "avg_exp"]*100
+
+}
+
+if (group4 != "") {
+
+	target_sd3 <- target_sd3/qpcr_data[group4, "avg_exp"]*100
+
+}
+
+if (group5 != "") {
+
+	target_sd4 <- target_sd4/qpcr_data[group5, "avg_exp"]*100
+
+}
+
 
 if (ref2 != "") {
 
@@ -414,14 +518,19 @@ if (ref2 != "") {
   percent_exp2 <- qpcr_data[group2, "percent_exp"]
 
   if (group3 != "") {
+
     percent_exp3 <- qpcr_data[group3, "percent_exp"]
+
     }
 
   if (group4 != "") {
+
     percent_exp4 <- qpcr_data[group4, "percent_exp"]
+
     }
 
   if (group5 != "") {
+
     percent_exp5 <- qpcr_data[group5, "percent_exp"]
     }
 
@@ -431,15 +540,21 @@ if (ref2 != "") {
   percent_exp2 <- qpcr_data[group2, "percent_exp"]
 
   if (group3 != "") {
+
     percent_exp3 <- qpcr_data[group3, "percent_exp"]
+
     }
 
   if (group4 != "") {
+
     percent_exp4 <- qpcr_data[group4, "percent_exp"]
+
     }
 
   if (group5 != "") {
+
     percent_exp5 <- qpcr_data[group5, "percent_exp"]
+
     }
 
 }

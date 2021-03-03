@@ -18,13 +18,18 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- read.csv("/mnt/c/Users/Erkut Ilaslan/Desktop/FOXM1/RIP results/RIP_qPCR.csv")
-#group1 <- "RIP NC"
-#group2 <- "RIP P1"
-#ref1 <- "Rluc"
-#ref2 <- "Fluc"
-#goi <- "FOXM1"
-#tech_rep <- "4"
+qpcr_data <- read.csv("~/qpcr_foxm1.csv")
+group1 <- "siCTRL"
+group2 <- "siPUM1"
+group3 <- "siNANOS3"
+group4 <- "siPUM1/NANOS3"
+group5 <- "siFOXM1"
+ref1 <- "GARS1"
+ref2 <- ""
+goi <- "FOXM1"
+tech_rep <- "3"
+type <- "biorad"
+test <- FALSE
 
 #qpcr_data <- read.csv("~/RIP_qPCR.csv")
 #group1 <- "RIP NC"
@@ -69,21 +74,21 @@
 #	     group3 = "siNANOS3",
 #	     group4 = "siPUM1/NANOS3",
 #	     group5 = "siFOXM1",
- #            ref1 = "GARS1",
-  #           goi = "FOXM1",
+#             ref1 = "GARS1",
+#             goi = "FOXM1",
 #	     tech_rep = 3,
- #            test = FALSE)
+#             test = FALSE)
 
 #barplot_qpcr("~/multipe_test_qpcr.csv",
- #            group1 = "5",
-  #           group2 = "6",
+#             group1 = "5",
+#             group2 = "6",
 #	     group3 = "7",
 #	     group4 = "8",
 #	     group5 = "9",
- #            ref1 = "GAPDH",
-  #           goi = "DAZL",
-   #          tech_rep = 3,
-    #         test = FALSE)
+#             ref1 = "GAPDH",
+#             goi = "DAZL",
+#             tech_rep = 3,
+#             test = FALSE)
 
 
 #barplot_qpcr("~/rip_pum1.csv",
@@ -304,7 +309,7 @@ if (group5 != "") {
 }
 
 #converting raw expression to percentage for better visualization
-qpcr_data <- dplyr::arrange(qpcr_data, dplyr::desc(qpcr_data$control_avg_exp))
+qpcr_data <- dplyr::arrange(qpcr_data, match(qpcr_data$Sample, c(group1, group2, group3, group4, group5)))
 qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$control_avg_exp[1]*100)
 
 if (test == TRUE) {
@@ -503,14 +508,11 @@ if (group3 == "" && group4 == "" && group5 == "") {
   }
 
 } else if (group4 == "" && group5 == "") {
-print("group 1-2-3")
-	if (test == TRUE) {
 
-print("test positive")
+	if (test == TRUE) {
 
 	} else {
 
-print("test negative")
     final_plot <- ggpubr::ggbarplot(qpcr_data,
 				    x = "Sample",
 				    y = "percent_exp",
@@ -542,15 +544,10 @@ print("test negative")
 
 } else if (group5 == "") {
 
-print("group1-2-3-4")
-
 	if (test == TRUE) {
-
-print("test positive")
 
 	} else {
 
-print("test negative")
     final_plot <- ggpubr::ggbarplot(qpcr_data,
 				    x = "Sample",
 				    y = "percent_exp",
@@ -582,16 +579,14 @@ print("test negative")
      					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
 
-
 	}
 
 } else {
-print("group1-2-3-4-5")
+
   if (test == TRUE) {
 
-	  print("test positive")
-
   } else {
+
     final_plot <- ggpubr::ggbarplot(qpcr_data,
 				    x = "Sample",
 				    y = "percent_exp",
@@ -626,8 +621,6 @@ print("group1-2-3-4-5")
 	    				 ymin = percent_exp1 - control_sd,
      					 ymax = percent_exp1 + control_sd,
      					 width = 0.1))
-
-	  print("test negative")
 
   }
 

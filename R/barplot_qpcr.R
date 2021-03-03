@@ -50,50 +50,50 @@
 #tech_rep <- 4
 #test <- FALSE
 
-qpcr_data <- read.csv("~/multipe_test_qpcr.csv")
-type <- "biorad"
-group1 <- "5"
-group2 <- "6"
-group3 <- ""
-group4 <- ""
-group5 <- ""
-ref1 <- "GAPDH"
-ref2 <- ""
-goi <- "DAZL"
-tech_rep <- 3
-test <- FALSE
+#qpcr_data <- read.csv("~/multipe_test_qpcr.csv")
+#type <- "biorad"
+#group1 <- "5"
+#group2 <- "6"
+#group3 <- ""
+#group4 <- ""
+#group5 <- ""
+#ref1 <- "GAPDH"
+#ref2 <- ""
+#goi <- "DAZL"
+#tech_rep <- 3
+#test <- FALSE
 
-barplot_qpcr("~/qpcr_foxm1.csv",
-             group1 = "siCTRL",
-             group2 = "siPUM1",
-	     group3 = "siNANOS3",
-	     group4 = "siPUM1/NANOS3",
-	     group5 = "siFOXM1",
-             ref1 = "GARS1",
-             goi = "FOXM1",
-	     tech_rep = 3,
-             test = FALSE)
+#barplot_qpcr("~/qpcr_foxm1.csv",
+#             group1 = "siCTRL",
+#             group2 = "siPUM1",
+#	     group3 = "siNANOS3",
+#	     group4 = "siPUM1/NANOS3",
+#	     group5 = "siFOXM1",
+ #            ref1 = "GARS1",
+  #           goi = "FOXM1",
+#	     tech_rep = 3,
+ #            test = FALSE)
 
-barplot_qpcr("~/multipe_test_qpcr.csv",
-             group1 = "5",
-             group2 = "6",
-	     group3 = "7",
-	     group4 = "8",
-	     group5 = "9",
-             ref1 = "GAPDH",
-             goi = "DAZL",
-             tech_rep = 3,
-             test = FALSE)
+#barplot_qpcr("~/multipe_test_qpcr.csv",
+ #            group1 = "5",
+  #           group2 = "6",
+#	     group3 = "7",
+#	     group4 = "8",
+#	     group5 = "9",
+ #            ref1 = "GAPDH",
+  #           goi = "DAZL",
+   #          tech_rep = 3,
+    #         test = FALSE)
 
 
-barplot_qpcr("~/rip_pum1.csv",
-             group1 = "RIP NC",
-             group2 = "RIP P1",
-             ref1 = "Rluc",
-             ref2 = "Fluc",
-             goi = "FOXM1",
-             tech_rep = 3,
-             test = FALSE)
+#barplot_qpcr("~/rip_pum1.csv",
+ #            group1 = "RIP NC",
+  #           group2 = "RIP P1",
+   #          ref1 = "Rluc",
+    #         ref2 = "Fluc",
+     #        goi = "FOXM1",
+      #       tech_rep = 3,
+       #      test = FALSE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",

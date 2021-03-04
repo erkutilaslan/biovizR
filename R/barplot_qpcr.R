@@ -31,19 +31,19 @@
 #type <- "biorad"
 #test <- TRUE
 
-#qpcr_data <- read.csv("~/RIP_qPCR.csv")
-#group1 <- "RIP NC"
-#group2 <- "RIP P1"
-#group3 <- "RIP N3"
-#group4 <- ""
-#group5 <- ""
-#ref1 <- "Fluc"
-#ref2 <- "Rluc"
-#goi <- "FOXM1"
-#tech_rep <- 3
-#test <- FALSE
-#type <- "biorad"
-#stat <- "t.test"
+qpcr_data <- read.csv("~/RIP_qPCR.csv")
+group1 <- "RIP NC"
+group2 <- "RIP P1"
+group3 <- ""
+group4 <- ""
+group5 <- ""
+ref1 <- "Fluc"
+ref2 <- "Rluc"
+goi <- "FOXM1"
+tech_rep <- 3
+test <- FALSE
+type <- "biorad"
+stat <- "t.test"
 
 #qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
 #type <- "biorad"
@@ -68,16 +68,16 @@
 #tech_rep <- 3
 #test <- FALSE
 
-barplot_qpcr("~/qpcr_foxm1.csv",
-             group1 = "siCTRL",
-             group2 = "siPUM1",
-	     group3 = "siNANOS3",
-             group4 = "siPUM1/NANOS3",
-             group5 = "siFOXM1",
-             ref1 = "GARS1",
-             goi = "RAD21",
-	     tech_rep = 3,
-             test = FALSE)
+#barplot_qpcr("~/qpcr_foxm1.csv",
+#             group1 = "siCTRL",
+#             group2 = "siPUM1",
+#	     group3 = "siNANOS3",
+#             group4 = "siPUM1/NANOS3",
+#             group5 = "siFOXM1",
+#             ref1 = "GARS1",
+#             goi = "FOXM1",
+#	     tech_rep = 3,
+#             test = FALSE)
 
 #barplot_qpcr("~/multipe_test_qpcr.csv",
 #             group1 = "5",
@@ -91,14 +91,14 @@ barplot_qpcr("~/qpcr_foxm1.csv",
 #             test = FALSE)
 
 
-#barplot_qpcr("~/rip_pum1.csv",
- #            group1 = "RIP NC",
-  #           group2 = "RIP P1",
-   #          ref1 = "Rluc",
-    #         ref2 = "Fluc",
-     #        goi = "FOXM1",
-      #       tech_rep = 3,
-       #      test = FALSE)
+barplot_qpcr("~/rip_pum1.csv",
+             group1 = "RIP NC",
+             group2 = "RIP P1",
+             ref1 = "Rluc",
+             ref2 = "Fluc",
+             goi = "FOXM1",
+             tech_rep = 3,
+             test = FALSE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -185,7 +185,7 @@ colnames(qpcr_data)[match(ref1, colnames(qpcr_data))] <- "ref1"
 
 if (ref2 != "") {
 
-  colnames(qpcr_data)[match(ref2, colnames(qpcr_data))] <- "ref2"
+	colnames(qpcr_data)[match(ref2, colnames(qpcr_data))] <- "ref2"
 
 }
 
@@ -194,14 +194,14 @@ colnames(qpcr_data)[match(goi, colnames(qpcr_data))] <- "goi"
 #avg of refs for multiple refs
 if (ref2 != "") {
 
-  qpcr_data <- dplyr::mutate(qpcr_data, avg_ref = (ref1 + ref2) / 2)
-  #dCt calculation for avg of refs
-  qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - avg_ref))
+	qpcr_data <- dplyr::mutate(qpcr_data, avg_ref = (ref1 + ref2) / 2)
+	#dCt calculation for avg of refs
+	qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - avg_ref))
 
 } else {
 
-  #dCt calculation for only 1 ref
-  qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - ref1))
+	#dCt calculation for only 1 ref
+	qpcr_data <- dplyr::mutate(qpcr_data, dCt = (goi - ref1))
 
 }
 
@@ -221,19 +221,19 @@ target_exp1 <- dplyr::filter(qpcr_data, Sample == group2)
 
 if (group3 != "") {
   
-  target_exp2 <- dplyr::filter(qpcr_data, Sample == group3)
+	target_exp2 <- dplyr::filter(qpcr_data, Sample == group3)
   
 }
 
 if (group4 != "") {
   
-  target_exp3 <- dplyr::filter(qpcr_data, Sample == group4)
+	target_exp3 <- dplyr::filter(qpcr_data, Sample == group4)
   
 }
 
 if (group5 != "") {
   
-  target_exp4 <- dplyr::filter(qpcr_data, Sample == group5)
+	target_exp4 <- dplyr::filter(qpcr_data, Sample == group5)
   
 }
 
@@ -242,19 +242,19 @@ target_exp1 <- dplyr::mutate(target_exp1, target_avg_exp1 = mean(expression))
 
 if (group3 != "") {
 
-  target_exp2 <- dplyr::mutate(target_exp2, target_avg_exp2 = mean(expression))
+	target_exp2 <- dplyr::mutate(target_exp2, target_avg_exp2 = mean(expression))
 
 }
 
 if (group4 != "") {
 
-  target_exp3 <- dplyr::mutate(target_exp3, target_avg_exp3 = mean(expression))
+	target_exp3 <- dplyr::mutate(target_exp3, target_avg_exp3 = mean(expression))
 
 }
 
 if (group5 != "") {
 
-  target_exp4 <- dplyr::mutate(target_exp4, target_avg_exp4 = mean(expression))
+	target_exp4 <- dplyr::mutate(target_exp4, target_avg_exp4 = mean(expression))
 
 }
 
@@ -263,19 +263,19 @@ qpcr_data <- dplyr::left_join(qpcr_data, target_exp1)
 
 if (group3 != "") {
 
-  qpcr_data <- dplyr::left_join(qpcr_data, target_exp2)
+	qpcr_data <- dplyr::left_join(qpcr_data, target_exp2)
 
 }
 
 if (group4 != "") {
 
-  qpcr_data <- dplyr::left_join(qpcr_data, target_exp3)
+	qpcr_data <- dplyr::left_join(qpcr_data, target_exp3)
 
 }
 
 if (group5 != "") {
 
-  qpcr_data <- dplyr::left_join(qpcr_data, target_exp4)
+	qpcr_data <- dplyr::left_join(qpcr_data, target_exp4)
 
 }
 
@@ -283,24 +283,24 @@ qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
 
 if (group3 != "") {
 
-  qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
-								  target_avg_exp2,
-								  control_avg_exp))
-
+	qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
+									  target_avg_exp2,
+									  control_avg_exp))
+	
 }
 
 if (group4 != "") {
 
-  qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
-								  target_avg_exp2,
-								  target_avg_exp3,
-								  control_avg_exp))
+	qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
+									target_avg_exp2,
+									target_avg_exp3,
+									control_avg_exp))
 
 }
 
 if (group5 != "") {
 
-  qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
+	qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
 								  target_avg_exp2,
 								  target_avg_exp3,
 								  target_avg_exp4,
@@ -309,62 +309,83 @@ if (group5 != "") {
 }
 
 #converting raw expression to percentage for better visualization
-qpcr_data <- dplyr::arrange(qpcr_data, match(qpcr_data$Sample, c(group1, group2, group3, group4, group5)))
+if (group3 == "" & group4 == "" & group4 == "") {
+
+	qpcr_data <- dplyr::arrange(qpcr_data, match(qpcr_data$Sample, c(group1, group2)))
+
+}
+
+if (group4 == "" & group5 == "") {
+
+	qpcr_data <- dplyr::arrange(qpcr_data, match(qpcr_data$Sample, c(group1, group2, group3)))
+
+}
+
+if (group5 == "") {
+
+	qpcr_data <- dplyr::arrange(qpcr_data, match(qpcr_data$Sample, c(group1, group2, group3, group4)))
+
+} else {
+
+	qpcr_data <- dplyr::arrange(qpcr_data, match(qpcr_data$Sample, c(group1, group2, group3, group4, group5)))
+
+}
+
 qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$control_avg_exp[1]*100)
 
 if (test == TRUE) {
 
   #duplicating rows for accurate p-value calculation
-  idx1 <- rep(1:nrow(control_exp), tech_rep)
-  control_exp <- control_exp[idx1, ]
+  	idx1 <- rep(1:nrow(control_exp), tech_rep)
+  	control_exp <- control_exp[idx1, ]
 
-  idx2 <- rep(1:nrow(target_exp1), tech_rep)
-  target_exp1 <- target_exp1[idx2, ]
+  	idx2 <- rep(1:nrow(target_exp1), tech_rep)
+  	target_exp1 <- target_exp1[idx2, ]
 
   if (group3 != "") {
 
-    idx3 <- rep(1:nrow(target_exp2), tech_rep)
-    target_exp2 <- target_exp2[idx3, ]
+		idx3 <- rep(1:nrow(target_exp2), tech_rep)
+		target_exp2 <- target_exp2[idx3, ]
 
   }
 
   if (group4 != "") {
 
-    idx4 <- rep(1:nrow(target_exp3), tech_rep)
-    target_exp3 <- target_exp3[idx4, ]
+		idx4 <- rep(1:nrow(target_exp3), tech_rep)
+		target_exp3 <- target_exp3[idx4, ]
 
   }
 
   if (group5 != "") {
 
-    idx5 <- rep(1:nrow(target_exp4), tech_rep)
-    target_exp4 <- target_exp4[idx5, ]
+		idx5 <- rep(1:nrow(target_exp4), tech_rep)
+		target_exp4 <- target_exp4[idx5, ]
 
   }
 
-  if (stat == "t-test" & group3 == "" & group4 == "" & group5 == "") {
+	if (stat == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 
-    #calculating p-value
-    stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
+		#calculating p-value
+		stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
 
-    #converting pvalues to *
-    if (stats$p.value < 0.001) {
+		#converting pvalues to *
+		if (stats$p.value < 0.001) {
 
-      pvalue <- "***"
+			pvalue <- "***"
 
-      } else if (stats$p.value < 0.01) {
+			} else if (stats$p.value < 0.01) {
 
-        pvalue <- "**"
+				pvalue <- "**"
 
-        } else if (stats$p.value < 0.05) {
+				} else if (stats$p.value < 0.05) {
 
-          pvalue <- "*"
+					pvalue <- "*"
 
-          } else {
+					} else {
 
-             pvalue <- "ns"
+						pvalue <- "ns"
 
-             }
+						}
 
   #this is the supported df layout for ggpubr::stat_pvalue_manuel()
   qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
@@ -514,48 +535,49 @@ if (group5 != "") {
 
 if (ref2 != "") {
 
-  percent_exp1 <- qpcr_data[group1, "percent_exp"]
-  percent_exp2 <- qpcr_data[group2, "percent_exp"]
+	percent_exp1 <- qpcr_data[group1, "percent_exp"]
+  	percent_exp2 <- qpcr_data[group2, "percent_exp"]
 
-  if (group3 != "") {
+	if (group3 != "") {
 
-    percent_exp3 <- qpcr_data[group3, "percent_exp"]
+		percent_exp3 <- qpcr_data[group3, "percent_exp"]
 
-    }
+		}
 
-  if (group4 != "") {
+	if (group4 != "") {
 
-    percent_exp4 <- qpcr_data[group4, "percent_exp"]
+    		percent_exp4 <- qpcr_data[group4, "percent_exp"]
 
-    }
+		}
 
-  if (group5 != "") {
+	if (group5 != "") {
 
-    percent_exp5 <- qpcr_data[group5, "percent_exp"]
-    }
+		percent_exp5 <- qpcr_data[group5, "percent_exp"]
 
-  } else {
+		}
 
-  percent_exp1 <- qpcr_data[group1, "percent_exp"]
-  percent_exp2 <- qpcr_data[group2, "percent_exp"]
+	} else {
 
-  if (group3 != "") {
+	percent_exp1 <- qpcr_data[group1, "percent_exp"]
+	percent_exp2 <- qpcr_data[group2, "percent_exp"]
 
-    percent_exp3 <- qpcr_data[group3, "percent_exp"]
+	if (group3 != "") {
 
-    }
+		percent_exp3 <- qpcr_data[group3, "percent_exp"]
 
-  if (group4 != "") {
+		}
 
-    percent_exp4 <- qpcr_data[group4, "percent_exp"]
+	if (group4 != "") {
 
-    }
+		percent_exp4 <- qpcr_data[group4, "percent_exp"]
 
-  if (group5 != "") {
+		}
 
-    percent_exp5 <- qpcr_data[group5, "percent_exp"]
+	if (group5 != "") {
 
-    }
+		percent_exp5 <- qpcr_data[group5, "percent_exp"]
+
+		}
 
 }
 
@@ -567,10 +589,10 @@ qpcr_data <- qpcr_data[!is.na(qpcr_data$percent_exp), ]
 #visualization
 if (group3 == "" && group4 == "" && group5 == "") {
 
-  if (test == TRUE) {
+	if (test == TRUE) {
 
-    final_plot <- ggpubr::ggbarplot(qpcr_data,
-       	                            x = "Sample",
+		final_plot <- ggpubr::ggbarplot(qpcr_data,
+       						x = "Sample",
                                     y = "percent_exp",
 			            fill = "808080",
 				    xlab = "Sample",

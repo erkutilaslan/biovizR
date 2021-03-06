@@ -117,62 +117,62 @@ barplot_qpcr <- function(qpcr_data,
 #data import
 if (is.character(qpcr_data) == TRUE) {
 
-  qpcr_data <- read.csv(qpcr_data)
+	qpcr_data <- read.csv(qpcr_data)
 
 }
 
 #data wrangling
 if (type == "biorad") {
 
-  if (colnames(qpcr_data[1]) == "X") {
+	if (colnames(qpcr_data[1]) == "X") {
      
-    qpcr_data <- qpcr_data[ , -1]
+		qpcr_data <- qpcr_data[ , -1]
   
-    }
+	}
 
-  if (test == TRUE) {
+	if (test == TRUE) {
 
-    qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
+		qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
 
-  } else {
+	} else {
 
-    qpcr_data <- qpcr_data[, c(3, 5, 7)]
+		qpcr_data <- qpcr_data[, c(3, 5, 7)]
 
-  }
+	}
 
-  qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
-  qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
-  qpcr_data <- na.omit(qpcr_data)
-  qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
+	qpcr_data$Sample[qpcr_data$Sample == ""] <- NA
+	qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
+	qpcr_data <- na.omit(qpcr_data)
+	qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
 
-  if (test == TRUE) {
+	if (test == TRUE) {
 
-    qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
+		qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
 
-  } else {
+	} else {
 
-    qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample)
+		qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample)
 
-  }
+	}
 
-  qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
-  qpcr_data <- dplyr::ungroup(qpcr_data)
+	qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
+	qpcr_data <- dplyr::ungroup(qpcr_data)
 
-  if (test == TRUE) {
+	if (test == TRUE) {
 
-    qpcr_data <- qpcr_data[ ,-4]
+		qpcr_data <- qpcr_data[ ,-4]
 
-  } else {
+	} else {
 
-    qpcr_data <- qpcr_data[ ,-3]
+		qpcr_data <- qpcr_data[ ,-3]
 
-  }
+	}
 
-  qpcr_data <- dplyr::distinct(qpcr_data)
+	qpcr_data <- dplyr::distinct(qpcr_data)
 
-  #pivot_wider for analysis
-  qpcr_data <- tidyr::pivot_wider(qpcr_data,
-                                  names_from = Target, values_from = Cq_mean)
+	#pivot_wider for analysis
+	qpcr_data <- tidyr::pivot_wider(qpcr_data,
+					names_from = Target, values_from = Cq_mean)
 
 }
 
@@ -284,8 +284,8 @@ qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
 if (group3 != "") {
 
 	qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
-									  target_avg_exp2,
-									  control_avg_exp))
+									target_avg_exp2,
+									control_avg_exp))
 	
 }
 
@@ -301,10 +301,10 @@ if (group4 != "") {
 if (group5 != "") {
 
 	qpcr_data <- dplyr::mutate(qpcr_data, avg_exp = dplyr::coalesce(target_avg_exp1,
-								  target_avg_exp2,
-								  target_avg_exp3,
-								  target_avg_exp4,
-								  control_avg_exp))
+								  	target_avg_exp2,
+								  	target_avg_exp3,
+								  	target_avg_exp4,
+								  	control_avg_exp))
 
 }
 
@@ -335,33 +335,33 @@ qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$
 
 if (test == TRUE) {
 
-  #duplicating rows for accurate p-value calculation
+	#duplicating rows for accurate p-value calculation
   	idx1 <- rep(1:nrow(control_exp), tech_rep)
   	control_exp <- control_exp[idx1, ]
 
   	idx2 <- rep(1:nrow(target_exp1), tech_rep)
   	target_exp1 <- target_exp1[idx2, ]
 
-  if (group3 != "") {
+	if (group3 != "") {
 
 		idx3 <- rep(1:nrow(target_exp2), tech_rep)
 		target_exp2 <- target_exp2[idx3, ]
 
-  }
+	}
 
-  if (group4 != "") {
+	if (group4 != "") {
 
 		idx4 <- rep(1:nrow(target_exp3), tech_rep)
 		target_exp3 <- target_exp3[idx4, ]
 
-  }
+	}
 
-  if (group5 != "") {
+	if (group5 != "") {
 
 		idx5 <- rep(1:nrow(target_exp4), tech_rep)
 		target_exp4 <- target_exp4[idx5, ]
 
-  }
+	}
 
 	if (stat == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 
@@ -373,116 +373,119 @@ if (test == TRUE) {
 
 			pvalue <- "***"
 
-			} else if (stats$p.value < 0.01) {
+		} else if (stats$p.value < 0.01) {
 
-				pvalue <- "**"
+			pvalue <- "**"
 
-				} else if (stats$p.value < 0.05) {
+		} else if (stats$p.value < 0.05) {
 
-					pvalue <- "*"
+			pvalue <- "*"
 
-					} else {
+		} else {
 
-						pvalue <- "ns"
+			pvalue <- "ns"
 
-						}
+		}
 
-  #this is the supported df layout for ggpubr::stat_pvalue_manuel()
-  qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
-                                  group1, group2, pvalue)
-  }
+		#this is the supported df layout for ggpubr::stat_pvalue_manuel()
+		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+						group1, group2, pvalue)
 
-  if (stat == "t-test" & group3 != "" & group4 == "" & group5 == "") {
+	}
 
-stats <- t.test()
+	if (stat == "t-test" & group3 != "" & group4 == "" & group5 == "") {
 
-    if (stats$p.value < 0.001) {
+		stats <- t.test()
 
-      pvalue <- "***"
+		if (stats$p.value < 0.001) {
 
-      } else if (stats$p.value < 0.01) {
+			pvalue <- "***"
 
-        pvalue <- "**"
+		} else if (stats$p.value < 0.01) {
 
-        } else if (stats$p.value < 0.05) {
+			pvalue <- "**"
 
-          pvalue <- "*"
+		} else if (stats$p.value < 0.05) {
 
-          } else {
+			pvalue <- "*"
 
-             pvalue <- "ns"
+		} else {
 
-             }
+			pvalue <- "ns"
 
-      qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~pvalue,
-                                    group1, group2, group3, pvalue)
+		}
 
-  }
+		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~pvalue,
+						group1, group2, group3, pvalue)
 
-  if (stat == "t-test" & group3 != "" & group4 != "" & group5 == "") {
+	}
 
-  stats <- t.test()
+	if (stat == "t-test" & group3 != "" & group4 != "" & group5 == "") {
 
-    if (stats$p.value < 0.001) {
+		stats <- t.test()
 
-      pvalue <- "***"
+		if (stats$p.value < 0.001) {
 
-      } else if (stats$p.value < 0.01) {
+			pvalue <- "***"
 
-        pvalue <- "**"
+		} else if (stats$p.value < 0.01) {
 
-        } else if (stats$p.value < 0.05) {
+			pvalue <- "**"
 
-          pvalue <- "*"
+		} else if (stats$p.value < 0.05) {
 
-          } else {
+			pvalue <- "*"
 
-             pvalue <- "ns"
+		} else {
 
-             }
-    qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~pvalue,
-                                  group1, group2, group3, group4, pvalue)
+			pvalue <- "ns"
 
+		}
 
-  }
-
-  if (stat == "t-test" & group3 != "" & group4 != "" & group5 != "") {
-
-  stats <- t.test()
-
-    if (stats$p.value < 0.001) {
-
-      pvalue <- "***"
-
-      } else if (stats$p.value < 0.01) {
-
-        pvalue <- "**"
-
-        } else if (stats$p.value < 0.05) {
-
-          pvalue <- "*"
-
-          } else {
-
-             pvalue <- "ns"
-    }
-
-    qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~group5, ~pvalue,
-                                      group1, group2, group3, group4, group5, pvalue)
-
-    }
-
-  #anova test here
-  if (stat == "anova") {
-
-  #first data wrangling for anova function
+		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~pvalue,
+						group1, group2, group3, group4, pvalue)
 
 
-  #anova test
-  stats <- aov()
-  stats_anova <- TukeyHSD(stats)
+	}
 
-  }
+	if (stat == "t-test" & group3 != "" & group4 != "" & group5 != "") {
+
+		stats <- t.test()
+
+		if (stats$p.value < 0.001) {
+
+			pvalue <- "***"
+
+		} else if (stats$p.value < 0.01) {
+
+			pvalue <- "**"
+
+		} else if (stats$p.value < 0.05) {
+
+			pvalue <- "*"
+
+		} else {
+
+			pvalue <- "ns"
+
+		}
+
+		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~group5, ~pvalue,
+						group1, group2, group3, group4, group5, pvalue)
+
+	}
+
+	#anova test here
+	if (stat == "anova") {
+
+		#first data wrangling for anova function
+
+
+		#anova test
+		stats <- aov()
+		stats_anova <- TukeyHSD(stats)
+
+  	}
 
 }
 
@@ -493,11 +496,13 @@ control_sd <- sd(control_exp$expression)
 if (group3 != "") {
 
 	target_sd2 <- sd(target_exp2$expression)
+
 }
 
 if (group4 != "") {
 
 	target_sd3 <- sd(target_exp3$expression)
+
 }
 
 if (group5 != "") {
@@ -542,21 +547,21 @@ if (ref2 != "") {
 
 		percent_exp3 <- qpcr_data[group3, "percent_exp"]
 
-		}
+	}
 
 	if (group4 != "") {
 
     		percent_exp4 <- qpcr_data[group4, "percent_exp"]
 
-		}
+	}
 
 	if (group5 != "") {
 
 		percent_exp5 <- qpcr_data[group5, "percent_exp"]
 
-		}
+	}
 
-	} else {
+} else {
 
 	percent_exp1 <- qpcr_data[group1, "percent_exp"]
 	percent_exp2 <- qpcr_data[group2, "percent_exp"]
@@ -565,19 +570,19 @@ if (ref2 != "") {
 
 		percent_exp3 <- qpcr_data[group3, "percent_exp"]
 
-		}
+	}
 
 	if (group4 != "") {
 
 		percent_exp4 <- qpcr_data[group4, "percent_exp"]
 
-		}
+	}
 
 	if (group5 != "") {
 
 		percent_exp5 <- qpcr_data[group5, "percent_exp"]
 
-		}
+	}
 
 }
 
@@ -593,89 +598,91 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_data,
        						x = "Sample",
-                                    y = "percent_exp",
-			            fill = "808080",
-				    xlab = "Sample",
-				    ylab = "Relative mRNA level",
-				    title = goi,
-				    size = 0.5,
-				    palette = "npg",
-				    lab.size = 5,
-				    lab.vjust = 0.5,
-				    lab.hjust = 1.2,
-				    sort.by.groups = FALSE,
-				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp2 - target_sd1,
-	                		 ymax = percent_exp2 + target_sd1,
-		                	 width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - control_sd,
-     					 ymax = percent_exp1 + control_sd,
-     					 width = 0.1)) +
-                  ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-					     y.position = percent_exp2 + control_sd + 20,
-					     bracket.size = 0.6, label.size = 6)
+						y = "percent_exp",
+						fill = "808080",
+						xlab = "Sample",
+						ylab = "Relative mRNA level",
+						title = goi,
+						size = 0.5,
+						palette = "npg",
+						lab.size = 5,
+						lab.vjust = 0.5,
+						lab.hjust = 1.2,
+						sort.by.groups = FALSE,
+						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+		ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+						    ymin = percent_exp2 - target_sd1,
+						    ymax = percent_exp2 + target_sd1,
+						    width = 0.1)) +
+		ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+						    ymin = percent_exp1 - control_sd,
+						    ymax = percent_exp1 + control_sd,
+						    width = 0.1)) +
+		ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
+					   y.position = percent_exp2 + control_sd + 20,
+					   bracket.size = 0.6, label.size = 6)
 
-  } else {
+	} else {
 
-    final_plot <- ggpubr::ggbarplot(qpcr_data,
-				    x = "Sample",
-				    y = "percent_exp",
-				    fill = "808080",
-				    xlab = "Sample",
-				    ylab = "Relative mRNA level",
-				    size = 0.5,
-				    title = goi,
-				    palette = "npg",
-				    lab.size = 5,
-				    lab.vjust = 0.5,
-				    lab.hjust = 1.2,
-				    sort.by.groups = FALSE,
-				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp2 - target_sd1,
-	                		 ymax = percent_exp2 + target_sd1,
-		                	 width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - control_sd,
-     					 ymax = percent_exp1 + control_sd,
-     					 width = 0.1))
+		final_plot <- ggpubr::ggbarplot(qpcr_data,
+						x = "Sample",
+						y = "percent_exp",
+						fill = "808080",
+						xlab = "Sample",
+						ylab = "Relative mRNA level",
+						size = 0.5,
+						title = goi,
+						palette = "npg",
+						lab.size = 5,
+						lab.vjust = 0.5,
+						lab.hjust = 1.2,
+						sort.by.groups = FALSE,
+						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+		ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+	        				    ymin = percent_exp2 - target_sd1,
+						    ymax = percent_exp2 + target_sd1,
+						    width = 0.1)) +
+		ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+		    				    ymin = percent_exp1 - control_sd,
+     					 	    ymax = percent_exp1 + control_sd,
+     					 	    width = 0.1))
 
-  }
+	}
 
 } else if (group4 == "" && group5 == "") {
 
 	if (test == TRUE) {
 
+
+
 	} else {
 
-    final_plot <- ggpubr::ggbarplot(qpcr_data,
-				    x = "Sample",
-				    y = "percent_exp",
-				    fill = "808080",
-				    xlab = "Sample",
-				    ylab = "Relative mRNA level",
-				    size = 0.5,
-				    title = goi,
-				    palette = "npg",
-				    lab.size = 5,
-				    lab.vjust = 0.5,
-				    lab.hjust = 1.2,
-				    sort.by.groups = FALSE,
-				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			              ymin = percent_exp2 - target_sd1,
-	                		              ymax = percent_exp2 + target_sd1,
-		                	              width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
-						      ymin = percent_exp3 - target_sd2,
-						      ymax = percent_exp3 + target_sd2,
-						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				              ymin = percent_exp1 - control_sd,
-     					              ymax = percent_exp1 + control_sd,
-     					              width = 0.1))
+	final_plot <- ggpubr::ggbarplot(qpcr_data,
+					x = "Sample",
+					y = "percent_exp",
+					fill = "808080",
+					xlab = "Sample",
+					ylab = "Relative mRNA level",
+					size = 0.5,
+					title = goi,
+					palette = "npg",
+					lab.size = 5,
+					lab.vjust = 0.5,
+					lab.hjust = 1.2,
+					sort.by.groups = FALSE,
+					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+			ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+		        				    ymin = percent_exp2 - target_sd1,
+	                				    ymax = percent_exp2 + target_sd1,
+							    width = 0.1)) +
+			ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						    	    ymin = percent_exp3 - target_sd2,
+							    ymax = percent_exp3 + target_sd2,
+							    width = 0.1)) +
+			ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+	    						    ymin = percent_exp1 - control_sd,
+     						       	    ymax = percent_exp1 + control_sd,
+     					                    width = 0.1))
 
 	}
 
@@ -683,65 +690,69 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 	if (test == TRUE) {
 
+
+
 	} else {
 
-    final_plot <- ggpubr::ggbarplot(qpcr_data,
-				    x = "Sample",
-				    y = "percent_exp",
-				    fill = "808080",
-				    xlab = "Sample",
-				    ylab = "Relative mRNA level",
-				    title = goi,
-				    size = 0.5,
-				    palette = "npg",
-				    lab.size = 5,
-				    lab.vjust = 0.5,
-				    lab.hjust = 1.2,
-				    sort.by.groups = FALSE,
-				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp2 - target_sd1,
-	                		 ymax = percent_exp2 + target_sd1,
-		                	 width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
-						      ymin = percent_exp3 - target_sd2,
-						      ymax = percent_exp3 + target_sd2,
-						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group4,
-						      ymin = percent_exp4 - target_sd3,
-						      ymax = percent_exp4 + target_sd3,
-						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - control_sd,
-     					 ymax = percent_exp1 + control_sd,
-     					 width = 0.1))
+		final_plot <- ggpubr::ggbarplot(qpcr_data,
+						x = "Sample",
+						y = "percent_exp",
+						fill = "808080",
+						xlab = "Sample",
+						ylab = "Relative mRNA level",
+						title = goi,
+						size = 0.5,
+						palette = "npg",
+						lab.size = 5,
+						lab.vjust = 0.5,
+						lab.hjust = 1.2,
+						sort.by.groups = FALSE,
+						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+				ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+		        			   		    ymin = percent_exp2 - target_sd1,
+		                		 		    ymax = percent_exp2 + target_sd1,
+					                	    width = 0.1)) +
+				ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+							      	    ymin = percent_exp3 - target_sd2,
+							      	    ymax = percent_exp3 + target_sd2,
+							      	    width = 0.1)) +
+				ggplot2::geom_errorbar(ggplot2::aes(x = group4,
+							      	    ymin = percent_exp4 - target_sd3,
+							      	    ymax = percent_exp4 + target_sd3,
+							      	    width = 0.1)) +
+				ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+		    				 		    ymin = percent_exp1 - control_sd,
+     						 		    ymax = percent_exp1 + control_sd,
+     						 		    width = 0.1))
 
 	}
 
 } else {
+			
+	if (test == TRUE) {
 
-  if (test == TRUE) {
 
-  } else {
 
-    final_plot <- ggpubr::ggbarplot(qpcr_data,
-				    x = "Sample",
-				    y = "percent_exp",
-				    fill = "808080",
-				    xlab = "Sample",
-				    ylab = "Relative mRNA level",
-				    size = 0.5,
-				    title = goi,
-				    palette = "npg",
-				    lab.size = 5,
-				    lab.vjust = 0.5,
-				    lab.hjust = 1.2,
-				    sort.by.groups = FALSE,
-				    ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+	} else {
+
+		final_plot <- ggpubr::ggbarplot(qpcr_data,
+						x = "Sample",
+				 		y = "percent_exp",
+						fill = "808080",
+				    		xlab = "Sample",
+				    		ylab = "Relative mRNA level",
+				    		size = 0.5,
+				    		title = goi,
+				    		palette = "npg",
+				    		lab.size = 5,
+				    		lab.vjust = 0.5,
+				    		lab.hjust = 1.2,
+				    		sort.by.groups = FALSE,
+				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group2,
-	        			 ymin = percent_exp2 - target_sd1,
-	                		 ymax = percent_exp2 + target_sd1,
-		                	 width = 0.1)) +
+	        			              ymin = percent_exp2 - target_sd1,
+	                		 	      ymax = percent_exp2 + target_sd1,
+		                	 	      width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group3,
 						      ymin = percent_exp3 - target_sd2,
 						      ymax = percent_exp3 + target_sd2,
@@ -755,11 +766,11 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						      ymax = percent_exp5 + target_sd4,
 						      width = 0.1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
-	    				 ymin = percent_exp1 - control_sd,
-     					 ymax = percent_exp1 + control_sd,
-     					 width = 0.1))
+	    				 	      ymin = percent_exp1 - control_sd,
+     					 	      ymax = percent_exp1 + control_sd,
+     					 	      width = 0.1))
 
-  }
+	}
 
 }
 

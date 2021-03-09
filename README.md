@@ -36,6 +36,13 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 
 BiocManager::install("ComplexHeatmap")
 ```
+- biomaRt package
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("biomaRt")
+```
 # Installation
 
 ```r

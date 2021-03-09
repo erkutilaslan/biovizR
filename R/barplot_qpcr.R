@@ -18,19 +18,19 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- read.csv("~/qpcr.txt", sep = ";", dec = ",")
-#group1 <- "siCTRL"
-#group2 <- "siPUM1"
-#group3 <- "siNANOS3"
-#group4 <- "siPUM1/NANOS3"
-#group5 <- "siFOXM1"
-#ref1 <- "GARS1"
-#ref2 <- "DTD1"
-#goi <- "FOXM1"
-#tech_rep <- "3"
-#type <- "biorad"
-#test <- TRUE
-#stat <- "t-test"
+qpcr_data <- read.csv("~/qpcr.csv")
+group1 <- "siCTRL"
+group2 <- "siPUM1"
+group3 <- "siNANOS3"
+group4 <- "siPUM1/NANOS3"
+group5 <- "siFOXM1"
+ref1 <- "GARS1"
+ref2 <- "DTD1"
+goi <- "FOXM1"
+tech_rep <- "3"
+type <- "biorad"
+test <- TRUE
+stat <- "t-test"
 
 #qpcr_data <- read.csv("~/RIP_qPCR.csv")
 #group1 <- "RIP NC"
@@ -69,17 +69,17 @@
 #tech_rep <- 3
 #test <- FALSE
 
-#barplot_qpcr("~/qpcr.csv",
-#	     group1 = "siCTRL",
-#	     group2 = "siPUM1",
-#	     group3 = "siNANOS3",
-#	     group4 = "siPUM1/NANOS3",
-#	     group5 = "siFOXM1",
-#	     ref1 = "GARS1",
-#	     ref2 = "DTD1",
-#	     goi = "FOXM1",
-#	     tech_rep = 3,
-#	     test = TRUE)
+barplot_qpcr("~/qpcr.csv",
+	     group1 = "siCTRL",
+	     group2 = "siPUM1",
+	     group3 = "siNANOS3",
+	     group4 = "siPUM1/NANOS3",
+	     group5 = "siFOXM1",
+	     ref1 = "GARS1",
+	     ref2 = "DTD1",
+	     goi = "FOXM1",
+	     tech_rep = 3,
+	     test = TRUE)
 
 #barplot_qpcr("~/multipe_test_qpcr.csv",
 #             group1 = "5",
@@ -115,6 +115,33 @@ barplot_qpcr <- function(qpcr_data,
 			 tech_rep = 3,
 			 test = TRUE,
                          stat = "t-test") {
+
+#pvalue to star conversion function
+pvalue_star <- function(dat) {
+
+	if (dat < 0.001) {
+
+		dat <- "***"
+
+	} else if (dat < 0.01) {
+
+		dat <- "**"
+
+	} else if (dat < 0.05) {
+
+		dat <- "*"
+
+	} else if (dat >= 0.05){
+
+		dat <- "ns"
+
+	} else {
+
+		dat <- NA
+
+	}
+
+}
 
 #data import
 if (is.character(qpcr_data) == TRUE) {
@@ -165,7 +192,7 @@ if (type == "biorad") {
 		qpcr_data <- qpcr_data[ ,-4]
 
 	} else {
-
+#pvalue to star conversion function
 		qpcr_data <- qpcr_data[ ,-3]
 
 	}
@@ -371,95 +398,58 @@ if (test == TRUE) {
 		stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
 
 		#converting pvalues to *
-		if (stats$p.value < 0.001) {
-
-			pvalue <- "***"
-
-		} else if (stats$p.value < 0.01) {
-
-			pvalue <- "**"
-
-		} else if (stats$p.value < 0.05) {
-
-			pvalue <- "*"
-
-		} else {
-
-			pvalue <- "ns"
-
-		}
+		pvalue <- pvalue_star(stats$p.value)
 
 		#this is the supported df layout for ggpubr::stat_pvalue_manuel()
-		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+		stat1 <- tibble::tribble(~group1, ~group2, ~pvalue,
 						group1, group2, pvalue)
 
 	}
 
 	if (stat == "t-test" & group3 != "" & group4 == "" & group5 == "") {
 
+	
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample)
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
 		pvalues <- stats$p.value
-		pvalues <- as.data.frame(pvalues)
-		pvalues <- tibble::rownames_to_column(pvalues)
+		pvalues <- pvalues[,group1]
 
-		if (stats$p.value < 0.001) {
+		pvalues <- lapply(pvalues, pvalue_star)
+		pvalue1 <- as.character(pvalues[group2])
+		pvalue2 <- as.character(pvalues[group3])
 
-			pvalue <- "***"
-
-		} else if (stats$p.value < 0.01) {
-
-			pvalue <- "**"
-
-		} else if (stats$p.value < 0.05) {
-
-			pvalue <- "*"
-
-		} else {
-
-			pvalue <- "ns"
-
-		}
-
-		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~pvalue,
-						group1, group2, group3, pvalue)
+		stat1 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group2, pvalue1)
+		stat2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group3, pvalue2)
 
 	}
 
 	if (stat == "t-test" & group3 != "" & group4 != "" & group5 == "") {
 
+
+	
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample)
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
 		pvalues <- stats$p.value
-		pvalues <- as.data.frame(pvalues)
-		pvalues <- tibble::rownames_to_column(pvalues)
+		pvalues <- pvalues[,group1]
 
-		if (stats$p.value < 0.001) {
+		pvalues <- lapply(pvalues, pvalue_star)
+		pvalue1 <- as.character(pvalues[group2])
+		pvalue2 <- as.character(pvalues[group3])
+		pvalue3 <- as.character(pvalues[group4])
 
-			pvalue <- "***"
-
-		} else if (stats$p.value < 0.01) {
-
-			pvalue <- "**"
-
-		} else if (stats$p.value < 0.05) {
-
-			pvalue <- "*"
-
-		} else {
-
-			pvalue <- "ns"
-
-		}
-
-		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~pvalue,
-						group1, group2, group3, group4, pvalue)
-
+		stat1 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group2, pvalue1)
+		stat2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group3, pvalue2)
+		stat3 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group4, pvalue3)
 
 	}
 
@@ -470,31 +460,27 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp4)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample)
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
 		pvalues <- stats$p.value
-		pvalues <- as.data.frame(pvalues)
-		pvalues <- tibble::rownames_to_column(pvalues)
+		pvalues <- pvalues[,group1]
 
-		if (stats$p.value < 0.001) {
+		pvalues <- lapply(pvalues, pvalue_star)
+		pvalue1 <- as.character(pvalues[group2])
+		pvalue2 <- as.character(pvalues[group3])
+		pvalue3 <- as.character(pvalues[group4])
+		pvalue4 <- as.character(pvalues[group5])
 
-			pvalue <- "***"
+		stat1 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group2, pvalue1)
 
-		} else if (stats$p.value < 0.01) {
+		stat2 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group3, pvalue2)
 
-			pvalue <- "**"
+		stat3 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group4, pvalue3)
 
-		} else if (stats$p.value < 0.05) {
-
-			pvalue <- "*"
-
-		} else {
-
-			pvalue <- "ns"
-
-		}
-
-		qpcr_data2 <- tibble::tribble(~group1, ~group2, ~group3, ~group4, ~group5, ~pvalue,
-						group1, group2, group3, group4, group5, pvalue)
+		stat4 <- tibble::tribble(~group1, ~group2, ~pvalue,
+					group1, group5, pvalue4)
 
 	}
 
@@ -636,7 +622,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						    ymin = percent_exp1 - percent_sd1,
 						    ymax = percent_exp1 + percent_sd1,
 						    width = 0.1)) +
-		ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
+		ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
 					   y.position = percent_exp[1] + percent_sd[1] + 5,
 					   bracket.size = 0.6, label.size = 6)
 
@@ -697,9 +683,12 @@ if (group3 == "" && group4 == "" && group5 == "") {
 	    						    ymin = percent_exp1 - percent_sd1,
      						       	    ymax = percent_exp1 + percent_sd1,
      					                    width = 0.1)) +
-			ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-						   y.position = percent_exp[1] + percent_sd[1] + 5,
+			ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
+						   y.position = percent_exp[1] + percent_sd[1] + 10,
 						   bracket.size = 0.6, label.size = 6)
+			ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
+						   y.position = percent_exp[1] + percent_sd[1] + 20,
+						   bracket.size = 0.6, label.size = 6) 
 
 	} else {
 
@@ -766,8 +755,14 @@ if (group3 == "" && group4 == "" && group5 == "") {
 		    				 		    ymin = percent_exp1 - percent_sd1,
      						 		    ymax = percent_exp1 + percent_sd1,
      						 		    width = 0.1)) +
-				ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-							   y.position = percent_exp[1] + percent_sd[1] + 5,
+				ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
+					   y.position = percent_exp[1] + percent_sd[1] + 10,
+					   bracket.size = 0.6, label.size = 6) +
+				ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
+					   y.position = percent_exp[1] + percent_sd[1] + 20,
+					   bracket.size = 0.6, label.size = 6) +
+				ggpubr::stat_pvalue_manual(stat3, label = "pvalue",
+							   y.position = percent_exp[1] + percent_sd[1] + 30,
 							   bracket.size = 0.6, label.size = 6)
 
 
@@ -843,9 +838,18 @@ if (group3 == "" && group4 == "" && group5 == "") {
                   ggplot2::geom_errorbar(ggplot2::aes(x = group1,
 	    				 	      ymin = percent_exp1 - percent_sd1,
      					 	      ymax = percent_exp1 + percent_sd1,
-     					 	      width = 0.1))
-		ggpubr::stat_pvalue_manual(qpcr_data2, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 5,
+     					 	      width = 0.1)) +
+		ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
+					   y.position = percent_exp[1] + percent_sd[1] + 10,
+					   bracket.size = 0.6, label.size = 6) +
+		ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
+					   y.position = percent_exp[1] + percent_sd[1] + 20,
+					   bracket.size = 0.6, label.size = 6) +
+		ggpubr::stat_pvalue_manual(stat3, label = "pvalue",
+					   y.position = percent_exp[1] + percent_sd[1] + 30,
+					   bracket.size = 0.6, label.size = 6) +
+		ggpubr::stat_pvalue_manual(stat4, label = "pvalue",
+					   y.position = percent_exp[1] + percent_sd[1] + 40,
 					   bracket.size = 0.6, label.size = 6)
 
 	} else {

@@ -131,7 +131,7 @@ pvalue_star <- function(dat) {
 
 		dat <- "*"
 
-	} else if (dat >= 0.05){
+	} else if (dat >= 0.05) {
 
 		dat <- "ns"
 
@@ -412,7 +412,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -435,7 +435,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -460,7 +460,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp4)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 

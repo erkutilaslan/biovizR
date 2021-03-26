@@ -18,19 +18,19 @@
 #' @import tidyverse
 #' @export
 
-qpcr_data <- read.csv("~/qpcr.csv")
-group1 <- "siCTRL"
-group2 <- "siPUM1"
-group3 <- "siNANOS3"
-group4 <- "siPUM1/NANOS3"
-group5 <- "siFOXM1"
-ref1 <- "GARS1"
-ref2 <- "DTD1"
-goi <- "FOXM1"
-tech_rep <- "3"
-type <- "biorad"
-test <- TRUE
-stat <- "t-test"
+#qpcr_data <- read.csv("~/qpcr.csv")
+#group1 <- "siCTRL"
+#group2 <- "siPUM1"
+#group3 <- "siNANOS3"
+#group4 <- "siPUM1/NANOS3"
+#group5 <- "siFOXM1"
+#ref1 <- "GARS1"
+#ref2 <- "DTD1"
+#goi <- "FOXM1"
+#tech_rep <- "3"
+#type <- "biorad"
+#test <- TRUE
+#stat <- "t-test"
 
 #qpcr_data <- read.csv("~/RIP_qPCR.csv")
 #group1 <- "RIP NC"

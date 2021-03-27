@@ -18,19 +18,19 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- read.csv("~/qpcr.csv")
-#group1 <- "siCTRL"
-#group2 <- "siPUM1"
-#group3 <- "siNANOS3"
-#group4 <- "siPUM1/NANOS3"
-#group5 <- "siFOXM1"
-#ref1 <- "GARS1"
-#ref2 <- "DTD1"
-#goi <- "FOXM1"
-#tech_rep <- "3"
-#type <- "biorad"
-#test <- TRUE
-#stat <- "t-test"
+qpcr_data <- read.csv("~/qpcr.csv")
+group1 <- "siCTRL"
+group2 <- "siPUM1"
+group3 <- "siNANOS3"
+group4 <- "siPUM1/NANOS3"
+group5 <- "siFOXM1"
+ref1 <- "GARS1"
+ref2 <- "DTD1"
+goi <- "PUM1"
+tech_rep <- "3"
+type <- "biorad"
+test <- TRUE
+stat <- "t-test"
 
 #qpcr_data <- read.csv("~/RIP_qPCR.csv")
 #group1 <- "RIP NC"
@@ -46,52 +46,17 @@
 #type <- "biorad"
 #stat <- "t.test"
 
-#qpcr_data <- read.csv("~/Cq siFOXM1 siPUM1.csv")
-#type <- "biorad"
-#group1 <- "siCTRL 1"
-#group2 <- "siFOXM1 1"
-#ref1 <- "GARS1"
-#ref2 <- ""
-#goi <- "FOXM1"
-#tech_rep <- 4
-#test <- FALSE
-
-#qpcr_data <- read.csv("~/multipe_test_qpcr.csv")
-#type <- "biorad"
-#group1 <- "5"
-#group2 <- "6"
-#group3 <- ""
-#group4 <- ""
-#group5 <- ""
-#ref1 <- "GAPDH"
-#ref2 <- ""
-#goi <- "DAZL"
-#tech_rep <- 3
-#test <- FALSE
-
-#barplot_qpcr("~/qpcr.csv",
-#	     group1 = "siCTRL",
-#	     group2 = "siPUM1",
-#	     group3 = "siNANOS3",
-#	     group4 = "siPUM1/NANOS3",
-#	     group5 = "siFOXM1",
-#	     ref1 = "GARS1",
-#	     ref2 = "DTD1",
-#	     goi = "FOXM1",
-#	     tech_rep = 3,
-#	     test = TRUE)
-
-#barplot_qpcr("~/multipe_test_qpcr.csv",
-#             group1 = "5",
-#             group2 = "6",
-#	     group3 = "7",
-#	     group4 = "8",
-#	     group5 = "9",
-#             ref1 = "GAPDH",
-#             goi = "DAZL",
-#             tech_rep = 3,
-#             test = FALSE)
-
+barplot_qpcr("~/qpcr.csv",
+	     group1 = "siCTRL",
+	     group2 = "siPUM1",
+	     group3 = "siNANOS3",
+	     group4 = "siPUM1/NANOS3",
+	     group5 = "siFOXM1",
+	     ref1 = "GARS1",
+	     ref2 = "DTD1",
+	     goi = "PUM1",
+	     tech_rep = 3,
+	     test = TRUE)
 
 #barplot_qpcr("~/rip_pum1.csv",
 #             group1 = "RIP NC",
@@ -412,7 +377,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -435,7 +400,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -460,7 +425,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp4)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "bonf")
+		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -557,8 +522,6 @@ if (group5 != "") {
 
 }
 
-percent_sd <- sort(percent_sd, decreasing = TRUE)
-
 percent_exp1 <- qpcr_data[group1, "percent_exp"]
 percent_exp2 <- qpcr_data[group2, "percent_exp"]
 	
@@ -589,7 +552,6 @@ if (group5 != "") {
 
 }
 	
-percent_exp <-  sort(percent_exp, decreasing = TRUE)
 qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
 
 #removing na to only visualize sample of interest
@@ -623,7 +585,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						    ymax = percent_exp1 + percent_sd1,
 						    width = 0.1)) +
 		ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 5,
+					   y.position = max(percent_exp) + max(percent_sd) + 10,
 					   bracket.size = 0.6, label.size = 6)
 
 	} else {
@@ -684,10 +646,10 @@ if (group3 == "" && group4 == "" && group5 == "") {
      						       	    ymax = percent_exp1 + percent_sd1,
      					                    width = 0.1)) +
 			ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
-						   y.position = percent_exp[1] + percent_sd[1] + 10,
+						   y.position = max(percent_exp) + max(percent_sd) + 10,
 						   bracket.size = 0.6, label.size = 6)
 			ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
-						   y.position = percent_exp[1] + percent_sd[1] + 20,
+						   y.position = max(percent_exp) + max(percent_sd) + 20,
 						   bracket.size = 0.6, label.size = 6) 
 
 	} else {
@@ -756,13 +718,13 @@ if (group3 == "" && group4 == "" && group5 == "") {
      						 		    ymax = percent_exp1 + percent_sd1,
      						 		    width = 0.1)) +
 				ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 10,
+						           y.position = max(percent_exp) + max(percent_sd) + 10,
 					   bracket.size = 0.6, label.size = 6) +
 				ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 20,
+						           y.position = max(percent_exp) + max(percent_sd) + 20,
 					   bracket.size = 0.6, label.size = 6) +
 				ggpubr::stat_pvalue_manual(stat3, label = "pvalue",
-							   y.position = percent_exp[1] + percent_sd[1] + 30,
+						           y.position = max(percent_exp) + max(percent_sd) + 30,
 							   bracket.size = 0.6, label.size = 6)
 
 
@@ -840,16 +802,16 @@ if (group3 == "" && group4 == "" && group5 == "") {
      					 	      ymax = percent_exp1 + percent_sd1,
      					 	      width = 0.1)) +
 		ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 10,
+				           y.position = max(percent_exp) + max(percent_sd) + 10,
 					   bracket.size = 0.6, label.size = 6) +
 		ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 20,
+				           y.position = max(percent_exp) + max(percent_sd) + 20,
 					   bracket.size = 0.6, label.size = 6) +
 		ggpubr::stat_pvalue_manual(stat3, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 30,
+				           y.position = max(percent_exp) + max(percent_sd) + 30,
 					   bracket.size = 0.6, label.size = 6) +
 		ggpubr::stat_pvalue_manual(stat4, label = "pvalue",
-					   y.position = percent_exp[1] + percent_sd[1] + 40,
+				           y.position = max(percent_exp) + max(percent_sd) + 40,
 					   bracket.size = 0.6, label.size = 6)
 
 	} else {

@@ -401,7 +401,7 @@ if (test == TRUE) {
 	if (stat == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 
 		#calculating p-value
-		stats <- t.test(target_exp1$percent_exp, control_exp$expression, alternative = "two.sided")
+		stats <- t.test(target_exp1$percent_exp, control_exp$percent_exp, alternative = "two.sided")
 
 		#converting pvalues to *
 		pvalue <- pvalue_star(stats$p.value)
@@ -418,7 +418,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
+		stats <- pairwise.t.test(qpcr_data$percent_exp, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -441,7 +441,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
+		stats <- pairwise.t.test(qpcr_data$percent_exp, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 
@@ -466,7 +466,7 @@ if (test == TRUE) {
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp2)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp3)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp4)
-		stats <- pairwise.t.test(qpcr_data$expression, qpcr_data$Sample, p.adjust.method = "fdr")
+		stats <- pairwise.t.test(qpcr_data$percent_exp, qpcr_data$Sample, p.adjust.method = "fdr")
 		pvalues <- stats$p.value
 		pvalues <- pvalues[,group1]
 

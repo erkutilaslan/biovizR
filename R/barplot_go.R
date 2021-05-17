@@ -7,11 +7,12 @@
 #' @param top Turned off by default. Parameter to set top amount of processes to be visualized.
 #' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
 #' @param min_genes Turned off by default. Parameter to set threshold for biological processes containing minimum number of genes.
+#' @param header Set a title for the barplot.
 #' @return A bar plot of gene ontology results.
 #' @import tidyverse
 #' @export
 
-barplot_go <- function(go_data, type = "cluego", top = " ", go_process = " ", min_genes = " ") {
+barplot_go <- function(go_data, type = "cluego", top = "", go_process = "", min_genes = "", header = "") {
 
 # import data
 if (is.character(go_data) == TRUE) {
@@ -101,7 +102,7 @@ final_plot <- ggpubr::ggbarplot(go_data,
           size = 0.5,
           palette = "jco",            # jco journal color palett. see ?ggpar
           label = go_data$`Nr. Genes`,
-          title = "",
+          title = header,
           lab.size = 5,
           lab.vjust = 0.5,
           lab.hjust = 1.2,

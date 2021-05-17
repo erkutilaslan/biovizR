@@ -7,9 +7,10 @@
 barplot_go(
   go_data,
   type = "cluego",
-  top = " ",
-  go_process = " ",
-  min_genes = " "
+  top = "",
+  go_process = "",
+  min_genes = "",
+  header = ""
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ barplot_go(
 \item{go_process}{Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.}
 
 \item{min_genes}{Turned off by default. Parameter to set threshold for biological processes containing minimum number of genes.}
+
+\item{header}{Set a title for the barplot.}
 }
 \value{
 A bar plot of gene ontology results.

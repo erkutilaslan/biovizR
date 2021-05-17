@@ -9,10 +9,13 @@ barplot_qpcr(
   type = "biorad",
   group1 = "",
   group2 = "",
+  group3 = "",
+  group4 = "",
+  group5 = "",
   ref1 = "",
   ref2 = "",
   goi = "",
-  tech_rep = 4,
+  tech_rep = 3,
   test = TRUE,
   stat = "t-test"
 )
@@ -26,13 +29,19 @@ barplot_qpcr(
 
 \item{group2}{Target group.}
 
+\item{group3}{Target group.}
+
+\item{group4}{Target group.}
+
+\item{group5}{Target group.}
+
 \item{ref1}{Reference gene one.}
 
 \item{ref2}{Reference gene two.}
 
 \item{goi}{Gene of interest.}
 
-\item{tech_rep}{Number of technical replicates. Necessary for accurate statistical calculation}
+\item{tech_rep}{Number of technical replicates. Optional if consideration of technical replicates for statistical testing is desired.}
 
 \item{test}{Default TRUE. Enable or disable statistical analysis.}
 

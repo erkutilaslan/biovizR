@@ -4,7 +4,14 @@
 \alias{maplot_dge}
 \title{MA-plot visualization of DGE analysis.}
 \usage{
-maplot_dge(dge_data, FDR = 0.01, FC = 0.5, TOP = 10, type = "deseq2")
+maplot_dge(
+  dge_data,
+  FDR = 0.01,
+  FC = 0.5,
+  TOP = 10,
+  type = "deseq2",
+  title = ""
+)
 }
 \arguments{
 \item{dge_data}{Path to the input file.}
@@ -16,6 +23,8 @@ maplot_dge(dge_data, FDR = 0.01, FC = 0.5, TOP = 10, type = "deseq2")
 \item{TOP}{Default 10. Adjust top number of DE genes to visualize.}
 
 \item{type}{Default deseq2. Specify input datatype.}
+
+\item{title}{Default is empty. Set title for the MA-plot.}
 }
 \value{
 An ma-plot of RNA-Seq DGE data.

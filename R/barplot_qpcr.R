@@ -18,54 +18,18 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- read.csv("~/qpcr.csv")
-#group1 <- "siCTRL"
-#group2 <- "siPUM1"
-#group3 <- "siNANOS3"
-#group4 <- "siPUM1/NANOS3"
-#group5 <- "siFOXM1"
-#ref1 <- "GARS1"
-#ref2 <- "DTD1"
-#goi <- "PUM1"
-#tech_rep <- "3"
-#type <- "biorad"
-#test <- TRUE
-#stat <- "t-test"
-
-#qpcr_data <- read.csv("~/RIP_qPCR.csv")
-#group1 <- "RIP NC"
-#group2 <- "RIP P1"
-#group3 <- ""
-#group4 <- ""
-#group5 <- ""
-#ref1 <- "Fluc"
-#ref2 <- "Rluc"
-#goi <- "FOXM1"
-#tech_rep <- 3
-#test <- FALSE
-#type <- "biorad"
-#stat <- "t.test"
-
-#barplot_qpcr("~/qpcr.csv",
-#	     group1 = "siCTRL",
-#	     group2 = "siPUM1",
-#	     group3 = "siNANOS3",
-#	     group4 = "siPUM1/NANOS3",
-#	     group5 = "siFOXM1",
-#	     ref1 = "GARS1",
-#	     ref2 = "DTD1",
-#	     goi = "PUM1",
-#	     tech_rep = 3,
-#	     test = TRUE)
-
-#barplot_qpcr("~/rip_pum1.csv",
-#             group1 = "RIP NC",
-#             group2 = "RIP P1",
-#             ref1 = "Rluc",
-#             ref2 = "Fluc",
-#             goi = "FOXM1",
-#             tech_rep = 3,
-#             test = FALSE)
+qpcr_data <- read.csv("~/qpcr\ data/siPUM1_results.csv")
+group1 = "siCTRL"
+group2 = "siPUM1"
+group3 = ""
+group4 = ""
+group5 = ""
+ref1 = "DTD1"
+ref2 = "GARS1"
+goi = "FOXM1"
+test = TRUE
+stat = "t-test"
+type = "biorad"
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",

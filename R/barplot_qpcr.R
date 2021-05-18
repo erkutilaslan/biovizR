@@ -18,18 +18,19 @@
 #' @import tidyverse
 #' @export
 
-qpcr_data <- read.csv("~/qpcr\ data/siPUM1_results.csv")
-group1 = "siCTRL"
-group2 = "siPUM1"
-group3 = ""
-group4 = ""
-group5 = ""
-ref1 = "DTD1"
-ref2 = "GARS1"
-goi = "FOXM1"
-test = TRUE
-stat = "t-test"
-type = "biorad"
+#qpcr_data <- read.csv("~/qpcr\ data/siPUM1_results.csv")
+#group1 = "siCTRL"
+#group2 = "siPUM1"
+#group3 = ""
+#group4 = ""
+#group5 = ""
+#ref1 = "DTD1"
+#ref2 = "GARS1"
+#goi = "FOXM1"
+#test = TRUE
+#stat = "t-test"
+#type = "biorad"
+#tech_rep = 3
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -521,6 +522,15 @@ qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
 #removing na to only visualize sample of interest
 qpcr_data <- qpcr_data[!is.na(qpcr_data$percent_exp), ]
 
+#dataframe for rna 2021 poster
+poster_sample <- as.character(qpcr_data$Sample)
+poster_expression <- qpcr_data$percent_exp
+poster_sd <- percent_sd
+poster_stat <- c(stat1$pvalue, stat1$pvalue)
+poster_target <- c(goi, goi)
+poster_data <- data.frame(poster_sample, poster_expression, poster_sd, poster_stat, poster_target)
+write.table(poster_data, quote = FALSE, sep = ",", file = "poster_table.csv", row.names = FALSE)
+
 #visualization
 if (group3 == "" && group4 == "" && group5 == "") {
 
@@ -797,8 +807,8 @@ if (group3 == "" && group4 == "" && group5 == "") {
                   ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,
 	                		 	      ymax = percent_exp2 + percent_sd2,
-		                	 	      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+						      width = 0.1)) +
+                  gplot2::geom_errorbar(ggplot2::aes(x = group3,
 						      ymin = percent_exp3 - percent_sd3,
 						      ymax = percent_exp3 + percent_sd3,
 						      width = 0.1)) +

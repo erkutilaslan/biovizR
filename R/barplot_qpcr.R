@@ -32,6 +32,14 @@
 #type = "biorad"
 #tech_rep = 3
 
+#barplot_qpcr("~/qpcr\ data/siPUM1_results.csv",
+#group1 = "siCTRL",
+#group2 = "siPUM1",
+#ref1 = "DTD1",
+#ref2 = "GARS1",
+#goi = "FOXM1",
+#test = TRUE)
+
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -543,24 +551,21 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
 						title = goi,
-						size = 0.5,
-						palette = "npg",
-						lab.size = 5,
-						lab.vjust = 0.5,
-						lab.hjust = 1.2,
+						size = 1,
 						sort.by.groups = FALSE,
-						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
-		ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
+		ggplot2::geom_errorbar(size = 1, ggplot2::aes(x = group2,
 						    ymin = percent_exp2 - percent_sd2,
 						    ymax = percent_exp2 + percent_sd2,
 						    width = 0.1)) +
-		ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+		ggplot2::geom_errorbar(size = 1, ggplot2::aes(x = group1,
 						    ymin = percent_exp1 - percent_sd1,
 						    ymax = percent_exp1 + percent_sd1,
 						    width = 0.1)) +
 		ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
 					   y.position = max(percent_exp) + max(percent_sd) + 10,
-					   bracket.size = 0.6, label.size = 6)
+					   bracket.size = 1, label.size = 8)
 
 	} else {
 

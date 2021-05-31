@@ -575,7 +575,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						fill = "808080",
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
-						size = 0.5,
+						size = 1,
 						title = goi,
 						palette = "npg",
 						lab.size = 5,
@@ -583,6 +583,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
 		ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 	        				    ymin = percent_exp2 - percent_sd2,
 						    ymax = percent_exp2 + percent_sd2,
@@ -604,7 +605,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					fill = "808080",
 					xlab = "Sample",
 					ylab = "Relative mRNA level",
-					size = 0.5,
+					size = 1,
 					title = goi,
 					palette = "npg",
 					lab.size = 5,
@@ -612,6 +613,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					lab.hjust = 1.2,
 					sort.by.groups = FALSE,
 					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
 			ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 		        				    ymin = percent_exp2 - percent_sd2,
 	                				    ymax = percent_exp2 + percent_sd2,
@@ -639,7 +641,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					fill = "808080",
 					xlab = "Sample",
 					ylab = "Relative mRNA level",
-					size = 0.5,
+					size = 1,
 					title = goi,
 					palette = "npg",
 					lab.size = 5,
@@ -647,6 +649,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					lab.hjust = 1.2,
 					sort.by.groups = FALSE,
 					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
 			ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 		        				    ymin = percent_exp2 - percent_sd2,
 	                				    ymax = percent_exp2 + percent_sd2,
@@ -673,13 +676,14 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
 						title = goi,
-						size = 0.5,
+						size = 1,
 						palette = "npg",
 						lab.size = 5,
 						lab.vjust = 0.5,
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
 				ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 		        			   		    ymin = percent_exp2 - percent_sd2,
 		                		 		    ymax = percent_exp2 + percent_sd2,
@@ -716,13 +720,14 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
 						title = goi,
-						size = 0.5,
+						size = 1,
 						palette = "npg",
 						lab.size = 5,
 						lab.vjust = 0.5,
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
 				ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 		        			   		    ymin = percent_exp2 - percent_sd2,
 		                		 		    ymax = percent_exp2 + percent_sd2,
@@ -752,7 +757,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						fill = "808080",
 				    		xlab = "Sample",
 				    		ylab = "Relative mRNA level",
-				    		size = 0.5,
+				    		size = 1,
 				    		title = goi,
 				    		palette = "npg",
 				    		lab.size = 5,
@@ -760,6 +765,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		lab.hjust = 1.2,
 				    		sort.by.groups = FALSE,
 				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,
 	                		 	      ymax = percent_exp2 + percent_sd2,
@@ -801,7 +807,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						fill = "808080",
 				    		xlab = "Sample",
 				    		ylab = "Relative mRNA level",
-				    		size = 0.5,
+				    		size = 1,
 				    		title = goi,
 				    		palette = "npg",
 				    		lab.size = 5,
@@ -809,6 +815,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		lab.hjust = 1.2,
 				    		sort.by.groups = FALSE,
 				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+                ggplot2::theme(axis.line =  element_line(size = 1)) +
                   ggplot2::geom_errorbar(ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,
 	                		 	      ymax = percent_exp2 + percent_sd2,

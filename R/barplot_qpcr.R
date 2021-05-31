@@ -532,7 +532,7 @@ qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
 #removing na to only visualize sample of interest
 qpcr_data <- qpcr_data[!is.na(qpcr_data$percent_exp), ]
 
-if (generate_table = TRUE) { 
+if (generate_table == TRUE) { 
 
 	#generating results as a table
 	samples <- as.character(qpcr_data$Sample)

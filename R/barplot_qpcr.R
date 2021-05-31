@@ -582,7 +582,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.vjust = 0.5,
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
-						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
 		ggplot2::geom_errorbar(size = 1,
 				       ggplot2::aes(x = group2,
@@ -614,7 +614,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					lab.vjust = 0.5,
 					lab.hjust = 1.2,
 					sort.by.groups = FALSE,
-					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+					ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
 			ggplot2::geom_errorbar(size = 1,
 					       ggplot2::aes(x = group2,
@@ -633,10 +633,10 @@ if (group3 == "" && group4 == "" && group5 == "") {
      					                    width = 0.1)) +
 			ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
 						   y.position = max(percent_exp) + max(percent_sd) + 10,
-						   bracket.size = 0.6, label.size = 6)
+						   bracket.size = 1, label.size = 8)
 			ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
 						   y.position = max(percent_exp) + max(percent_sd) + 20,
-						   bracket.size = 0.6, label.size = 6) 
+						   bracket.size = 1, label.size = 8) 
 
 	} else {
 
@@ -653,7 +653,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					lab.vjust = 0.5,
 					lab.hjust = 1.2,
 					sort.by.groups = FALSE,
-					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+					ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
 			ggplot2::geom_errorbar(size = 1,
 					       ggplot2::aes(x = group2,
@@ -690,7 +690,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.vjust = 0.5,
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
-						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
 				ggplot2::geom_errorbar(size = 1,
 						       ggplot2::aes(x = group2,
@@ -714,13 +714,13 @@ if (group3 == "" && group4 == "" && group5 == "") {
      						 		    width = 0.1)) +
 				ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
 						           y.position = max(percent_exp) + max(percent_sd) + 10,
-					   bracket.size = 0.6, label.size = 6) +
+					   bracket.size = 1, label.size = 8) +
 				ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
 						           y.position = max(percent_exp) + max(percent_sd) + 20,
-					   bracket.size = 0.6, label.size = 6) +
+					   bracket.size = 1, label.size = 8) +
 				ggpubr::stat_pvalue_manual(stat3, label = "pvalue",
 						           y.position = max(percent_exp) + max(percent_sd) + 30,
-							   bracket.size = 0.6, label.size = 6)
+							   bracket.size = 1, label.size = 8)
 
 
 	} else {
@@ -738,7 +738,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.vjust = 0.5,
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
-						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
 				ggplot2::geom_errorbar(size = 1,
 						       ggplot2::aes(x = group2,
@@ -780,7 +780,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		lab.vjust = 0.5,
 				    		lab.hjust = 1.2,
 				    		sort.by.groups = FALSE,
-				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+				    		ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
                   ggplot2::geom_errorbar(size = 1,
 					 ggplot2::aes(x = group2,
@@ -809,16 +809,16 @@ if (group3 == "" && group4 == "" && group5 == "") {
      					 	      width = 0.1)) +
 		ggpubr::stat_pvalue_manual(stat1, label = "pvalue",
 				           y.position = max(percent_exp) + max(percent_sd) + 10,
-					   bracket.size = 0.6, label.size = 6) +
+					   bracket.size = 1, label.size = 8) +
 		ggpubr::stat_pvalue_manual(stat2, label = "pvalue",
 				           y.position = max(percent_exp) + max(percent_sd) + 20,
-					   bracket.size = 0.6, label.size = 6) +
+					   bracket.size = 1, label.size = 8) +
 		ggpubr::stat_pvalue_manual(stat3, label = "pvalue",
 				           y.position = max(percent_exp) + max(percent_sd) + 30,
-					   bracket.size = 0.6, label.size = 6) +
+					   bracket.size = 1, label.size = 8) +
 		ggpubr::stat_pvalue_manual(stat4, label = "pvalue",
 				           y.position = max(percent_exp) + max(percent_sd) + 40,
-					   bracket.size = 0.6, label.size = 6)
+					   bracket.size = 1, label.size = 8)
 
 	} else {
 
@@ -835,7 +835,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		lab.vjust = 0.5,
 				    		lab.hjust = 1.2,
 				    		sort.by.groups = FALSE,
-				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
+				    		ggtheme = ggpubr::theme_pubr(base_size = 18)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
                   ggplot2::geom_errorbar(size = 1,
 					 ggplot2::aes(x = group2,

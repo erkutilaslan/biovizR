@@ -584,11 +584,13 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-		ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+		ggplot2::geom_errorbar(size = 1,
+				       ggplot2::aes(x = group2,
 	        				    ymin = percent_exp2 - percent_sd2,
 						    ymax = percent_exp2 + percent_sd2,
 						    width = 0.1)) +
-		ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+		ggplot2::geom_errorbar(size = 1,
+				       ggplot2::aes(x = group1,
 		    				    ymin = percent_exp1 - percent_sd1,
      					 	    ymax = percent_exp1 + percent_sd1,
      					 	    width = 0.1))
@@ -614,15 +616,18 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					sort.by.groups = FALSE,
 					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-			ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+			ggplot2::geom_errorbar(size = 1,
+					       ggplot2::aes(x = group2,
 		        				    ymin = percent_exp2 - percent_sd2,
 	                				    ymax = percent_exp2 + percent_sd2,
 							    width = 0.1)) +
-			ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+			ggplot2::geom_errorbar(size = 1,
+					       ggplot2::aes(x = group3,
 						    	    ymin = percent_exp3 - percent_sd3,
 							    ymax = percent_exp3 + percent_sd3,
 							    width = 0.1)) +
-			ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+			ggplot2::geom_errorbar(size = 1,
+					       ggplot2::aes(x = group1,
 	    						    ymin = percent_exp1 - percent_sd1,
      						       	    ymax = percent_exp1 + percent_sd1,
      					                    width = 0.1)) +
@@ -650,15 +655,18 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					sort.by.groups = FALSE,
 					ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-			ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+			ggplot2::geom_errorbar(size = 1,
+					       ggplot2::aes(x = group2,
 		        				    ymin = percent_exp2 - percent_sd2,
 	                				    ymax = percent_exp2 + percent_sd2,
 							    width = 0.1)) +
-			ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+			ggplot2::geom_errorbar(size = 1,
+					       ggplot2::aes(x = group3,
 						    	    ymin = percent_exp3 - percent_sd3,
 							    ymax = percent_exp3 + percent_sd3,
 							    width = 0.1)) +
-			ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+			ggplot2::geom_errorbar(size = 1,
+					       ggplot2::aes(x = group1,
 	    						    ymin = percent_exp1 - percent_sd1,
      						       	    ymax = percent_exp1 + percent_sd1,
      					                    width = 0.1))
@@ -684,19 +692,23 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group2,
 		        			   		    ymin = percent_exp2 - percent_sd2,
 		                		 		    ymax = percent_exp2 + percent_sd2,
 					                	    width = 0.1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group3,
 							      	    ymin = percent_exp3 - percent_sd3,
 							      	    ymax = percent_exp3 + percent_sd3,
 							      	    width = 0.1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group4,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group4,
 							      	    ymin = percent_exp4 - percent_sd4,
 							      	    ymax = percent_exp4 + percent_sd4,
 							      	    width = 0.1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group1,
 		    				 		    ymin = percent_exp1 - percent_sd1,
      						 		    ymax = percent_exp1 + percent_sd1,
      						 		    width = 0.1)) +
@@ -728,19 +740,23 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group2,
 		        			   		    ymin = percent_exp2 - percent_sd2,
 		                		 		    ymax = percent_exp2 + percent_sd2,
 					                	    width = 0.1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group3,
 							      	    ymin = percent_exp3 - percent_sd3,
 							      	    ymax = percent_exp3 + percent_sd3,
 							      	    width = 0.1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group4,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group4,
 							      	    ymin = percent_exp4 - percent_sd4,
 							      	    ymax = percent_exp4 + percent_sd4,
 							      	    width = 0.1)) +
-				ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+				ggplot2::geom_errorbar(size = 1,
+						       ggplot2::aes(x = group1,
 		    				 		    ymin = percent_exp1 - percent_sd1,
      						 		    ymax = percent_exp1 + percent_sd1,
      						 		    width = 0.1))
@@ -766,23 +782,28 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		sort.by.groups = FALSE,
 				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,
 	                		 	      ymax = percent_exp2 + percent_sd2,
 		                	 	      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group3,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group3,
 						      ymin = percent_exp3 - percent_sd3,
 						      ymax = percent_exp3 + percent_sd3,
 						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group4,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group4,
 						      ymin = percent_exp4 - percent_sd4,
 						      ymax = percent_exp4 + percent_sd4,
 						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group5,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group5,
 						      ymin = percent_exp5 - percent_sd5,
 						      ymax = percent_exp5 + percent_sd5,
 						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group1,
 	    				 	      ymin = percent_exp1 - percent_sd1,
      					 	      ymax = percent_exp1 + percent_sd1,
      					 	      width = 0.1)) +
@@ -816,19 +837,23 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		sort.by.groups = FALSE,
 				    		ggtheme = ggpubr::theme_pubr(base_size = 14)) +
                 ggplot2::theme(axis.line =  element_line(size = 1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group2,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,
 	                		 	      ymax = percent_exp2 + percent_sd2,
 						      width = 0.1)) +
-                  gplot2::geom_errorbar(ggplot2::aes(x = group3,
+                  gplot2::geom_errorbar(size = 1,
+					ggplot2::aes(x = group3,
 						      ymin = percent_exp3 - percent_sd3,
 						      ymax = percent_exp3 + percent_sd3,
 						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group4,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group4,
 						      ymin = percent_exp4 - percent_sd4,
 						      ymax = percent_exp4 + percent_sd4,
 						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group5,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group5,
 						      ymin = percent_exp5 - percent_sd5,
 						      ymax = percent_exp5 + percent_sd5,
 						      width = 0.1)) +

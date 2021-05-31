@@ -14,6 +14,7 @@
 #' @param tech_rep Number of technical replicates. Optional if consideration of technical replicates for statistical testing is desired.
 #' @param test Default TRUE. Enable or disable statistical analysis.
 #' @param stat Default t-test. Select statistical testing method.
+#' @param generate_table Default False. Set to True to create a table with the results everytime run the function.
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
 #' @export
@@ -52,7 +53,8 @@ barplot_qpcr <- function(qpcr_data,
                          goi = "",
 			 tech_rep = 3,
 			 test = TRUE,
-                         stat = "t-test") {
+                         stat = "t-test",
+			 generate_table = FALSE) {
 
 #pvalue to star conversion function
 pvalue_star <- function(dat) {
@@ -530,14 +532,18 @@ qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
 #removing na to only visualize sample of interest
 qpcr_data <- qpcr_data[!is.na(qpcr_data$percent_exp), ]
 
-#dataframe for rna 2021 poster
-poster_sample <- as.character(qpcr_data$Sample)
-poster_expression <- qpcr_data$percent_exp
-poster_sd <- percent_sd
-poster_stat <- c(stat1$pvalue, stat1$pvalue)
-poster_target <- c(goi, goi)
-poster_data <- data.frame(poster_sample, poster_expression, poster_sd, poster_stat, poster_target)
-write.table(poster_data, quote = FALSE, sep = ",", file = "poster_table.csv", row.names = FALSE)
+if (generate_table = TRUE) { 
+
+	#generating results as a table
+	samples <- as.character(qpcr_data$Sample)
+	expressions <- qpcr_data$percent_exp
+	sds <- percent_sd
+	stats <- c(stat1$pvalue, stat1$pvalue)
+	targets <- c(goi, goi)
+	results_table <- data.frame(poster_sample, poster_expression, poster_sd, poster_stat, poster_target)
+	write.table(results_table, quote = FALSE, sep = ",", file = "{goi}_results.csv", row.names = FALSE)
+
+}
 
 #visualization
 if (group3 == "" && group4 == "" && group5 == "") {
@@ -722,7 +728,6 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						           y.position = max(percent_exp) + max(percent_sd) + 30,
 							   bracket.size = 1, label.size = 8)
 
-
 	} else {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_data,
@@ -857,7 +862,8 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						      ymin = percent_exp5 - percent_sd5,
 						      ymax = percent_exp5 + percent_sd5,
 						      width = 0.1)) +
-                  ggplot2::geom_errorbar(ggplot2::aes(x = group1,
+                  ggplot2::geom_errorbar(size = 1,
+					 ggplot2::aes(x = group1,
 	    				 	      ymin = percent_exp1 - percent_sd1,
      					 	      ymax = percent_exp1 + percent_sd1,
      					 	      width = 0.1))

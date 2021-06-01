@@ -541,7 +541,7 @@ if (generate_table == TRUE) {
 	stats <- c(stat1$pvalue, stat1$pvalue)
 	targets <- c(goi, goi)
 	results_table <- data.frame(samples, expressions, sds, stats, targets)
-	write.table(results_table, quote = FALSE, sep = ",", file = "{goi}_results.csv", row.names = FALSE)
+	write.table(results_table, quote = FALSE, sep = ",", file = paste0(goi, "_table.csv"), row.names = FALSE)
 
 }
 

@@ -540,7 +540,7 @@ if (generate_table == TRUE) {
 	sds <- percent_sd
 	stats <- c(stat1$pvalue, stat1$pvalue)
 	targets <- c(goi, goi)
-	results_table <- data.frame(poster_sample, poster_expression, poster_sd, poster_stat, poster_target)
+	results_table <- data.frame(samples, expressions, sds, stats, targets)
 	write.table(results_table, quote = FALSE, sep = ",", file = "{goi}_results.csv", row.names = FALSE)
 
 }
@@ -560,7 +560,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						size = 1,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
 		ggplot2::geom_errorbar(size = 1, ggplot2::aes(x = group2,
 						    ymin = percent_exp2 - percent_sd2,
 						    ymax = percent_exp2 + percent_sd2,
@@ -589,7 +589,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
 		ggplot2::geom_errorbar(size = 1,
 				       ggplot2::aes(x = group2,
 	        				    ymin = percent_exp2 - percent_sd2,
@@ -621,7 +621,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					lab.hjust = 1.2,
 					sort.by.groups = FALSE,
 					ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
 			ggplot2::geom_errorbar(size = 1,
 					       ggplot2::aes(x = group2,
 		        				    ymin = percent_exp2 - percent_sd2,
@@ -660,7 +660,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 					lab.hjust = 1.2,
 					sort.by.groups = FALSE,
 					ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
 			ggplot2::geom_errorbar(size = 1,
 					       ggplot2::aes(x = group2,
 		        				    ymin = percent_exp2 - percent_sd2,
@@ -697,7 +697,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
 				ggplot2::geom_errorbar(size = 1,
 						       ggplot2::aes(x = group2,
 		        			   		    ymin = percent_exp2 - percent_sd2,
@@ -744,7 +744,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 						lab.hjust = 1.2,
 						sort.by.groups = FALSE,
 						ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
 				ggplot2::geom_errorbar(size = 1,
 						       ggplot2::aes(x = group2,
 		        			   		    ymin = percent_exp2 - percent_sd2,
@@ -786,7 +786,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		lab.hjust = 1.2,
 				    		sort.by.groups = FALSE,
 				    		ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
                   ggplot2::geom_errorbar(size = 1,
 					 ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,
@@ -841,7 +841,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 				    		lab.hjust = 1.2,
 				    		sort.by.groups = FALSE,
 				    		ggtheme = ggpubr::theme_pubr(base_size = 18)) +
-                ggplot2::theme(axis.line =  element_line(size = 1)) +
+                ggplot2::theme(axis.line =  ggplot2::element_line(size = 1)) +
                   ggplot2::geom_errorbar(size = 1,
 					 ggplot2::aes(x = group2,
 	        			              ymin = percent_exp2 - percent_sd2,

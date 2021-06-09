@@ -19,7 +19,6 @@ barplot_go <- function(go_data,
 		       min_genes = "",
 		       header = "") {
 
-	go_data <- ""
 # import data
 if (is.character(go_data) == TRUE) {
  

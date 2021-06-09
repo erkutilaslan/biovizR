@@ -4,7 +4,7 @@
 #'
 #' @param go_data Input GO data to visualize.
 #' @param type Default cluego. Parameter to specify input data source.
-#' @param top Turned off by default. Parameter to set top amount of processes to be visualized.
+#' @param top Default value is 50. Parameter to set top number of processes to be visualized.
 #' @param go_process Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.
 #' @param min_genes Turned off by default. Parameter to set threshold for biological processes containing minimum number of genes.
 #' @param header Set a title for the barplot.
@@ -14,21 +14,29 @@
 
 barplot_go <- function(go_data,
 		       type = "cluego",
-		       top = "",
+		       top = "50",
 		       go_process = "",
 		       min_genes = "",
 		       header = "") {
 
 # import data
 if (is.character(go_data) == TRUE) {
+ 
+  if (grep(".csv", as.character(go_data)) == 1) {
+    
+    go_data <- read.csv(go_data) 
 
-  go_data <- readxl::read_excel(go_data, sheet = 1)
+  } else {
+
+    go_data <- readxl::read_excel(go_data, sheet = 1)
+
+  }
 
 }
 
 if (type == "cluego") {
 
-  # first removing unnecessary columns they interfere with deduplication
+  #removing unnecessary columns they interfere with deduplication
   go_data <- dplyr::select(go_data, -6, -7, -8, -9)
 
   # deduplication
@@ -47,7 +55,7 @@ if (type == "cluego") {
 
 if (type == "panther") {
 
-  # first removing unnecessary columns they interfere with deduplication
+  #removing unnecessary columns they interfere with deduplication
 
   # deduplication
 
@@ -67,10 +75,10 @@ if (type == "david") {
 
 if (type == "gprofiler") {
 
-  go_data <- read.csv(go_data)
-
-  # first removing unnecessary columns they interfere with deduplication
+  #removing unnecessary columns they interfere with deduplication
   go_data <- dplyr::select(go_data, 3, 2, 1, 5, 8)
+
+  #renaming columns for visualization
   colnames(go_data)[c(2,4,5)] <- c("GOTerm", "log10_padj", "Nr. Genes")
 
   # deduplication

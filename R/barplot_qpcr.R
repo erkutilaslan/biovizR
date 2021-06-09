@@ -1,4 +1,3 @@
-#'
 #' This function visualizes qPCR results as bar plot.
 #'
 #' @param qpcr_data Input qPCR data to visualize.

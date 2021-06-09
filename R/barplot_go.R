@@ -12,7 +12,12 @@
 #' @import tidyverse
 #' @export
 
-barplot_go <- function(go_data, type = "cluego", top = "", go_process = "", min_genes = "", header = "") {
+barplot_go <- function(go_data,
+		       type = "cluego",
+		       top = "",
+		       go_process = "",
+		       min_genes = "",
+		       header = "") {
 
 # import data
 if (is.character(go_data) == TRUE) {
@@ -62,11 +67,14 @@ if (type == "david") {
 
 if (type == "gprofiler") {
 
+  go_data <- read.csv(go_data)
+
   # first removing unnecessary columns they interfere with deduplication
+  go_data <- dplyr::select(go_data, 3, 2, 1, 5, 8)
+  colnames(go_data)[c(2,4,5)] <- c("GOTerm", "log10_padj", "Nr. Genes")
 
   # deduplication
-
-  # converting column name so its easier to mutate
+  go_data <- dplyr::distinct(go_data)
 
 }
 

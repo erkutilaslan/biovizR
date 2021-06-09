@@ -18,28 +18,6 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- read.csv("~/qpcr\ data/siPUM1_results.csv")
-#group1 = "siCTRL"
-#group2 = "siPUM1"
-#group3 = ""
-#group4 = ""
-#group5 = ""
-#ref1 = "DTD1"
-#ref2 = "GARS1"
-#goi = "FOXM1"
-#test = TRUE
-#stat = "t-test"
-#type = "biorad"
-#tech_rep = 3
-
-#barplot_qpcr("~/qpcr\ data/siPUM1_results.csv",
-#group1 = "siCTRL",
-#group2 = "siPUM1",
-#ref1 = "DTD1",
-#ref2 = "GARS1",
-#goi = "FOXM1",
-#test = TRUE)
-
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -85,15 +63,15 @@ pvalue_star <- function(dat) {
 #data import
 if (is.character(qpcr_data) == TRUE) {
  
-  if (grepl(".csv", as.character(qpcr_data)) == TRUE) {
+	if (grepl(".csv", as.character(qpcr_data)) == TRUE) {
     
-    qpcr_data <- read.csv(qpcr_data) 
+		qpcr_data <- read.csv(qpcr_data) 
 
-  } else {
+	} else {
 
-    qpcr_data <- readxl::read_excel(qpcr_data, sheet = 1)
+		qpcr_data <- readxl::read_excel(qpcr_data, sheet = 1)
 
-  }
+	}
 
 }
 

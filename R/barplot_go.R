@@ -19,10 +19,11 @@ barplot_go <- function(go_data,
 		       min_genes = "",
 		       header = "") {
 
+	go_data <- ""
 # import data
 if (is.character(go_data) == TRUE) {
  
-  if (grep(".csv", as.character(go_data)) == 1) {
+  if (as.numeric(grep(".csv", as.character(go_data))) == 1) {
     
     go_data <- read.csv(go_data) 
 

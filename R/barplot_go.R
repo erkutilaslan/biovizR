@@ -56,20 +56,38 @@ if (type == "cluego") {
 if (type == "panther") {
 
   #removing unnecessary columns they interfere with deduplication
+  go_data <- dplyr::select(go_data, 1, 3, 8)
 
   # deduplication
+  go_data <- dplyr::distinct(go_data)
 
   # converting column name so its easier to mutate
+  colnames(go_data)[c(1, 2, 3)] <- c("GOTerm", "Nr. Genes", "padj")
+
+  # -log10 conversion of padj by mutate
+  go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
+
+  # arranging the GO Terms in descanding order
+  go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
 
 }
 
 if (type == "david") {
 
   # first removing unnecessary columns they interfere with deduplication
-
+  go_data <- dplyr::select(go_data, 1, 2, 3, 13)
+  
   # deduplication
+  go_data <- dplyr::distinct(go_data)
 
-  # converting column name so its easier to mutate
+  # converting column names
+  colnames(go_data)[c(2, 3, 4)] <- c("GOTerm", "Nr. Genes", "padj")
+
+  # -log10 conversion of padj by mutate
+  go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
+
+  # arranging the GO Terms in descanding order
+  go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
 
 }
 

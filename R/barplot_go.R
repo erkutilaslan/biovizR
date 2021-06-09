@@ -23,7 +23,7 @@ barplot_go <- function(go_data,
 # import data
 if (is.character(go_data) == TRUE) {
  
-  if grepl(".csv", as.character(go_data)) == TRUE) {
+  if (grepl(".csv", as.character(go_data)) == TRUE) {
     
     go_data <- read.csv(go_data) 
 

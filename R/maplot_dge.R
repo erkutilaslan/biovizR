@@ -16,9 +16,16 @@ maplot_dge <- function(dge_data, FDR = 0.01, FC = 0.5, TOP = 10, type = "deseq2"
 
 #data import
 if (is.character(dge_data) == TRUE) {
+ 
+  if (grepl(".csv", as.character(dge_data)) == TRUE) {
+    
+    dge_data <- read.csv(dge_data) 
 
-  dge_data <- read.table(file = dge_data,
-                         header = TRUE, sep = ",", dec = ".")
+  } else {
+
+    dge_data <- readxl::read_excel(dge_data, sheet = 1)
+
+  }
 
 }
 
@@ -28,6 +35,12 @@ if (type == "deseq2") {
   colnames(dge_data)[2] = "baseMean"
   colnames(dge_data)[3] = "log2FoldChange"
   colnames(dge_data)[7] = "padj"
+
+}
+
+if (type == "edger") {
+
+
 
 }
 

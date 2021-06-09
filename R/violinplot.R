@@ -13,8 +13,16 @@ violinplot <- function(violin_data, x_lab = "conditions", y_lab = "values") {
 
 #data import
 if (is.character(violin_data) == TRUE) {
+ 
+  if (grepl(".csv", as.character(violin_data)) == TRUE) {
+    
+    violin_data <- read.csv(violin_data) 
 
-violin_data <- readxl::read_xlsx(violin_data, sheet = 1)
+  } else {
+
+    violin_data <- readxl::read_excel(violin_data, sheet = 1)
+
+  }
 
 }
 

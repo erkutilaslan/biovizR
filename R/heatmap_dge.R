@@ -14,8 +14,16 @@ heatmap_dge <- function(heatmap_data, List = "") {
 
 #data import
 if (is.character(heatmap_data) == TRUE) {
+ 
+  if (grepl(".csv", as.character(heatmap_data)) == TRUE) {
+    
+    heatmap_data <- read.csv(heatmap_data, header = TRUE) 
 
-  heatmap_data <- read.csv(file = heatmap_data, header = TRUE)
+  } else {
+
+    heatmap_data <- readxl::read_excel(heatmap_data, sheet = 1)
+
+  }
 
 }
 

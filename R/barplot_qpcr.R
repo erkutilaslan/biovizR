@@ -84,8 +84,16 @@ pvalue_star <- function(dat) {
 
 #data import
 if (is.character(qpcr_data) == TRUE) {
+ 
+  if (grepl(".csv", as.character(qpcr_data)) == TRUE) {
+    
+    qpcr_data <- read.csv(qpcr_data) 
 
-	qpcr_data <- read.csv(qpcr_data)
+  } else {
+
+    qpcr_data <- readxl::read_excel(qpcr_data, sheet = 1)
+
+  }
 
 }
 

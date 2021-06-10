@@ -86,7 +86,7 @@ if (type == "biorad") {
 
 	if (test == TRUE) {
 
-		colnames(qpcr_data)[5] <- "Biological.Set.Name"
+		colnames(qpcr_data)[6] <- "Biological.Set.Name"
 		qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
 
 	} else {

@@ -6,13 +6,13 @@
 #' @param FDR Default 0.01. Adjust FDR value.
 #' @param FC Default 0.5. Adjust log2FC threshold.
 #' @param TOP Default 10. Adjust top number of DE genes to visualize.
-#' @param title Default is empty. Set title for the MA-plot.
+#' @param header Default is empty. Set a title for the MA-plot.
 #' @param type Default deseq2. Specify input datatype.
 #' @return An ma-plot of RNA-Seq DGE data.
 #' @export
 
 
-maplot_dge <- function(dge_data, FDR = 0.01, FC = 0.5, TOP = 10, type = "deseq2", title = "") {
+maplot_dge <- function(dge_data, FDR = 0.01, FC = 0.5, TOP = 10, type = "deseq2", header = "") {
 
 #data import
 if (is.character(dge_data) == TRUE) {
@@ -45,7 +45,7 @@ if (type == "edger") {
 }
 
 # Visuzalization
-final_plot <- ggpubr::ggmaplot(dge_data, main = title,
+final_plot <- ggpubr::ggmaplot(dge_data, main = header,
          fdr = FDR, fc = FC, size = 1.5,
          palette = c("#B31B21", "#1465AC", "darkgray"),
          genenames = as.vector(dge_data$HGNC),

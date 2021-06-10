@@ -51,16 +51,35 @@ devtools::install_github("erkutilaslan/biovizR")
 # Usage
 
 - MA-plot visualization of RNA-Seq
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
+
 
 - Analysis and visualization of qPCR
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Barplot visualization of GO Analysis
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Heatmap visualization
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Violinplot visualization
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Dotplot visualization of IP-MS
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 # Examples
 

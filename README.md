@@ -61,7 +61,7 @@ maplot_dge(data, #your data
            
 ```
 <p align="center">
-  <img src="https://github.com/erkutilaslan/biovizr/test.jpg" width="760" height="412"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/test.jpg" width="450" height="400"></div>
 </p>
 
 

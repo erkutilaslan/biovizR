@@ -51,16 +51,44 @@ devtools::install_github("erkutilaslan/biovizR")
 # Usage
 
 - MA-plot visualization of RNA-Seq
+```r
+maplot_dge(data, #your data
+           FDR = 0.05, #set FDR treshold.
+           FC = 0.5, #set fold change threshold.
+           TOP, #top significant genes to be labeled on the plot.
+           type = "deseq2", #set data type. deseq2 or edger.
+           header = "title") #set title for the plot.
+           
+```
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
+
 
 - Analysis and visualization of qPCR
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Barplot visualization of GO Analysis
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Heatmap visualization
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Violinplot visualization
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 - Dotplot visualization of IP-MS
+<p align="center">
+  <img src="link_here" width="760" height="412"></div>
+</p>
 
 # Examples
 

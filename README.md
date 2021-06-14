@@ -120,7 +120,7 @@ barplot_qpcr(data, #your data
              ref = "ACTB", #name of the first reference gene.
              ref2 = "GAPDH", #name of the second reference gene if used.
              goi = "NANOS1", #name of gene of interest
-             test = TRUE, #statistical analysis parameter. set to FALSE if statistical analysis is not applicable.
+             test = TRUE, #set to FALSE if statistical analysis is not applicable.
              stat = "t-test") #statistical analysis method. t-test or anova can be used.
 ```
 

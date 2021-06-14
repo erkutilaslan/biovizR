@@ -75,16 +75,16 @@ Both of these work.
 **Importing data using R Studio GUI:**
 
 Step 1:
-<p align="center">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="760" height="412"></div>
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="1700" height="1200"></div>
 </p>
 Step 2:
-<p align="center">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="760" height="412"></div>
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="1700" height="1200"></div>
 </p>
 Step 3:
-<p align="center">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="760" height="412"></div>
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="1700" height="1200"></div>
 </p>
 
 ```r
@@ -106,33 +106,33 @@ maplot_dge(data, #your data
            header = "biovizR is amazing!") #set title for the plot.
            
 ```
-<p align="center">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/test.jpg" width="450" height="400"></div>
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/test.jpg" width="1900" height="2100"></div>
 </p>
 
 
 - **Analysis and visualization of qPCR**
-<p align="center">
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
 - **Barplot visualization of GO Analysis**
-<p align="center">
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
 - **Heatmap visualization**
-<p align="center">
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
 - **Violinplot visualization**
-<p align="center">
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
 - **Dotplot visualization of IP-MS**
-<p align="center">
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 

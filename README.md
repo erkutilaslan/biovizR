@@ -122,11 +122,11 @@ maplot_dge(data, #your data
            TOP = 10, #top significant genes to be labeled on the plot.
            header = "MA-plot is amazing!", #title for the MA-plot.
            type = "deseq2", #set data type. deseq2 or edger.
-           header = "MA-plot is amazing!") #set title for the plot.      
+           header = "biovizR is amazing!") #set title for the plot.      
 ```
 
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/maplot_dge.png" width="500" height="500"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/maplot_dge.png" width="650" height="450"></div>
 </p>
 
 
@@ -144,14 +144,14 @@ barplot_qpcr(data, #your data
 
 
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_qpcr.png" width="450" height="450"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_qpcr.png" width="400" height="400"></div>
 </p>
 
 - **Barplot visualization of GO Analysis**
 
 This function visualize gene ontology (GO) results as a barplot.
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_go.png" width="1000" height="450"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_go.png" width="600" height="300"></div>
 </p>
 
 - **Heatmap visualization**

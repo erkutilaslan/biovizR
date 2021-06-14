@@ -50,7 +50,53 @@ devtools::install_github("erkutilaslan/biovizR")
 ```
 # Usage
 
-- MA-plot visualization of RNA-Seq
+- **Data import**
+
+biovizR supports both providing a path to the data and importing the data to R Studio via GUI.
+
+
+```r
+barplot_qpcr("C://Users/Erkut/Desktop/qPCR/siFOXM1_qpcr.csv",
+             group1 = "siCTRL",
+             group2 = "siFOXM1",
+             ref1 = "GAPDH",
+             ref2 = "ACTB",
+             goi = "FOXM1")
+             
+barplot_qpcr(siFOXM1,
+             group1 = "siCTRL",
+             group2 = "siFOXM1",
+             ref1 = "GAPDH",
+             ref2 = "ACTB",
+             goi = "FOXM1")
+```
+Both of these work.
+
+**Importing data using R Studio GUI:**
+
+Step 1:
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="1700" height="1100"></div>
+</p>
+Step 2:
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="1700" height="1100"></div>
+</p>
+Step 3:
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="1700" height="1100"></div>
+</p>
+
+```r
+barplot_qpcr(siFOXM1,
+             group1 = "siCTRL",
+             group2 = "siFOXM1",
+             ref1 = "GAPDH",
+             ref2 = "ACTB",
+             goi = "FOXM1")
+```
+
+- **MA-plot visualization of RNA-Seq**
 ```r
 maplot_dge(data, #your data
            FDR = 0.05, #set FDR treshold.
@@ -60,33 +106,33 @@ maplot_dge(data, #your data
            header = "biovizR is amazing!") #set title for the plot.
            
 ```
-<p align="center">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/test.jpg" width="450" height="400"></div>
+<p align="left">
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/test.jpg" width="1900" height="2100"></div>
 </p>
 
 
-- Analysis and visualization of qPCR
-<p align="center">
+- **Analysis and visualization of qPCR**
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
-- Barplot visualization of GO Analysis
-<p align="center">
+- **Barplot visualization of GO Analysis**
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
-- Heatmap visualization
-<p align="center">
+- **Heatmap visualization**
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
-- Violinplot visualization
-<p align="center">
+- **Violinplot visualization**
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
-- Dotplot visualization of IP-MS
-<p align="center">
+- **Dotplot visualization of IP-MS**
+<p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 

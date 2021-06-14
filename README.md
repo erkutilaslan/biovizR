@@ -100,20 +100,33 @@ barplot_qpcr(siFOXM1,
 ```r
 maplot_dge(data, #your data
            FDR = 0.05, #set FDR treshold.
-           FC = 0.5, #set fold change threshold.
+           FC = 1, #set fold change threshold.
            TOP = 10, #top significant genes to be labeled on the plot.
+           header = "MA-plot is amazing!", #title for the MA-plot.
            type = "deseq2", #set data type. deseq2 or edger.
-           header = "biovizR is amazing!") #set title for the plot.
-           
+           header = "MA-plot is amazing!") #set title for the plot.      
 ```
+
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/test.jpg" width="1900" height="2100"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/maplot_dge.png" width="500" height="500"></div>
 </p>
 
 
 - **Analysis and visualization of qPCR**
+```r
+barplot_qpcr(data, #your data
+             group1 = "siCTRL", #name of group 1.
+             group2 = "siPUM1", #name of group 2.
+             ref = "ACTB", #name of the first reference gene.
+             ref2 = "GAPDH", #name of the second reference gene if used.
+             goi = "NANOS1", #name of gene of interest
+             test = TRUE, #statistical analysis parameter. set to FALSE if statistical analysis is not applicable.
+             stat = "t-test") #statistical analysis method. t-test or anova can be used.
+```
+
+
 <p align="left">
-  <img src="link_here" width="760" height="412"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_qpcr.png" width="450" height="450"></div>
 </p>
 
 - **Barplot visualization of GO Analysis**

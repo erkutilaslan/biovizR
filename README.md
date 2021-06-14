@@ -76,15 +76,15 @@ Both of these work.
 
 Step 1:
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="1700" height="1200"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="1700" height="1100"></div>
 </p>
 Step 2:
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="1700" height="1200"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="1700" height="1100"></div>
 </p>
 Step 3:
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="1700" height="1200"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="1700" height="1100"></div>
 </p>
 
 ```r

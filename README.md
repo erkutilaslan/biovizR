@@ -148,21 +148,29 @@ barplot_qpcr(data, #your data
 </p>
 
 - **Barplot visualization of GO Analysis**
+
+This function visualize gene ontology (GO) results as a barplot.
 <p align="left">
-  <img src="link_here" width="760" height="412"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_go.png" width="1000" height="450"></div>
 </p>
 
 - **Heatmap visualization**
+
+This function scale expression values with z-score and visualzie them as a heatmap.
 <p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
 - **Violinplot visualization**
+
+This function visualize biological data as a violin plot.
 <p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>
 
 - **Dotplot visualization of IP-MS**
+
+This function visualize immunoprecipitation followed by mass spectrometry results as a dot-plot. 
 <p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>

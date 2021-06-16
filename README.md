@@ -79,7 +79,7 @@ A more user friendly way to import your data into RStudio is to use the graphica
 The enviroment window in RStudio is where the data will be stored as an object. 
 Clicking on the "Import Data" button to open will show options for importing different types of data.
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="1700" height="1100"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import1.png" width="1700" height="1000"></div>
 </p>
 
 - Step 2:
@@ -87,14 +87,14 @@ Clicking on the "Import Data" button to open will show options for importing dif
 Let's try to import our RT-qPCR results as an excel data. Clicking on the "From Excel..." button will open a new window. 
 Here clicking on the "Browse..." button will let you select your data.
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="1700" height="1100"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import2.png" width="1700" height="1000"></div>
 </p>
 
 - Step 3:
 
 Selecting your data allows you to preview it. Here you can set the name of the object that will contain your data. By default the name of your excel data will be used.
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="1700" height="1100"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/import3.png" width="1700" height="1000"></div>
 </p>
 
 Once you import your data to R enviroment, you can now apply the functions of biovizR to analyze and visualize your data.
@@ -126,7 +126,7 @@ maplot_dge(data, #your data
 ```
 
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/maplot_dge.png" width="650" height="450"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/maplot_dge.png" width="550" height="450"></div>
 </p>
 
 

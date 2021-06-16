@@ -12,7 +12,7 @@
 
 heatmap_dge <- function(heatmap_data,
 		       	gene_list = "",
-			header) {
+			header = "") {
 
 #data import
 if (is.character(heatmap_data) == TRUE) {

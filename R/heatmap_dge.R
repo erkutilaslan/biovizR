@@ -9,7 +9,6 @@
 #' @import ComplexHeatmap
 #' @export
 
-
 heatmap_dge <- function(heatmap_data, List = "") {
 
 #data import
@@ -55,33 +54,19 @@ if (List != "") {
 heatmap_data  <- na.omit(heatmap_data)
 
 # Visualization
-final_plot <- ComplexHeatmap::Heatmap(heatmap_data,
-  heatmap_legend_param = list(title = "z-score",
-                              legend_height = grid::unit(5, "cm"),
-                              grid_width = grid::unit(0.75, "cm"),
-                              labels_gp = grid::gpar(fontsize = 12),
-                              title_gp = grid::gpar(fontsize = 14)),
-  column_title_gp = grid::gpar(fontsize = 18),
-  #col = greenred(75),
-  #show_row_names = TRUE,
-  row_names_side = "left",
-  row_names_gp = grid::gpar(fontsize = 14),
-  column_names_gp = grid::gpar(fontsize = 16),
-  #show_column_names = TRUE
-  #cluster_rows = FALSE,
-  cluster_columns = FALSE,
-  #show_column_dend = TRUE,
-  show_row_dend = FALSE,
-  #row_dend_reorder = TRUE,
-  #column_dend_reorder = TRUE,
-  clustering_method_rows = "ward.D2",
-  clustering_distance_rows = "pearson"
-  #clustering_method_columns = "ward.D2",
-  #width = unit(150, "mm"),
-  #height = unit(130, "mm")
-)
-
-plot(final_plot)
-return(final_plot)
+ComplexHeatmap::Heatmap(heatmap_data,
+                        heatmap_legend_param = list(title = "z-score",
+                                                    legend_height = grid::unit(5, "cm"),
+                                                    grid_width = grid::unit(0.75, "cm"),
+                                                    labels_gp = grid::gpar(fontsize = 12),
+                                                    title_gp = grid::gpar(fontsize = 14)),
+                        column_title_gp = grid::gpar(fontsize = 18),
+                        row_names_side = "left",
+                        row_names_gp = grid::gpar(fontsize = 14),
+                        column_names_gp = grid::gpar(fontsize = 16),
+                        cluster_columns = FALSE,
+                        show_row_dend = FALSE,
+                        clustering_method_rows = "ward.D2",
+                        clustering_distance_rows = "pearson")
 
 }

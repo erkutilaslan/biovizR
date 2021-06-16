@@ -4,12 +4,15 @@
 #' as heatmap.
 #'
 #' @param heatmap_data Path to the input file.
-#' @param List Path to the list of genes file which will be visualized.
+#' @param gene_list Path to the list of genes file which will be visualized.
+#' @param header Title for the heatmap.
 #' @return A heatmap of heatmap_data.
 #' @import ComplexHeatmap
 #' @export
 
-heatmap_dge <- function(heatmap_data, List = "") {
+heatmap_dge <- function(heatmap_data,
+		       	gene_list = "",
+			header) {
 
 #data import
 if (is.character(heatmap_data) == TRUE) {
@@ -39,14 +42,14 @@ heatmap_data <- tibble::column_to_rownames(heatmap_data, var = "hgnc_symbol")
 heatmap_data <- t(scale(t(heatmap_data)))
 
 #selecing of genes to visualize e.g. infertility vectors
-if (List != "") {
+if (gene_list != "") {
 
-  List <- read.table(List, header = FALSE, sep = " ")
-  List <- List$V1
+  gene_list <- read.table(gene_list, header = FALSE, sep = " ")
+  gene_list <- gene_list$V1
 
 
   #need to take the columns with the genes i want to visualize
-  heatmap_data <- heatmap_data[as.character(List), ]
+  heatmap_data <- heatmap_data[as.character(gene_list), ]
 
   }
 
@@ -61,6 +64,7 @@ ComplexHeatmap::Heatmap(heatmap_data,
                                                     labels_gp = grid::gpar(fontsize = 12),
                                                     title_gp = grid::gpar(fontsize = 14)),
                         column_title_gp = grid::gpar(fontsize = 18),
+                        column_title = header,
                         row_names_side = "left",
                         row_names_gp = grid::gpar(fontsize = 14),
                         column_names_gp = grid::gpar(fontsize = 16),

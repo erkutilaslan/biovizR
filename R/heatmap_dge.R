@@ -36,6 +36,7 @@ heatmap_data  <- na.omit(heatmap_data)
 heatmap_data <- tibble::remove_rownames(heatmap_data)
 
 #moving HGNC to rownames
+colnames(heatmap_data)[1] <- "hgnc_symbol"
 heatmap_data <- tibble::column_to_rownames(heatmap_data, var = "hgnc_symbol")
 
 #z-score calculation
@@ -63,7 +64,7 @@ ComplexHeatmap::Heatmap(heatmap_data,
                                                     grid_width = grid::unit(0.75, "cm"),
                                                     labels_gp = grid::gpar(fontsize = 12),
                                                     title_gp = grid::gpar(fontsize = 14)),
-                        column_title_gp = grid::gpar(fontsize = 18),
+                        column_title_gp = grid::gpar(fontsize = 24),
                         column_title = header,
                         row_names_side = "left",
                         row_names_gp = grid::gpar(fontsize = 14),

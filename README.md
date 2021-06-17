@@ -157,8 +157,12 @@ This function visualize gene ontology (GO) results as a barplot.
 - **Heatmap visualization**
 
 This function scale expression values with z-score and visualzie them as a heatmap.
+```r
+heatmap_dge(heatmap_data,
+            header = "Heatmaps are cool!")
+            
 <p align="left">
-  <img src="link_here" width="760" height="412"></div>
+  <img src="link_here" width="750" height="850"></div>
 </p>
 
 - **Violinplot visualization**

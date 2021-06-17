@@ -163,14 +163,14 @@ heatmap_dge(heatmap_data,
 ```
             
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/heatmap_dge.png" width="750" height="850"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/heatmap_dge.png" width="500" height="600"></div>
 </p>
 
 - **Violinplot visualization**
 
 This function visualize biological data as a violin plot.
 <p align="left">
-  <img src="link_here" width="760" height="412"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/violinplot.png" width="500" height="500"></div>
 </p>
 
 - **Dotplot visualization of IP-MS**

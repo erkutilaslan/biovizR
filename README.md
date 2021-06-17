@@ -160,9 +160,10 @@ This function scale expression values with z-score and visualzie them as a heatm
 ```r
 heatmap_dge(heatmap_data,
             header = "Heatmaps are cool!")
+```
             
 <p align="left">
-  <img src="link_here" width="750" height="850"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/heatmap_dge.png" width="750" height="850"></div>
 </p>
 
 - **Violinplot visualization**

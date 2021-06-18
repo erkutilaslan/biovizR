@@ -115,6 +115,11 @@ barplot_qpcr(siFOXM1,
 
 This function enables you to visualize differential gene expression data-sets (for example from RNA-Seq) as an MA-plot.
 
+Input data:
+
+Usage:
+
+
 ```r
 maplot_dge(data, #your data
            FDR = 0.05, #set FDR treshold.
@@ -132,6 +137,13 @@ maplot_dge(data, #your data
 
 - **Analysis and visualization of qPCR**
 ```r
+
+
+Input data:
+
+Usage:
+
+
 barplot_qpcr(data, #your data
              group1 = "siCTRL", #name of group 1.
              group2 = "siPUM1", #name of group 2.
@@ -150,6 +162,12 @@ barplot_qpcr(data, #your data
 - **Barplot visualization of GO Analysis**
 
 This function visualize gene ontology (GO) results as a barplot.
+
+Input data:
+
+Usage:
+
+
 <p align="left">
   <img src="https://github.com/erkutilaslan/biovizR/blob/devel/barplot_go.png" width="600" height="300"></div>
 </p>
@@ -157,25 +175,43 @@ This function visualize gene ontology (GO) results as a barplot.
 - **Heatmap visualization**
 
 This function scale expression values with z-score and visualzie them as a heatmap.
+
+Input data:
+
+Usage:
+
+
 ```r
 heatmap_dge(heatmap_data,
             header = "Heatmaps are cool!")
 ```
             
 <p align="left">
-  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/heatmap_dge.png" width="750" height="850"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/heatmap_dge.png" width="500" height="600"></div>
 </p>
 
 - **Violinplot visualization**
 
 This function visualize biological data as a violin plot.
+
+Input data:
+
+Usage:
+
+
 <p align="left">
-  <img src="link_here" width="760" height="412"></div>
+  <img src="https://github.com/erkutilaslan/biovizR/blob/devel/violinplot.png" width="500" height="500"></div>
 </p>
 
 - **Dotplot visualization of IP-MS**
 
 This function visualize immunoprecipitation followed by mass spectrometry results as a dot-plot. 
+
+Input data:
+
+Usage:
+
+
 <p align="left">
   <img src="link_here" width="760" height="412"></div>
 </p>

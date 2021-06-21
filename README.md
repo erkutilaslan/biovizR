@@ -203,18 +203,5 @@ Usage:
   <img src="https://github.com/erkutilaslan/biovizR/blob/devel/violinplot.png" width="500" height="500"></div>
 </p>
 
-- **Dotplot visualization of IP-MS**
-
-This function visualize immunoprecipitation followed by mass spectrometry results as a dot-plot. 
-
-Input data:
-
-Usage:
-
-
-<p align="left">
-  <img src="link_here" width="760" height="412"></div>
-</p>
-
 
 

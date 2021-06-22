@@ -1,6 +1,6 @@
 #' Dot plot for IP-MS experiment visualization.
 #'
-#' This function visualizes IP-MS results with 2 axis
+#' This function visualizes IP-MS results as a dotplot
 #' for number of validated peptides in 2 samples.
 #'
 #' @param ip_data Path to the input file
@@ -132,6 +132,8 @@ if (is.character(ip_data) == TRUE) {
 
 #data cleanup and process
 if (type == "peptide_shaker") {
+
+	if (bio_rep == 1) {
 	#removing unnecesary columns
 
 	ip_1 <- ip_1[, c(4, 8)]
@@ -170,7 +172,219 @@ if (type == "peptide_shaker") {
 	#taking the average of peptide numbers using mutate
 	ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
 	ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+
+	}
+
+	if (bio_rep == 2) {
+	#removing unnecesary columns
+
+	ip_1 <- ip_1[, c(4, 8)]
+	ip_2 <- ip_2[, c(4, 8)]
+	ip_3 <- ip_3[, c(4, 8)]
+	ctrl_1 <- ctrl_1[, c(4, 8)]
+	ctrl_2 <- ctrl_2[, c(4, 8)]
+	ctrl_3 <- ctrl_3[, c(4, 8)]
+
+	#renaming columns for join
+	colnames(ip_1) <- c("HGNC", "ip_1")
+	colnames(ip_2) <- c("HGNC", "ip_2")
+	colnames(ip_3) <- c("HGNC", "ip_3")
+	colnames(ctrl_1) <- c("HGNC", "ctrl_1")
+	colnames(ctrl_2) <- c("HGNC", "ctrl_2")
+	colnames(ctrl_3) <- c("HGNC", "ctrl_3")
+
+	#joining DFs into one dataframe
+	ipms <- dplyr::full_join(ip_1, ip_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ip_3, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_1, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_3, "HGNC")
+
+	#dropna to remove NA from only one column
+	ipms <- tidyr::drop_na(ipms, HGNC)
 	
+	#replace NA in peptide numbers with 0
+	ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
+	                                     ip_2 = 0,
+	                                     ip_3 = 0,
+	                                     ctrl_1 = 0,
+	                                     ctrl_2 = 0,
+	                                     ctrl_3 = 0))
+	
+	#taking the average of peptide numbers using mutate
+	ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
+	ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+
+	}	
+
+	if (bio_rep == 3) {
+	#removing unnecesary columns
+
+	ip_1 <- ip_1[, c(4, 8)]
+	ip_2 <- ip_2[, c(4, 8)]
+	ip_3 <- ip_3[, c(4, 8)]
+	ctrl_1 <- ctrl_1[, c(4, 8)]
+	ctrl_2 <- ctrl_2[, c(4, 8)]
+	ctrl_3 <- ctrl_3[, c(4, 8)]
+
+	#renaming columns for join
+	colnames(ip_1) <- c("HGNC", "ip_1")
+	colnames(ip_2) <- c("HGNC", "ip_2")
+	colnames(ip_3) <- c("HGNC", "ip_3")
+	colnames(ctrl_1) <- c("HGNC", "ctrl_1")
+	colnames(ctrl_2) <- c("HGNC", "ctrl_2")
+	colnames(ctrl_3) <- c("HGNC", "ctrl_3")
+
+	#joining DFs into one dataframe
+	ipms <- dplyr::full_join(ip_1, ip_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ip_3, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_1, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_3, "HGNC")
+
+	#dropna to remove NA from only one column
+	ipms <- tidyr::drop_na(ipms, HGNC)
+	
+	#replace NA in peptide numbers with 0
+	ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
+	                                     ip_2 = 0,
+	                                     ip_3 = 0,
+	                                     ctrl_1 = 0,
+	                                     ctrl_2 = 0,
+	                                     ctrl_3 = 0))
+	
+	#taking the average of peptide numbers using mutate
+	ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
+	ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+
+	}
+
+	if (bio_rep == 4) {
+	#removing unnecesary columns
+
+	ip_1 <- ip_1[, c(4, 8)]
+	ip_2 <- ip_2[, c(4, 8)]
+	ip_3 <- ip_3[, c(4, 8)]
+	ctrl_1 <- ctrl_1[, c(4, 8)]
+	ctrl_2 <- ctrl_2[, c(4, 8)]
+	ctrl_3 <- ctrl_3[, c(4, 8)]
+
+	#renaming columns for join
+	colnames(ip_1) <- c("HGNC", "ip_1")
+	colnames(ip_2) <- c("HGNC", "ip_2")
+	colnames(ip_3) <- c("HGNC", "ip_3")
+	colnames(ctrl_1) <- c("HGNC", "ctrl_1")
+	colnames(ctrl_2) <- c("HGNC", "ctrl_2")
+	colnames(ctrl_3) <- c("HGNC", "ctrl_3")
+
+	#joining DFs into one dataframe
+	ipms <- dplyr::full_join(ip_1, ip_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ip_3, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_1, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_3, "HGNC")
+
+	#dropna to remove NA from only one column
+	ipms <- tidyr::drop_na(ipms, HGNC)
+	
+	#replace NA in peptide numbers with 0
+	ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
+	                                     ip_2 = 0,
+	                                     ip_3 = 0,
+	                                     ctrl_1 = 0,
+	                                     ctrl_2 = 0,
+	                                     ctrl_3 = 0))
+	
+	#taking the average of peptide numbers using mutate
+	ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
+	ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+
+	}
+
+	if (bio_rep == 5) {
+	#removing unnecesary columns
+
+	ip_1 <- ip_1[, c(4, 8)]
+	ip_2 <- ip_2[, c(4, 8)]
+	ip_3 <- ip_3[, c(4, 8)]
+	ctrl_1 <- ctrl_1[, c(4, 8)]
+	ctrl_2 <- ctrl_2[, c(4, 8)]
+	ctrl_3 <- ctrl_3[, c(4, 8)]
+
+	#renaming columns for join
+	colnames(ip_1) <- c("HGNC", "ip_1")
+	colnames(ip_2) <- c("HGNC", "ip_2")
+	colnames(ip_3) <- c("HGNC", "ip_3")
+	colnames(ctrl_1) <- c("HGNC", "ctrl_1")
+	colnames(ctrl_2) <- c("HGNC", "ctrl_2")
+	colnames(ctrl_3) <- c("HGNC", "ctrl_3")
+
+	#joining DFs into one dataframe
+	ipms <- dplyr::full_join(ip_1, ip_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ip_3, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_1, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_3, "HGNC")
+
+	#dropna to remove NA from only one column
+	ipms <- tidyr::drop_na(ipms, HGNC)
+	
+	#replace NA in peptide numbers with 0
+	ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
+	                                     ip_2 = 0,
+	                                     ip_3 = 0,
+	                                     ctrl_1 = 0,
+	                                     ctrl_2 = 0,
+	                                     ctrl_3 = 0))
+	
+	#taking the average of peptide numbers using mutate
+	ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
+	ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+
+	}
+
+	if (bio_rep == 6) {
+	#removing unnecesary columns
+
+	ip_1 <- ip_1[, c(4, 8)]
+	ip_2 <- ip_2[, c(4, 8)]
+	ip_3 <- ip_3[, c(4, 8)]
+	ctrl_1 <- ctrl_1[, c(4, 8)]
+	ctrl_2 <- ctrl_2[, c(4, 8)]
+	ctrl_3 <- ctrl_3[, c(4, 8)]
+
+	#renaming columns for join
+	colnames(ip_1) <- c("HGNC", "ip_1")
+	colnames(ip_2) <- c("HGNC", "ip_2")
+	colnames(ip_3) <- c("HGNC", "ip_3")
+	colnames(ctrl_1) <- c("HGNC", "ctrl_1")
+	colnames(ctrl_2) <- c("HGNC", "ctrl_2")
+	colnames(ctrl_3) <- c("HGNC", "ctrl_3")
+
+	#joining DFs into one dataframe
+	ipms <- dplyr::full_join(ip_1, ip_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ip_3, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_1, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_2, "HGNC")
+	ipms <- dplyr::full_join(ipms, ctrl_3, "HGNC")
+
+	#dropna to remove NA from only one column
+	ipms <- tidyr::drop_na(ipms, HGNC)
+	
+	#replace NA in peptide numbers with 0
+	ipms <- tidyr::replace_na(ipms, list(ip_1 = 0,
+	                                     ip_2 = 0,
+	                                     ip_3 = 0,
+	                                     ctrl_1 = 0,
+	                                     ctrl_2 = 0,
+	                                     ctrl_3 = 0))
+	
+	#taking the average of peptide numbers using mutate
+	ipms <- dplyr::mutate(ipms, "avg.ip" = (ip_1 + ip_2 + ip_3) / 3)
+	ipms <- dplyr::mutate(ipms, "avg.ctrl" =  (ctrl_1 + ctrl_2 + ctrl_3) / 3)
+
+	}
+
 }
 	
 #generating ma-plot

@@ -116,7 +116,7 @@ if (go_process != " ") {
 
 if (top != " ") {
 
-	go_data <- dplyr::slice(go_data, 1:top)
+	go_data <- dplyr::slice_tail(go_data, n = top)
 
 }
 

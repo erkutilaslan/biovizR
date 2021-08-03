@@ -12,7 +12,6 @@
 #' @import tidyverse
 #' @export
 
-
 barplot_go <- function(go_data,
 		       type = "cluego",
 		       top = "50",
@@ -50,8 +49,7 @@ if (type == "cluego") {
 	go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
 	# arranging the GO Terms in ascending order
-	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
-	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
+	go_data <- dplyr::arrange(go_data, log10_padj)
 
 }
 
@@ -70,8 +68,7 @@ if (type == "panther") {
 	go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
 	# arranging the GO Terms in ascending order
-	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
-	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
+	go_data <- dplyr::arrange(go_data)
 
 }
 
@@ -90,8 +87,7 @@ if (type == "david") {
 	go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
 	# arranging the GO Terms in ascending order
-	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
-	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
+	go_data <- dplyr::arrange(go_data)
 
 }
 

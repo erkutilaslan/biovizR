@@ -48,8 +48,8 @@ if (type == "cluego") {
 	# -log10 conversion of padj by mutate
 	go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
-	# arranging the GO Terms in descanding order
-	go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
+	# arranging the GO Terms in ascending order
+	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
 
 }
 
@@ -67,8 +67,8 @@ if (type == "panther") {
 	# -log10 conversion of padj by mutate
 	go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
-	# arranging the GO Terms in descanding order
-	go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
+	# arranging the GO Terms in ascending order
+	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
 
 }
 
@@ -86,8 +86,8 @@ if (type == "david") {
 	# -log10 conversion of padj by mutate
 	go_data <- dplyr::mutate(go_data, log10_padj = -log10(go_data$padj))
 
-	# arranging the GO Terms in descanding order
-	go_data <- dplyr::arrange(go_data, dplyr::desc(go_data$log10_padj))
+	# arranging the GO Terms in ascending order
+	go_data <- dplyr::arrange(go_data, order(go_data$log10_padj))
 
 }
 
@@ -140,7 +140,6 @@ final_plot <- ggpubr::ggbarplot(go_data,
                                 lab.size = 5,
                                 lab.vjust = 0.5,
                                 lab.hjust = 1.2,
-                                sort.val = "asc",
                                 sort.by.groups = FALSE,
                                 rotate = TRUE,
                                 ggtheme = ggpubr::theme_pubr(base_size = 18))

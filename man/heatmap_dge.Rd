@@ -4,12 +4,14 @@
 \alias{heatmap_dge}
 \title{Heatmap for differential gene expression data.}
 \usage{
-heatmap_dge(heatmap_data, List = "")
+heatmap_dge(heatmap_data, gene_list = "", header = "")
 }
 \arguments{
 \item{heatmap_data}{Path to the input file.}
 
-\item{List}{Path to the list of genes file which will be visualized.}
+\item{gene_list}{Path to the list of genes file which will be visualized.}
+
+\item{header}{Title for the heatmap.}
 }
 \value{
 A heatmap of heatmap_data.

@@ -7,7 +7,7 @@
 barplot_go(
   go_data,
   type = "cluego",
-  top = "",
+  top = "50",
   go_process = "",
   min_genes = "",
   header = ""
@@ -18,7 +18,7 @@ barplot_go(
 
 \item{type}{Default cluego. Parameter to specify input data source.}
 
-\item{top}{Turned off by default. Parameter to set top amount of processes to be visualized.}
+\item{top}{Default value is 50. Parameter to set top number of processes to be visualized.}
 
 \item{go_process}{Turned off by default. Parameter to add a specific keyword to only visuzalize GO terms that contains it.}
 

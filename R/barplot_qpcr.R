@@ -11,8 +11,8 @@
 #' @param ref2 Reference gene two.
 #' @param goi Gene of interest.
 #' @param tech_rep Number of technical replicates. Optional if consideration of technical replicates for statistical testing is desired.
-#' @param test Default TRUE. Enable or disable statistical analysis.
-#' @param stat Default t-test. Select statistical testing method.
+#' @param stat Default TRUE. Enable or disable statistical analysis.
+#' @param test Default t-test. Select statistical testing method.
 #' @param generate_table Default False. Set to True to create a table with the results everytime run the function.
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
@@ -29,8 +29,8 @@ barplot_qpcr <- function(qpcr_data,
 			 ref2 = "",
                          goi = "",
 			 tech_rep = 3,
-			 test = TRUE,
-                         stat = "t-test",
+			 stat = TRUE,
+                         test = "t-test",
 			 generate_table = FALSE) {
 
 #pvalue to star conversion function
@@ -84,7 +84,7 @@ if (type == "biorad") {
   
 	}
 
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 		colnames(qpcr_data)[6] <- "Biological.Set.Name"
 		qpcr_data <- qpcr_data[, c(3, 5, 6, 7)]
@@ -100,7 +100,7 @@ if (type == "biorad") {
 	qpcr_data <- na.omit(qpcr_data)
 	qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
 
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 		qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
 
@@ -113,7 +113,7 @@ if (type == "biorad") {
 	qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
 	qpcr_data <- dplyr::ungroup(qpcr_data)
 
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 		qpcr_data <- qpcr_data[ ,-4]
 
@@ -288,7 +288,7 @@ if (group5 == "") {
 
 qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$control_avg_exp[1]*100)
 
-if (test == TRUE) {
+if (stat == TRUE) {
 
 	#duplicating rows for accurate p-value calculation
   	idx1 <- rep(1:nrow(control_exp), tech_rep)
@@ -318,7 +318,7 @@ if (test == TRUE) {
 
 	}
 
-	if (stat == "t-test" & group3 == "" & group4 == "" & group5 == "") {
+	if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 
 		#calculating p-value
 		stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
@@ -326,13 +326,13 @@ if (test == TRUE) {
 		#converting pvalues to *
 		pvalue <- pvalue_star(stats$p.value)
 
-		#this is the supported df layout for ggpubr::stat_pvalue_manuel()
+		#this is the supported df layout for ggpubr::stat_pvalue_manual()
 		stat1 <- tibble::tribble(~group1, ~group2, ~pvalue,
 						group1, group2, pvalue)
 
 	}
 
-	if (stat == "t-test" & group3 != "" & group4 == "" & group5 == "") {
+	if (test == "t-test" & group3 != "" & group4 == "" & group5 == "") {
 
 	
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
@@ -353,7 +353,7 @@ if (test == TRUE) {
 
 	}
 
-	if (stat == "t-test" & group3 != "" & group4 != "" & group5 == "") {
+	if (test == "t-test" & group3 != "" & group4 != "" & group5 == "") {
 
 
 	
@@ -379,7 +379,7 @@ if (test == TRUE) {
 
 	}
 
-	if (stat == "t-test" & group3 != "" & group4 != "" & group5 != "") {
+	if (test == "t-test" & group3 != "" & group4 != "" & group5 != "") {
 
 		qpcr_data <- dplyr::full_join(qpcr_data, control_exp)
 		qpcr_data <- dplyr::full_join(qpcr_data, target_exp1)
@@ -411,7 +411,7 @@ if (test == TRUE) {
 	}
 
 	#anova test here
-	if (stat == "anova") {
+	if (test == "anova") {
 
 		#first data wrangling for anova function
 
@@ -534,7 +534,7 @@ if (generate_table == TRUE) {
 #visualization
 if (group3 == "" && group4 == "" && group5 == "") {
 
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_data,
        						x = "Sample",
@@ -591,7 +591,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 } else if (group4 == "" && group5 == "") {
 
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 	final_plot <- ggpubr::ggbarplot(qpcr_data,
 					x = "Sample",
@@ -667,7 +667,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 } else if (group5 == "") {
 
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_data,
 						x = "Sample",
@@ -756,7 +756,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 } else {
 			
-	if (test == TRUE) {
+	if (stat == TRUE) {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_data,
 						x = "Sample",

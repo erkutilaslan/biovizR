@@ -10,7 +10,7 @@ maplot_dge(
   FC = 0.5,
   TOP = 10,
   type = "deseq2",
-  title = ""
+  header = ""
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ maplot_dge(
 
 \item{type}{Default deseq2. Specify input datatype.}
 
-\item{title}{Default is empty. Set title for the MA-plot.}
+\item{header}{Default is empty. Set a title for the MA-plot.}
 }
 \value{
 An ma-plot of RNA-Seq DGE data.

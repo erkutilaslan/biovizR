@@ -16,8 +16,9 @@ barplot_qpcr(
   ref2 = "",
   goi = "",
   tech_rep = 3,
-  test = TRUE,
-  stat = "t-test"
+  stat = TRUE,
+  test = "t-test",
+  generate_table = FALSE
 )
 }
 \arguments{
@@ -43,9 +44,11 @@ barplot_qpcr(
 
 \item{tech_rep}{Number of technical replicates. Optional if consideration of technical replicates for statistical testing is desired.}
 
-\item{test}{Default TRUE. Enable or disable statistical analysis.}
+\item{stat}{Default TRUE. Enable or disable statistical analysis.}
 
-\item{stat}{Default t-test. Select statistical testing method.}
+\item{test}{Default t-test. Select statistical testing method.}
+
+\item{generate_table}{Default False. Set to True to create a table with the results everytime run the function.}
 }
 \value{
 A bar plot of qPCR results.

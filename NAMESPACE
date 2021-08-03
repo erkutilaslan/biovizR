@@ -2,7 +2,6 @@
 
 export(barplot_go)
 export(barplot_qpcr)
-export(dotplot_ipms)
 export(heatmap_dge)
 export(maplot_dge)
 export(violinplot)

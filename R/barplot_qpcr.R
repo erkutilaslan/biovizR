@@ -18,6 +18,16 @@
 #' @import tidyverse
 #' @export
 
+qpcr_data <- "~/biovizR_data/qpcr_data.csv"
+group1 <- "- control 24"
+group2 <- "N1-1 24"
+ref1 <- "Bactin"
+ref2 <- "GAPDH"
+goi <- "NOS1"
+stat <- TRUE
+test <- "t-test"
+type <- "biorad"
+
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -78,7 +88,7 @@ if (is.character(qpcr_data) == TRUE) {
 #data wrangling
 if (type == "biorad") {
 
-	if (colnames(qpcr_data[1]) == "X") {
+	if (colnames(qpcr_data[1]) == "X" | colnames(qpcr_data[1]) == "x") {
      
 		qpcr_data <- qpcr_data[ , -1]
   
@@ -99,6 +109,7 @@ if (type == "biorad") {
 	qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
 	qpcr_data <- na.omit(qpcr_data)
 	qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
+	cq_values <- qpcr_data
 
 	if (stat == TRUE) {
 

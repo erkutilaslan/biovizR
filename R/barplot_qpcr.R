@@ -21,7 +21,10 @@
 qpcr_data <- "~/biovizR_data/qpcr_data.csv"
 group1 <- "- control 24"
 group2 <- "N1-1 24"
-ref1 <- "Bactin"
+group3 <- ""
+group4 <- ""
+group5 <- ""
+ref1 <- "Actin"
 ref2 <- "GAPDH"
 goi <- "NOS1"
 stat <- TRUE
@@ -109,36 +112,13 @@ if (type == "biorad") {
 	qpcr_data$Target[qpcr_data$Target == "Target"] <- NA
 	qpcr_data <- na.omit(qpcr_data)
 	qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
-	cq_values <- qpcr_data
-
-	if (stat == TRUE) {
-
-		qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample, Biological.Set.Name)
-
-	} else {
-
-		qpcr_data <- dplyr::group_by(qpcr_data, Target, Sample)
-
-	}
-
-	qpcr_data <- dplyr::mutate(qpcr_data, Cq_mean = mean(Cq))
-	qpcr_data <- dplyr::ungroup(qpcr_data)
-
-	if (stat == TRUE) {
-
-		qpcr_data <- qpcr_data[ ,-4]
-
-	} else {
-#pvalue to star conversion function
-		qpcr_data <- qpcr_data[ ,-3]
-
-	}
-
-	qpcr_data <- dplyr::distinct(qpcr_data)
 
 	#pivot_wider for analysis
 	qpcr_data <- tidyr::pivot_wider(qpcr_data,
-					names_from = Target, values_from = Cq_mean)
+					names_from = Target, values_from = Cq)
+	qpcr_data <- tidyr::unnest_auto(qpcr_data, GAPDH)
+	qpcr_data <- tidyr::unnest_auto(qpcr_data, Actin)
+	qpcr_data <- tidyr::unnest_auto(qpcr_data, NOS1)
 
 }
 

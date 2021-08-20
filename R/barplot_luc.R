@@ -50,7 +50,8 @@ barplot_luc <- function(luc_data,
 #data wrangling
 luc_data <- luc_data[33:41, 1:12]
 luc_data <- luc_data[-1, -1:-2]
-
+luc_data <- luc_data[luc_data == "X"] <- NA
+luc_data <- luc_data[complete.cases(luc_data), ]
   
   
   

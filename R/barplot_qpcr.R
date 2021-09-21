@@ -18,6 +18,15 @@
 #' @import tidyverse
 #' @export
 
+qpcr_data <- "~/biovizR_data/qpcr_data.csv"
+group1 <- "- control 24"
+group2 <- "N1-1 24"
+stat <- TRUE
+ref1 <- "Bactin"
+ref2 <- "GAPDH"
+goi <- "NOS1"
+type <- "biorad"
+
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
 			 group1 = "",
@@ -78,7 +87,7 @@ if (is.character(qpcr_data) == TRUE) {
 #data wrangling
 if (type == "biorad") {
 
-	if (colnames(qpcr_data[1]) == "X") {
+	if (colnames(qpcr_data[1]) == "X" || colnames(qpcr_data[1]) == "x") {
      
 		qpcr_data <- qpcr_data[ , -1]
   
@@ -118,7 +127,7 @@ if (type == "biorad") {
 		qpcr_data <- qpcr_data[ ,-4]
 
 	} else {
-#pvalue to star conversion function
+
 		qpcr_data <- qpcr_data[ ,-3]
 
 	}

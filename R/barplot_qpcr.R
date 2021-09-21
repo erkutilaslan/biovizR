@@ -91,7 +91,7 @@ if (is.character(qpcr_data) == TRUE) {
 #data wrangling
 if (type == "biorad") {
 
-	if (colnames(qpcr_data[1]) == "X" | colnames(qpcr_data[1]) == "x") {
+	if (colnames(qpcr_data[1]) == "X" || colnames(qpcr_data[1]) == "x") {
      
 		qpcr_data <- qpcr_data[ , -1]
   
@@ -114,28 +114,53 @@ if (type == "biorad") {
 	qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
 
 	#pivot_wider for analysis
+	qpcr_data <- dplyr::mutate(qpcr_data, rows = row(qpcr_data))
 	qpcr_data <- tidyr::pivot_wider(qpcr_data,
-					names_from = Target, values_from = Cq)
-	qpcr_data <- tidyr::unnest_auto(qpcr_data, GAPDH)
-	qpcr_data <- tidyr::unnest_auto(qpcr_data, Actin)
-	qpcr_data <- tidyr::unnest_auto(qpcr_data, NOS1)
+					names_from = Target,
+				       	values_from = Cq)
+	qpcr_data <- dplyr::select(qpcr_data, -c(rows))
+	
+	#annotating ref and goi names
+	colnames(qpcr_data)[match(ref1, colnames(qpcr_data))] <- "ref1"
+
+	if (ref2 != "") {
+
+		colnames(qpcr_data)[match(ref2, colnames(qpcr_data))] <- "ref2"
+
+	}
+
+	colnames(qpcr_data)[match(goi, colnames(qpcr_data))] <- "goi"
+
+	#reconstructing data.frame to remove NAs
+	ref1_df <- dplyr::select(qpcr_data, c(Sample, Biological.Set.Name, ref1))
+	ref1_df <- na.omit(ref1_df)
+
+	if (ref2 != "") {
+
+		ref2_df <- dplyr::select(qpcr_data, c(Sample, Biological.Set.Name, ref2))
+		ref2_df <- na.omit(ref2_df)
+
+	}
+
+	goi_df <- dplyr::select(qpcr_data, c(Sample, Biological.Set.Name, goi))
+	goi_df <- na.omit(goi_df)
+
+	qpcr_data <- data.frame(ref1_df$Sample,
+			       	ref1_df$Biological.Set.Name,
+			       	ref1_df$ref1,
+			       	ref2_df$ref2,
+			       	goi_df$goi)
+	colnames(qpcr_data) <- c("Sample",
+				 "Biological.Set.Name",
+				 "ref1",
+	                         "ref2",
+				 "goi")
 
 }
 
 #analysis
 #for each sample average the ct values of the 3 ref genes --> ct[ref] = mean( ct[ref1], ct[ref[2], ct[ref3] )
 #for each sample, calculate the dct as the difference dct = ct[ref] - ct[goi]
-
-#annotating ref and goi names
-colnames(qpcr_data)[match(ref1, colnames(qpcr_data))] <- "ref1"
-
-if (ref2 != "") {
-
-	colnames(qpcr_data)[match(ref2, colnames(qpcr_data))] <- "ref2"
-
-}
-
-colnames(qpcr_data)[match(goi, colnames(qpcr_data))] <- "goi"
 
 #avg of refs for multiple refs
 if (ref2 != "") {
@@ -281,34 +306,6 @@ qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$
 
 if (stat == TRUE) {
 
-	#duplicating rows for accurate p-value calculation
-  	idx1 <- rep(1:nrow(control_exp), tech_rep)
-  	control_exp <- control_exp[idx1, ]
-
-  	idx2 <- rep(1:nrow(target_exp1), tech_rep)
-  	target_exp1 <- target_exp1[idx2, ]
-
-	if (group3 != "") {
-
-		idx3 <- rep(1:nrow(target_exp2), tech_rep)
-		target_exp2 <- target_exp2[idx3, ]
-
-	}
-
-	if (group4 != "") {
-
-		idx4 <- rep(1:nrow(target_exp3), tech_rep)
-		target_exp3 <- target_exp3[idx4, ]
-
-	}
-
-	if (group5 != "") {
-
-		idx5 <- rep(1:nrow(target_exp4), tech_rep)
-		target_exp4 <- target_exp4[idx5, ]
-
-	}
-
 	if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 
 		#calculating p-value
@@ -443,6 +440,7 @@ qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
 
 
 #converting raw sd into percentage
+qpcr_data <- tibble::rownames_to_column(qpcr_data)
 qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
 percent_sd1 <- control_sd/qpcr_data[group1, "avg_exp"]*100
 percent_sd2 <- target_sd1/qpcr_data[group2, "avg_exp"]*100

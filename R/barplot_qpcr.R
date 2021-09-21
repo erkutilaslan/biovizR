@@ -30,6 +30,7 @@ goi <- "NOS1"
 stat <- TRUE
 test <- "t-test"
 type <- "biorad"
+generate_table <- FALSE
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -442,8 +443,8 @@ qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
 #converting raw sd into percentage
 qpcr_data <- tibble::rownames_to_column(qpcr_data)
 qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
-percent_sd1 <- control_sd/qpcr_data[group1, "avg_exp"]*100
-percent_sd2 <- target_sd1/qpcr_data[group2, "avg_exp"]*100
+percent_sd1 <- control_sd*qpcr_data[group1, "percent_exp"]/qpcr_data[group1, "avg_exp"]
+percent_sd2 <- target_sd1*qpcr_data[group2, "percent_exp"]/qpcr_data[group1, "avg_exp"]
 
 if (group3 == "" & group4 == "" & group5 == "") {
 
@@ -453,21 +454,21 @@ if (group3 == "" & group4 == "" & group5 == "") {
 
 if (group3 != "") {
 	
-	percent_sd3 <- target_sd2/qpcr_data[group3, "avg_exp"]*100
+	percent_sd3 <- target_sd2/qpcr_data[group3, "percent_exp"]/qpcr_data[group3, "avg_exp"]
 	percent_sd <- c(percent_sd1, percent_sd2, percent_sd3)
 
 }
 
 if (group4 != "") {
 
-	percent_sd4 <- target_sd3/qpcr_data[group4, "avg_exp"]*100
+	percent_sd4 <- target_sd3/qpcr_data[group4, "percent_exp"]/qpcr_data[group4, "avg_exp"]
 	percent_sd <- c(percent_sd1, percent_sd2, percent_sd3, percent_sd4)
 
 }
 
 if (group5 != "") {
 
-	percent_sd5 <- target_sd4/qpcr_data[group5, "avg_exp"]*100
+	percent_sd5 <- target_sd4/qpcr_data[group5, "percent_exp"]/qpcr_data[group5, "avg_exp"]
 	percent_sd <- c(percent_sd1, percent_sd2, percent_sd3, percent_sd4, percent_sd5)
 
 }

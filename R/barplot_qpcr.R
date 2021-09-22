@@ -146,16 +146,29 @@ if (type == "biorad") {
 	goi_df <- dplyr::select(qpcr_data, c(Sample, Biological.Set.Name, goi))
 	goi_df <- na.omit(goi_df)
 
-	qpcr_data <- data.frame(ref1_df$Sample,
-			       	ref1_df$Biological.Set.Name,
-			       	ref1_df$ref1,
-			       	ref2_df$ref2,
-			       	goi_df$goi)
-	colnames(qpcr_data) <- c("Sample",
-				 "Biological.Set.Name",
-				 "ref1",
-	                         "ref2",
-				 "goi")
+	if (ref2 != "") {
+		 
+		qpcr_data <- data.frame(ref1_df$Sample,
+				       	ref1_df$Biological.Set.Name,
+				       	ref1_df$ref1,
+				       	ref2_df$ref2,
+				       	goi_df$goi)
+		colnames(qpcr_data) <- c("Sample",
+					 "Biological.Set.Name",
+					 "ref1",
+		                         "ref2",
+					 "goi")
+	} else {
+
+		qpcr_data <- data.frame(ref1_df$Sample,
+				       	ref1_df$Biological.Set.Name,
+				       	ref1_df$ref1,
+				       	goi_df$goi)
+		colnames(qpcr_data) <- c("Sample",
+					 "Biological.Set.Name",
+					 "ref1",
+					 "goi")
+	}		
 
 }
 

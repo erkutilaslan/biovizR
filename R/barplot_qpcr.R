@@ -18,19 +18,19 @@
 #' @import tidyverse
 #' @export
 
-qpcr_data <- "~/biovizR_data/qpcr_data.csv"
-group1 <- "- control 24"
-group2 <- "N1-1 24"
-group3 <- ""
-group4 <- ""
-group5 <- ""
-ref1 <- "Actin"
-ref2 <- "GAPDH"
-goi <- "NOS1"
-stat <- TRUE
-test <- "t-test"
-type <- "biorad"
-generate_table <- FALSE
+#qpcr_data <- "~/biovizR_data/qpcr_data.csv"
+#group1 <- "- control 24"
+#group2 <- "N1-1 24"
+#group3 <- ""
+#group4 <- ""
+#group5 <- ""
+#ref1 <- "Actin"
+#ref2 <- "GAPDH"
+#goi <- "NOS1"
+#stat <- TRUE
+#test <- "t-test"
+#type <- "biorad"
+#generate_table <- FALSE
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",

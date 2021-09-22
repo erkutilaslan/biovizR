@@ -18,7 +18,7 @@
 #' @import tidyverse
 #' @export
 
-luc_data <- read.csv("C://Users/Erkut Ilaslan/Desktop/testluc_Dual-Luciferase 2 injectors_8-13-2021_12-07-26 PM - Copy.csv")
+#luc_data <- read.csv("C://Users/Erkut Ilaslan/Desktop/testluc_Dual-Luciferase 2 injectors_8-13-2021_12-07-26 PM - Copy.csv")
 
 barplot_luc <- function(luc_data,
                         typle = "glomax",

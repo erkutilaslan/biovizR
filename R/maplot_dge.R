@@ -36,7 +36,7 @@ if (is.character(dge_data) == TRUE) {
 
 }
 
-if (mapping = TRUE) {
+if (mapping == TRUE) {
 
 
 }

@@ -14,7 +14,7 @@
 
 barplot_go <- function(go_data,
 		       type = "cluego",
-		       top = "50",
+		       top = "",
 		       go_process = "",
 		       min_genes = "",
 		       header = "") {
@@ -105,7 +105,7 @@ if (type == "gprofiler") {
 }
 
 # selecting GOTerms for visualization
-if (go_process != " ") {
+if (go_process != "") {
 
 	go_data <- go_data[grep(go_process,
     	                        go_data$GOTerm,
@@ -114,13 +114,13 @@ if (go_process != " ") {
 
 #selecting top processes for visualization
 
-if (top != " ") {
+if (top != "") {
 
 	go_data <- dplyr::slice_tail(go_data, n = top)
 
 }
 
-if (min_genes != " ") {
+if (min_genes != "") {
 
 	go_data <- dplyr::filter(go_data, go_data$`Nr. Genes` >= min_genes)
 

@@ -18,19 +18,19 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- "~/biovizR_data/qpcr_data.csv"
-#group1 <- "- control 24"
-#group2 <- "N1-1 24"
-#group3 <- ""
-#group4 <- ""
-#group5 <- ""
-#ref1 <- "Actin"
-#ref2 <- "GAPDH"
-#goi <- "NOS1"
-#stat <- TRUE
-#test <- "t-test"
-#type <- "biorad"
-#generate_table <- FALSE
+qpcr_data <- "/mnt/c/Users/Erkut\ Ilaslan/Desktop/Documents/Posters/RNA\ 2021/qpcr\ data/siPUM1_results.csv"
+group1 <- "siCTRL"
+group2 <- "siPUM1"
+group3 <- ""
+group4 <- ""
+group5 <- ""
+ref1 <- "GARS1"
+ref2 <- "DTD1"
+goi <- "AURKA"
+stat <- TRUE
+test <- "t-test"
+type <- "biorad"
+generate_table <- FALSE
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -115,11 +115,12 @@ if (type == "biorad") {
 	qpcr_data$Cq <- as.numeric(as.character(qpcr_data$Cq))
 
 	#pivot_wider for analysis
-	qpcr_data <- dplyr::mutate(qpcr_data, rows = row(qpcr_data))
+#	qpcr_data <- dplyr::mutate(qpcr_data, rows = row(qpcr_data))
+	qpcr_data <- tibble::rownames_to_column(qpcr_data)
 	qpcr_data <- tidyr::pivot_wider(qpcr_data,
-					names_from = Target,
+					names_from = Sample,
 				       	values_from = Cq)
-	qpcr_data <- dplyr::select(qpcr_data, -c(rows))
+#	qpcr_data <- dplyr::select(qpcr_data, -c(rows))
 	
 	#annotating ref and goi names
 	colnames(qpcr_data)[match(ref1, colnames(qpcr_data))] <- "ref1"
@@ -145,6 +146,12 @@ if (type == "biorad") {
 
 	goi_df <- dplyr::select(qpcr_data, c(Sample, Biological.Set.Name, goi))
 	goi_df <- na.omit(goi_df)
+
+	#the rows dont align properly here resulting in wrong analysis
+#	ref1_df_test <- dplyr::mutate(ref1_df, row(ref1_df))
+#	ref2_df_test <- dplyr::mutate(ref2_df, row(ref2_df))
+#	qpcr_data_test <- dplyr::left_join(ref1_df_test, ref2_df_test, by= c("Sample", "Biological.Set.Name"))
+	#I will create a column with a unique identifier at the very beginning and use it to pivot and join
 
 	if (ref2 != "") {
 		 

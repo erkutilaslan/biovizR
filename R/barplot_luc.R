@@ -21,7 +21,7 @@
 #luc_data <- read.csv("C://Users/Erkut Ilaslan/Desktop/testluc_Dual-Luciferase 2 injectors_8-13-2021_12-07-26 PM - Copy.csv")
 
 barplot_luc <- function(luc_data,
-                        typle = "glomax",
+                        type = "glomax",
                         group1 = "",
                         group2 = "",
                         group3 = "",
@@ -53,7 +53,10 @@ luc_data <- luc_data[-1, -1:-2]
 luc_data <- luc_data[luc_data == "X"] <- NA
 luc_data <- luc_data[complete.cases(luc_data), ]
   
-  
+#i want to have one parameter for groups which will be a string
+#second parameter will be tech reps
+#these two will be used to determine the plate layout
+#so i can have a 3rd parameter horizontal or vertical
   
   
 }

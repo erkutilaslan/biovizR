@@ -35,7 +35,10 @@ generate_table <- FALSE
 qpcr_data <- data_import(qpcr_data)
 qpcr_data <- data_process(qpcr_data)
 qpcr_data <- ddCt_calc(qpcr_data)
+
+#this part should be done seperately for each boi rep
 qpcr_data <- raw_to_percent(qpcr_data)
+
 stats <- qpcr_stat(qpcr_data)
 percent_sd <- calc_sd(qpcr_data)
 exp_data <- get_exp(qpcr_data)
@@ -81,7 +84,7 @@ data_import <- function(import_data) {
 
 	return(import_data)
 }
-
+process_data <- qpcr_data
 #data wrangling function
 data_process <- function(process_data) {
 
@@ -108,84 +111,51 @@ data_process <- function(process_data) {
 		process_data$Target[process_data$Target == "Target"] <- NA
 		process_data <- na.omit(process_data)
 		process_data$Cq <- as.numeric(as.character(process_data$Cq))
+
+		if (ref2 == "") {
+
+		goi_data <- dplyr::filter(process_data, Target == goi)
+		ref1_data <- dplyr::filter(process_data, Target == ref1)
+		process_data <- list(goi_data, ref1_data)
+		
+		} else {
+
+		goi_data <- dplyr::filter(process_data, Target == goi)
+		ref1_data <- dplyr::filter(process_data, Target == ref1)
+		ref2_data <- dplyr::filter(process_data, Target == ref2)
+		process_data <- list(goi_data, ref1_data, ref2_data)
+
+		}
 	
-		if (stat == TRUE) {
-
-			process_data <- dplyr::group_by(process_data, Target, Sample, Biological.Set.Name)
-
-		} else {
-
-			process_data <- dplyr::group_by(process_data, Target, Sample)
-
-		}
-
-		process_data <- dplyr::mutate(process_data, Cq_mean = mean(Cq))
-		process_data <- dplyr::ungroup(process_data)
-
-		#here generate df for each biorep
-	
-		if (stat == TRUE) {
-
-			process_data <- process_data[ ,-4]
-
-		} else {
-
-			process_data <- process_data[ ,-3]
-
-		}
-
-		process_data <- dplyr::distinct(process_data)
-
-		#pivot_wider for analysis
-		process_data <- tidyr::pivot_wider(process_data,
-					names_from = Target, values_from = Cq_mean)
-
-		if (ref2 != "") {
-
-		process_data <- dplyr::select(process_data, Sample, Biological.Set.Name,
-					      dplyr::all_of(goi), dplyr::all_of(ref1),
-					      dplyr::all_of(ref2))
-
-		} else {
-
-			process_data <- dplyr::select(process_data, Sample, Biological.Set.Name, goi,ref1)
-
-		}
-
-	#changing col names to goi, ref1, ref2
-	colnames_data <- colnames(process_data)
-	colnames_data <- sub(ref1, "ref1", colnames_data)
-	if (ref2 != "") {
-	colnames_data <- sub(ref2, "ref2", colnames_data)
-	}
-	colnames_data <- sub(goi, "goi", colnames_data)
-	colnames(process_data) <- colnames_data
-
 	}
 
 	return(process_data)
 }
 
-#i dont know why when i call this function mutate doesnt work 
+
 ddCt_calc <- function (ddCt_data) {
+
+	goi_data <- as.data.frame(ddCt_data[1])
+	ref1_data <- as.data.frame(ddCt_data[2])
 
 	#avg of refs for multiple refs
 	if (ref2 != "") {
 
-		ddCt_data <- dplyr::mutate(ddCt_data, avg_ref = (ddCt_data$ref1 + ddCt_data$ref2) / 2)
+		ref2_data <- as.data.frame(ddCt_data[3])
+		ddCt_data <- dplyr::mutate(goi_data, avg_ref = (ref1_data$Cq + ref2_data$Cq) / 2)
 		#dCt calculation for avg of refs
-		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (goi - avg_ref))
+		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (Cq - avg_ref))
 
 	} else {
 
 		#dCt calculation for only 1 ref
-		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (goi - ref1))
+		ddCt_data <- dplyr::mutate(goi_data, dCt = (goi_data$Cq - ref1_data$Cq))
 
 	}
 
 	#avg.dCt of target gene value in control biological replicates
 	control_ct <- dplyr::filter(ddCt_data, Sample == group1)
-	ddCt_data <- dplyr::mutate(ddCt_data, avg_control_dCt = mean(control_ct$goi))
+	ddCt_data <- dplyr::mutate(ddCt_data, avg_control_dCt = mean(control_ct$Cq))
 
 	#ddCt calculation
 	ddCt_data <- dplyr::mutate(ddCt_data, ddCt = dCt - avg_control_dCt)
@@ -346,7 +316,7 @@ pvalue_star <- function(dat) {
 	}
 
 }
-
+qpcr_stat_data <- qpcr_data 
 #statistics function
 qpcr_stat <- function(qpcr_stat_data) {
 
@@ -467,7 +437,7 @@ if (test == "anova") {
 
 return(stats)
 }
-
+calc_sd_data <- qpcr_data
 #sd calculation function
 calc_sd <- function(calc_sd_data) {
 
@@ -503,6 +473,7 @@ calc_sd <- function(calc_sd_data) {
 	calc_sd_data <- calc_sd_data[!duplicated(calc_sd_data$percent_exp), ]
 
 	#converting raw sd into percentage
+	rownames(calc_sd_data) <- NULL
 	calc_sd_data <- tibble::column_to_rownames(calc_sd_data, var = "Sample")
 	percent_sd1 <- control_sd*calc_sd_data[group1, "percent_exp"]/calc_sd_data[group1, "avg_exp"]
 	percent_sd2 <- target_sd1*calc_sd_data[group2, "percent_exp"]/calc_sd_data[group2, "avg_exp"]
@@ -536,12 +507,13 @@ calc_sd <- function(calc_sd_data) {
 	
 return(percent_sd)
 }
-
+get_exp_data <- qpcr_data
 #get exp data as a vector from qpcr_data. needed for visualization
 get_exp <- function(get_exp_data) {
 
 	#distinct only 1 column
 	qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
+	rownames(qpcr_data) <- NULL
 	qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
 
 	percent_exp1 <- qpcr_data[group1, "percent_exp"]

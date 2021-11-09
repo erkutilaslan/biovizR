@@ -17,36 +17,21 @@
 #' @import tidyverse
 #' @export
 
-qpcr_data <- "~/RNA\ 2021/qpcr\ data/siPUM1_results.csv"
-group1 <- "siCTRL"
-group2 <- "siPUM1"
-group3 <- ""
-group4 <- ""
-group5 <- ""
-ref1 <- "GARS1"
-ref2 <- "DTD1"
-goi <- "CCNA2"
-stat <- TRUE
-test <- "t-test"
-type <- "biorad"
-generate_table <- FALSE
+#qpcr_data <- "~/RNA\ 2021/qpcr\ data/siPUM1_results.csv"
+#group1 <- "siCTRL"
+#group2 <- "siPUM1"
+#group3 <- ""
+#group4 <- ""
+#group5 <- ""
+#ref1 <- "GARS1"
+#ref2 <- "DTD1"
+#goi <- "CCNA2"
+#stat <- TRUE
+#test <- "t-test"
+#type <- "biorad"
+#generate_table <- FALSE
 
-#test pipeline
-qpcr_data <- data_import(qpcr_data)
-qpcr_data <- data_process(qpcr_data)
-qpcr_data <- ddCt_calc(qpcr_data)
-
-#this part should be done seperately for each boi rep
-qpcr_data <- raw_to_percent(qpcr_data)
-
-stats <- qpcr_stat(qpcr_data)
-percent_sd <- calc_sd(qpcr_data)
-exp_data <- get_exp(qpcr_data)
-final_plot_qpcr <- qpcr_plot(qpcr_data, exp_data, stats, percent_sd)
-plot(final_plot_qpcr)
-
-export_table(qpcr_data, stats, percent_sd)
-
+#barplot_qpcr(qpcr_data, group1 = "siCTRL", group2 = "siPUM1", ref1 = "GARS1", ref2 = "DTD1", goi = "CCNA2", stat = TRUE)
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -84,7 +69,7 @@ data_import <- function(import_data) {
 
 	return(import_data)
 }
-process_data <- qpcr_data
+
 #data wrangling function
 data_process <- function(process_data) {
 
@@ -136,12 +121,18 @@ data_process <- function(process_data) {
 ddCt_calc <- function (ddCt_data) {
 
 	goi_data <- as.data.frame(ddCt_data[1])
+	goi_data <- dplyr::arrange(goi_data, desc(Biological.Set.Name))
+	goi_data <- dplyr::arrange(goi_data, desc(Sample))
 	ref1_data <- as.data.frame(ddCt_data[2])
+	ref1_data <- dplyr::arrange(ref1_data, desc(Biological.Set.Name))
+	ref1_data <- dplyr::arrange(ref1_data, desc(Sample))
 
 	#avg of refs for multiple refs
 	if (ref2 != "") {
 
 		ref2_data <- as.data.frame(ddCt_data[3])
+		ref2_data <- dplyr::arrange(ref2_data, desc(Biological.Set.Name))
+		ref2_data <- dplyr::arrange(ref2_data, desc(Sample))
 		ddCt_data <- dplyr::mutate(goi_data, avg_ref = (ref1_data$Cq + ref2_data$Cq) / 2)
 		#dCt calculation for avg of refs
 		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (Cq - avg_ref))
@@ -262,31 +253,37 @@ ddCt_calc <- function (ddCt_data) {
 #raw expression to percentage function
 raw_to_percent <- function(raw_to_percent_data) {
 
-if (group3 == "" & group4 == "" & group4 == "") {
 
-	raw_to_percent_data <- dplyr::arrange(raw_to_percent_data, match(raw_to_percent_data$Sample, c(group1, group2)))
+	if (group3 == "" & group4 == "" & group4 == "") {
 
-}
+		raw_to_percent_data <- dplyr::arrange(raw_to_percent_data,
+						      match(raw_to_percent_data$Sample, c(group1, group2)))
 
-if (group4 == "" & group5 == "") {
+	}
 
-	raw_to_percent_data <- dplyr::arrange(raw_to_percent_data, match(raw_to_percent_data$Sample, c(group1, group2, group3)))
+	if (group4 == "" & group5 == "") {
 
-}
+		raw_to_percent_data <- dplyr::arrange(raw_to_percent_data,
+						      match(raw_to_percent_data$Sample, c(group1, group2, group3)))
 
-if (group5 == "") {
+	}
 
-	raw_to_percent_data <- dplyr::arrange(raw_to_percent_data, match(raw_to_percent_data$Sample, c(group1, group2, group3, group4)))
+	if (group5 == "") {
 
-} else {
+		raw_to_percent_data <- dplyr::arrange(raw_to_percent_data,
+						      match(raw_to_percent_data$Sample, c(group1, group2, group3, group4)))
 
-	raw_to_percent_data <- dplyr::arrange(raw_to_percent_data, match(raw_to_percent_data$Sample, c(group1, group2, group3, group4, group5)))
+	} else {
 
-}
+		raw_to_percent_data <- dplyr::arrange(raw_to_percent_data,
+						      match(raw_to_percent_data$Sample, c(group1, group2, group3, group4, group5)))
 
-raw_to_percent_data <- dplyr::mutate(raw_to_percent_data, percent_exp = raw_to_percent_data$avg_exp/raw_to_percent_data$control_avg_exp[1]*100)
+	}
 
-raw_to_percent_data <- tidyr::drop_na(raw_to_percent_data, percent_exp)
+	raw_to_percent_data <- dplyr::mutate(raw_to_percent_data,
+					     percent_exp = raw_to_percent_data$avg_exp/raw_to_percent_data$control_avg_exp[1]*100)
+
+	raw_to_percent_data <- tidyr::drop_na(raw_to_percent_data, percent_exp)
 
 }
 
@@ -316,7 +313,7 @@ pvalue_star <- function(dat) {
 	}
 
 }
-qpcr_stat_data <- qpcr_data 
+
 #statistics function
 qpcr_stat <- function(qpcr_stat_data) {
 
@@ -433,19 +430,20 @@ if (test == "anova") {
 	stats <- aov()
 	stats_anova <- TukeyHSD(stats)
 
-}
+	}
 
 return(stats)
 }
-calc_sd_data <- qpcr_data
-#sd calculation function
+
+
+#sd calculation function. this calculates SE not SD!!
 calc_sd <- function(calc_sd_data) {
 
 	control_exp <- dplyr::filter(calc_sd_data, Sample == group1)
 	target_exp1 <- dplyr::filter(calc_sd_data, Sample == group2)
 
-	control_sd <- sd(control_exp$expression)
-	target_sd1 <- sd(target_exp1$expression)
+	control_sd <- sd(control_exp$expression)/sqrt(length(control_exp$expression))
+	target_sd1 <- sd(target_exp1$expression)/sqrt(length(target_exp1$expression))
 
 
 	if (group3 != "") {
@@ -507,7 +505,7 @@ calc_sd <- function(calc_sd_data) {
 	
 return(percent_sd)
 }
-get_exp_data <- qpcr_data
+
 #get exp data as a vector from qpcr_data. needed for visualization
 get_exp <- function(get_exp_data) {
 
@@ -901,7 +899,21 @@ if (group3 == "" && group4 == "" && group5 == "") {
 return(final_plot)
 }
 
-plot(final_plot)
-return(final_plot)
+#test pipeline
+qpcr_data <- data_import(qpcr_data)
+qpcr_data <- data_process(qpcr_data)
+qpcr_data <- ddCt_calc(qpcr_data)
+qpcr_data <- raw_to_percent(qpcr_data)
+stats <- qpcr_stat(qpcr_data)
+percent_sd <- calc_sd(qpcr_data)
+exp_data <- get_exp(qpcr_data)
+final_plot_qpcr <- qpcr_plot(qpcr_data, exp_data, stats, percent_sd)
+plot(final_plot_qpcr)
+
+if (generate_table == TRUE) {
+export_table(qpcr_data, stats, percent_sd)
+}
+
+return(final_plot_qpcr)
 
 }

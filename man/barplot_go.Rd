@@ -7,7 +7,7 @@
 barplot_go(
   go_data,
   type = "cluego",
-  top = "50",
+  top = "",
   go_process = "",
   min_genes = "",
   header = ""

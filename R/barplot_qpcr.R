@@ -327,7 +327,7 @@ if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 	target_exp1 <- dplyr::filter(qpcr_stat_data, Sample == group2)
 
 	#calculating p-value
-	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = stat_mode)
+	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = test_mode)
 
 	#converting pvalues to *
 	pvalue <- pvalue_star(stats$p.value)

@@ -12,26 +12,28 @@
 #' @param goi Gene of interest.
 #' @param stat Default TRUE. Enable or disable statistical analysis.
 #' @param test Default t-test. Select statistical testing method.
+#' @param test_mode Default two.sided. Define alternative hypothesis for statistical test.
 #' @param generate_table Default False. Set to True to create a table with the results everytime run the function.
 #' @return A bar plot of qPCR results.
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- "~/RNA\ 2021/qpcr\ data/siPUM1_results.csv"
-#group1 <- "siCTRL"
-#group2 <- "siPUM1"
+#qpcr_data <- "~/N3_OE_results.csv"
+#group1 <- "Control"
+#group2 <- "NANOS3"
 #group3 <- ""
 #group4 <- ""
 #group5 <- ""
 #ref1 <- "GARS1"
 #ref2 <- "DTD1"
-#goi <- "CCNA2"
+#goi <- "FOXM1"
 #stat <- TRUE
+#test_mode <- "less"
 #test <- "t-test"
 #type <- "biorad"
 #generate_table <- FALSE
 
-#barplot_qpcr(qpcr_data, group1 = "siCTRL", group2 = "siPUM1", ref1 = "GARS1", ref2 = "DTD1", goi = "CCNA2", stat = TRUE)
+#barplot_qpcr(qpcr_data, group1 = "Control", group2 = "NANOS3", ref1 = "GARS1", ref2 = "DTD1", goi = "FOXM1", stat = TRUE, test_mode = "less")
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -45,6 +47,7 @@ barplot_qpcr <- function(qpcr_data,
                          goi = "",
 			 stat = TRUE,
                          test = "t-test",
+			 test_mode = "two.sided",
 			 generate_table = FALSE) {
 
 
@@ -84,18 +87,18 @@ data_process <- function(process_data) {
 		if (stat == TRUE) {
 
 			colnames(process_data)[6] <- "Biological.Set.Name"
-			process_data <- process_data[, c(3, 5, 6, 7)]
+			process_data <- process_data[, c(3, 5, 6, 8)]
 	
 		} else {
 
-			process_data <- process_data[, c(3, 5, 7)]
+			process_data <- process_data[, c(3, 5, 8)]
 
 		}
 
 		process_data$Sample[process_data$Sample == ""] <- NA
 		process_data$Target[process_data$Target == "Target"] <- NA
 		process_data <- na.omit(process_data)
-		process_data$Cq <- as.numeric(as.character(process_data$Cq))
+		process_data$Cq.Mean <- as.numeric(as.character(process_data$Cq.Mean))
 
 		if (ref2 == "") {
 
@@ -133,20 +136,21 @@ ddCt_calc <- function (ddCt_data) {
 		ref2_data <- as.data.frame(ddCt_data[3])
 		ref2_data <- dplyr::arrange(ref2_data, desc(Biological.Set.Name))
 		ref2_data <- dplyr::arrange(ref2_data, desc(Sample))
-		ddCt_data <- dplyr::mutate(goi_data, avg_ref = (ref1_data$Cq + ref2_data$Cq) / 2)
+		ddCt_data <- dplyr::mutate(goi_data, avg_ref = (ref1_data$Cq.Mean + ref2_data$Cq.Mean) / 2)
 		#dCt calculation for avg of refs
-		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (Cq - avg_ref))
+		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (Cq.Mean - avg_ref))
 
 	} else {
 
 		#dCt calculation for only 1 ref
-		ddCt_data <- dplyr::mutate(goi_data, dCt = (goi_data$Cq - ref1_data$Cq))
+		ddCt_data <- dplyr::mutate(goi_data, dCt = (goi_data$Cq.Mean - ref1_data$Cq.Mean))
 
 	}
 
 	#avg.dCt of target gene value in control biological replicates
 	control_ct <- dplyr::filter(ddCt_data, Sample == group1)
-	ddCt_data <- dplyr::mutate(ddCt_data, avg_control_dCt = mean(control_ct$Cq))
+	ddCt_data <- dplyr::mutate(ddCt_data, avg_control_dCt = mean(control_ct$Cq.Mean))
+	ddCt_data <- dplyr::distinct(ddCt_data)
 
 	#ddCt calculation
 	ddCt_data <- dplyr::mutate(ddCt_data, ddCt = dCt - avg_control_dCt)
@@ -323,7 +327,7 @@ if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 	target_exp1 <- dplyr::filter(qpcr_stat_data, Sample == group2)
 
 	#calculating p-value
-	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = "two.sided")
+	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = stat_mode)
 
 	#converting pvalues to *
 	pvalue <- pvalue_star(stats$p.value)
@@ -418,7 +422,6 @@ if (test == "t-test" & group3 != "" & group4 != "" & group5 != "") {
 				group1, group5, pvalue4)
 
 }
-
 
 #anova test here
 if (test == "anova") {
@@ -899,6 +902,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 return(final_plot)
 }
 
+
 #test pipeline
 qpcr_data <- data_import(qpcr_data)
 qpcr_data <- data_process(qpcr_data)
@@ -908,12 +912,11 @@ stats <- qpcr_stat(qpcr_data)
 percent_sd <- calc_sd(qpcr_data)
 exp_data <- get_exp(qpcr_data)
 final_plot_qpcr <- qpcr_plot(qpcr_data, exp_data, stats, percent_sd)
-plot(final_plot_qpcr)
 
 if (generate_table == TRUE) {
 export_table(qpcr_data, stats, percent_sd)
 }
-
+plot(final_plot_qpcr)
 return(final_plot_qpcr)
 
 }

@@ -18,22 +18,22 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- "~/N3_OE_results.csv"
-#group1 <- "Control"
-#group2 <- "NANOS3"
-#group3 <- ""
-#group4 <- ""
-#group5 <- ""
-#ref1 <- "GARS1"
-#ref2 <- "DTD1"
-#goi <- "FOXM1"
-#stat <- TRUE
-#test_mode <- "less"
-#test <- "t-test"
-#type <- "biorad"
-#generate_table <- FALSE
+qpcr_data <- "~/N3_OE_results.csv"
+group1 <- "Control"
+group2 <- "NANOS3"
+group3 <- ""
+group4 <- ""
+group5 <- ""
+ref1 <- "GARS1"
+ref2 <- "DTD1"
+goi <- "FOXM1"
+stat <- TRUE
+test_mode <- "less"
+test <- "t-test"
+type <- "biorad"
+generate_table <- FALSE
 
-#barplot_qpcr(qpcr_data, group1 = "Control", group2 = "NANOS3", ref1 = "GARS1", ref2 = "DTD1", goi = "FOXM1", stat = TRUE, test_mode = "less")
+barplot_qpcr(qpcr_data, group1 = "Control", group2 = "NANOS3", ref1 = "GARS1", ref2 = "DTD1", goi = "FOXM1", stat = TRUE, test_mode = "less")
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -283,12 +283,23 @@ raw_to_percent <- function(raw_to_percent_data) {
 						      match(raw_to_percent_data$Sample, c(group1, group2, group3, group4, group5)))
 
 	}
+	percent_data_1 <- dplyr::filter(raw_to_percent_data, Biological.Set.Name == 1)
+	percent_data_2 <- dplyr::filter(raw_to_percent_data, Biological.Set.Name == 2)
+	percent_data_3 <- dplyr::filter(raw_to_percent_data, Biological.Set.Name == 3)
 
-	raw_to_percent_data <- dplyr::mutate(raw_to_percent_data,
-					     percent_exp = raw_to_percent_data$avg_exp/raw_to_percent_data$control_avg_exp[1]*100)
+	
 
+	percent_data_1 <- dplyr::mutate(percent_data_1,
+					     percent_exp = percent_data_1$expression/percent_data_1$expression[1]*100)
+	percent_data_2 <- dplyr::mutate(percent_data_2,
+					     percent_exp = percent_data_2$expression/percent_data_2$expression[1]*100)
+	percent_data_3 <- dplyr::mutate(percent_data_3,
+					     percent_exp = percent_data_3$expression/percent_data_3$expression[1]*100)
+
+	raw_to_percent_data <- dplyr::bind_rows(percent_data_1, percent_data_2, percent_data_3)
 	raw_to_percent_data <- tidyr::drop_na(raw_to_percent_data, percent_exp)
 
+	return(raw_to_percent_data)
 }
 
 #pvalue to star conversion function
@@ -327,7 +338,7 @@ if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 	target_exp1 <- dplyr::filter(qpcr_stat_data, Sample == group2)
 
 	#calculating p-value
-	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = test_mode)
+	stats <- t.test(target_exp1$percent_exp, control_exp$percent_exp, alternative = test_mode, var.equal = TRUE)
 
 	#converting pvalues to *
 	pvalue <- pvalue_star(stats$p.value)
@@ -438,7 +449,6 @@ if (test == "anova") {
 return(stats)
 }
 
-
 #sd calculation function. this calculates SE not SD!!
 calc_sd <- function(calc_sd_data) {
 
@@ -447,6 +457,9 @@ calc_sd <- function(calc_sd_data) {
 
 	control_sd <- sd(control_exp$expression)/sqrt(length(control_exp$expression))
 	target_sd1 <- sd(target_exp1$expression)/sqrt(length(target_exp1$expression))
+	control_exp <- dplyr::mutate(control_exp, avg_percent_exp = mean(percent_exp))
+	target_exp1 <- dplyr::mutate(target_exp1, avg_percent_exp = mean(percent_exp))
+	calc_sd_data <- dplyr::bind_rows(control_exp, target_exp1)
 
 
 	if (group3 != "") {
@@ -471,7 +484,8 @@ calc_sd <- function(calc_sd_data) {
 	}
 
 	#distinct only 1 column
-	calc_sd_data <- calc_sd_data[!duplicated(calc_sd_data$percent_exp), ]
+	
+	calc_sd_data <- calc_sd_data[!duplicated(calc_sd_data$avg_percent_exp), ]
 
 	#converting raw sd into percentage
 	rownames(calc_sd_data) <- NULL
@@ -506,19 +520,25 @@ calc_sd <- function(calc_sd_data) {
 
 	}
 	
-return(percent_sd)
+
+	return(percent_sd)
 }
 
 #get exp data as a vector from qpcr_data. needed for visualization
 get_exp <- function(get_exp_data) {
 
+	control_exp <- dplyr::filter(get_exp_data, Sample == group1)
+	target_exp1 <- dplyr::filter(get_exp_data, Sample == group2)
+	control_exp <- dplyr::mutate(control_exp, avg_percent_exp = mean(percent_exp))
+	target_exp1 <- dplyr::mutate(target_exp1, avg_percent_exp = mean(percent_exp))
+	get_exp_data <- dplyr::bind_rows(control_exp, target_exp1)
 	#distinct only 1 column
-	qpcr_data <- qpcr_data[!duplicated(qpcr_data$percent_exp), ]
-	rownames(qpcr_data) <- NULL
-	qpcr_data <- tibble::column_to_rownames(qpcr_data, var = "Sample")
+	get_exp_data <- get_exp_data[!duplicated(get_exp_data$avg_percent_exp), ]
+	rownames(get_exp_data) <- NULL
+	get_exp_data <- tibble::column_to_rownames(get_exp_data, var = "Sample")
 
-	percent_exp1 <- qpcr_data[group1, "percent_exp"]
-	percent_exp2 <- qpcr_data[group2, "percent_exp"]
+	percent_exp1 <- get_exp_data[group1, "avg_percent_exp"]
+	percent_exp2 <- get_exp_data[group2, "avg_percent_exp"]
 	
 	if (group3 == "" & group4 == "" & group5 == "") {
 
@@ -547,7 +567,7 @@ get_exp <- function(get_exp_data) {
 
 	}
 
-	qpcr_data <- tibble::rownames_to_column(qpcr_data, var = "Sample")
+	get_exp_data <- tibble::rownames_to_column(get_exp_data, var = "Sample")
 
 	return(percent_exp)
 }
@@ -570,8 +590,13 @@ export_table <- function(export_data, export_stat, export_sd) {
 #plotting function
 qpcr_plot <- function(qpcr_plot_data, qpcr_plot_exp, qpcr_plot_stat, qpcr_plot_sd) {
 
+	control_exp <- dplyr::filter(qpcr_plot_data, Sample == group1)
+	target_exp1 <- dplyr::filter(qpcr_plot_data, Sample == group2)
+	control_exp <- dplyr::mutate(control_exp, avg_percent_exp = mean(percent_exp))
+	target_exp1 <- dplyr::mutate(target_exp1, avg_percent_exp = mean(percent_exp))
+	qpcr_plot_data <- dplyr::bind_rows(control_exp, target_exp1)
 	#distinct only 1 column
-	qpcr_plot_data <- qpcr_plot_data[!duplicated(qpcr_plot_data$percent_exp), ]
+	qpcr_plot_data <- qpcr_plot_data[!duplicated(qpcr_plot_data$avg_percent_exp), ]
 
 if (group3 == "" && group4 == "" && group5 == "") {
 
@@ -579,7 +604,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
        						x = "Sample",
-						y = "percent_exp",
+						y = "avg_percent_exp",
 						fill = "808080",
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
@@ -604,7 +629,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 						x = "Sample",
-						y = "percent_exp",
+						y = "avg_percent_exp",
 						fill = "808080",
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
@@ -636,7 +661,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 	final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 					x = "Sample",
-					y = "percent_exp",
+					y = "avg_percent_exp",
 					fill = "808080",
 					xlab = "Sample",
 					ylab = "Relative mRNA level",
@@ -675,7 +700,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 	final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 					x = "Sample",
-					y = "percent_exp",
+					y = "avg_percent_exp",
 					fill = "808080",
 					xlab = "Sample",
 					ylab = "Relative mRNA level",
@@ -712,7 +737,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 						x = "Sample",
-						y = "percent_exp",
+						y = "avg_percent_exp",
 						fill = "808080",
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
@@ -759,7 +784,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 						x = "Sample",
-						y = "percent_exp",
+						y = "avg_percent_exp",
 						fill = "808080",
 						xlab = "Sample",
 						ylab = "Relative mRNA level",
@@ -801,7 +826,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 						x = "Sample",
-				 		y = "percent_exp",
+				 		y = "avg_percent_exp",
 						fill = "808080",
 				    		xlab = "Sample",
 				    		ylab = "Relative mRNA level",
@@ -856,7 +881,7 @@ if (group3 == "" && group4 == "" && group5 == "") {
 
 		final_plot <- ggpubr::ggbarplot(qpcr_plot_data,
 						x = "Sample",
-				 		y = "percent_exp",
+				 		y = "avg_percent_exp",
 						fill = "808080",
 				    		xlab = "Sample",
 				    		ylab = "Relative mRNA level",

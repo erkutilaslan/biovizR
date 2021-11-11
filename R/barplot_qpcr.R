@@ -18,22 +18,22 @@
 #' @import tidyverse
 #' @export
 
-qpcr_data <- "~/N3_OE_results.csv"
-group1 <- "Control"
-group2 <- "NANOS3"
-group3 <- ""
-group4 <- ""
-group5 <- ""
-ref1 <- "GARS1"
-ref2 <- "DTD1"
-goi <- "FOXM1"
-stat <- TRUE
-test_mode <- "less"
-test <- "t-test"
-type <- "biorad"
-generate_table <- FALSE
+#qpcr_data <- "~/N3_OE_results.csv"
+#group1 <- "Control"
+#group2 <- "NANOS3"
+#group3 <- ""
+#group4 <- ""
+#group5 <- ""
+#ref1 <- "GARS1"
+#ref2 <- "DTD1"
+#goi <- "FOXM1"
+#stat <- TRUE
+#test_mode <- "less"
+#test <- "t-test"
+#type <- "biorad"
+#generate_table <- FALSE
 
-barplot_qpcr(qpcr_data, group1 = "Control", group2 = "NANOS3", ref1 = "GARS1", ref2 = "DTD1", goi = "FOXM1", stat = TRUE, test_mode = "less")
+#barplot_qpcr(qpcr_data, group1 = "Control", group2 = "NANOS3", ref1 = "GARS1", ref2 = "DTD1", goi = "FOXM1", stat = TRUE, test_mode = "less")
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",

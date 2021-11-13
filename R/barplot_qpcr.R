@@ -18,9 +18,9 @@
 #' @import tidyverse
 #' @export
 
-#qpcr_data <- "~/N3_OE_results.csv"
-#group1 <- "Control"
-#group2 <- "NANOS3"
+#qpcr_data <- "~/siFOXM1_results.csv"
+#group1 <- "siCTRL"
+#group2 <- "siPUM1"
 #group3 <- ""
 #group4 <- ""
 #group5 <- ""
@@ -33,7 +33,7 @@
 #type <- "biorad"
 #generate_table <- FALSE
 
-#barplot_qpcr(qpcr_data, group1 = "Control", group2 = "NANOS3", ref1 = "GARS1", ref2 = "DTD1", goi = "FOXM1", stat = TRUE, test_mode = "less")
+#barplot_qpcr(qpcr_data, group1 = "siCTRL", group2 = "siFOXM1", ref1 = "GARS1", ref2 = "DTD1", goi = "PUM1", stat = TRUE, test_mode = "less")
 
 barplot_qpcr <- function(qpcr_data,
                          type = "biorad",
@@ -87,18 +87,18 @@ data_process <- function(process_data) {
 		if (stat == TRUE) {
 
 			colnames(process_data)[6] <- "Biological.Set.Name"
-			process_data <- process_data[, c(3, 5, 6, 8)]
+			process_data <- process_data[, c(3, 5, 6, 7)]
 	
 		} else {
 
-			process_data <- process_data[, c(3, 5, 8)]
+			process_data <- process_data[, c(3, 5, 7)]
 
 		}
 
 		process_data$Sample[process_data$Sample == ""] <- NA
 		process_data$Target[process_data$Target == "Target"] <- NA
-		process_data <- na.omit(process_data)
-		process_data$Cq.Mean <- as.numeric(as.character(process_data$Cq.Mean))
+		process_data <- tidyr::drop_na(process_data)
+		process_data$Cq <- as.numeric(as.character(process_data$Cq))
 
 		if (ref2 == "") {
 
@@ -136,20 +136,20 @@ ddCt_calc <- function (ddCt_data) {
 		ref2_data <- as.data.frame(ddCt_data[3])
 		ref2_data <- dplyr::arrange(ref2_data, desc(Biological.Set.Name))
 		ref2_data <- dplyr::arrange(ref2_data, desc(Sample))
-		ddCt_data <- dplyr::mutate(goi_data, avg_ref = (ref1_data$Cq.Mean + ref2_data$Cq.Mean) / 2)
+		ddCt_data <- dplyr::mutate(goi_data, avg_ref = (ref1_data$Cq + ref2_data$Cq) / 2)
 		#dCt calculation for avg of refs
-		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (Cq.Mean - avg_ref))
+		ddCt_data <- dplyr::mutate(ddCt_data, dCt = (Cq - avg_ref))
 
 	} else {
 
 		#dCt calculation for only 1 ref
-		ddCt_data <- dplyr::mutate(goi_data, dCt = (goi_data$Cq.Mean - ref1_data$Cq.Mean))
+		ddCt_data <- dplyr::mutate(goi_data, dCt = (goi_data$Cq - ref1_data$Cq))
 
 	}
 
 	#avg.dCt of target gene value in control biological replicates
 	control_ct <- dplyr::filter(ddCt_data, Sample == group1)
-	ddCt_data <- dplyr::mutate(ddCt_data, avg_control_dCt = mean(control_ct$Cq.Mean))
+	ddCt_data <- dplyr::mutate(ddCt_data, avg_control_dCt = mean(control_ct$Cq))
 	ddCt_data <- dplyr::distinct(ddCt_data)
 
 	#ddCt calculation
@@ -327,7 +327,7 @@ if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 	target_exp1 <- dplyr::filter(qpcr_stat_data, Sample == group2)
 
 	#calculating p-value
-	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = test_mode)
+	stats <- t.test(target_exp1$expression, control_exp$expression, alternative = test_mode, var.equal = TRUE)
 
 	#converting pvalues to *
 	pvalue <- pvalue_star(stats$p.value)
@@ -437,7 +437,6 @@ if (test == "anova") {
 
 return(stats)
 }
-
 
 #sd calculation function. this calculates SE not SD!!
 calc_sd <- function(calc_sd_data) {

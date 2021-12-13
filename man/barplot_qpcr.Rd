@@ -17,6 +17,7 @@ barplot_qpcr(
   goi = "",
   stat = TRUE,
   test = "t-test",
+  test_mode = "two.sided",
   generate_table = FALSE
 )
 }
@@ -44,6 +45,8 @@ barplot_qpcr(
 \item{stat}{Default TRUE. Enable or disable statistical analysis.}
 
 \item{test}{Default t-test. Select statistical testing method.}
+
+\item{test_mode}{Default two.sided. Define alternative hypothesis for statistical test.}
 
 \item{generate_table}{Default False. Set to True to create a table with the results everytime run the function.}
 }

@@ -10,7 +10,6 @@
 #' @param ref1 Reference gene one.
 #' @param ref2 Reference gene two.
 #' @param goi Gene of interest.
-#' @param tech_rep Number of technical replicates. Optional if consideration of technical replicates for statistical testing is desired.
 #' @param stat Default TRUE. Enable or disable statistical analysis.
 #' @param test Default t-test. Select statistical testing method.
 #' @param generate_table Default False. Set to True to create a table with the results everytime run the function.
@@ -28,7 +27,6 @@ barplot_qpcr <- function(qpcr_data,
                          ref1 = "",
 			 ref2 = "",
                          goi = "",
-			 tech_rep = 3,
 			 stat = TRUE,
                          test = "t-test",
 			 generate_table = FALSE) {
@@ -289,34 +287,6 @@ if (group5 == "") {
 qpcr_data <- dplyr::mutate(qpcr_data, percent_exp = qpcr_data$avg_exp/qpcr_data$control_avg_exp[1]*100)
 
 if (stat == TRUE) {
-
-	#duplicating rows for accurate p-value calculation
-  	idx1 <- rep(1:nrow(control_exp), tech_rep)
-  	control_exp <- control_exp[idx1, ]
-
-  	idx2 <- rep(1:nrow(target_exp1), tech_rep)
-  	target_exp1 <- target_exp1[idx2, ]
-
-	if (group3 != "") {
-
-		idx3 <- rep(1:nrow(target_exp2), tech_rep)
-		target_exp2 <- target_exp2[idx3, ]
-
-	}
-
-	if (group4 != "") {
-
-		idx4 <- rep(1:nrow(target_exp3), tech_rep)
-		target_exp3 <- target_exp3[idx4, ]
-
-	}
-
-	if (group5 != "") {
-
-		idx5 <- rep(1:nrow(target_exp4), tech_rep)
-		target_exp4 <- target_exp4[idx5, ]
-
-	}
 
 	if (test == "t-test" & group3 == "" & group4 == "" & group5 == "") {
 

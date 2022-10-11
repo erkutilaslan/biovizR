@@ -11,46 +11,40 @@
 
 violinplot <- function(violin_data, x_lab = "conditions", y_lab = "values") {
 
-#data import
-if (is.character(violin_data) == TRUE) {
- 
-  if (grepl(".csv", as.character(violin_data)) == TRUE) {
-    
-    violin_data <- read.csv(violin_data) 
-
-  } else {
-
-    violin_data <- readxl::read_excel(violin_data, sheet = 1)
-
+  # data import
+  if (is.character(violin_data) == TRUE) {
+    if (grepl(".csv", as.character(violin_data)) == TRUE) {
+      violin_data <- read.csv(violin_data)
+    } else {
+      violin_data <- readxl::read_excel(violin_data, sheet = 1)
+    }
   }
 
+  # data wrangling.
+  col_names <- colnames(violin_data)
+  col_length <- length(colnames(violin_data))
+
+  violin_data <- tidyr::pivot_longer(violin_data,
+    cols = col_names[1]:col_names[col_length],
+    names_to = x_lab, values_to = y_lab
+  )
+
+  # data visuzalization
+
+  final_plot <- ggpubr::ggviolin(violin_data,
+    x = x_lab,
+    y = y_lab,
+    xlab = x_lab,
+    ylab = y_lab,
+    fill = x_lab,
+    palette = "jco",
+    add = "boxplot",
+    add.params = list(fill = "white")
+  ) #+
+  #              ggpubr::stat_compare_means(comparisons = "Cell type",
+  # 	                                 label = "p.signif") + #Add significance levels
+  #              ggpubr::stat_compare_means(label.y = 50) # add global p-vale
+
+  plot(final_plot)
+  return(final_plot)
 }
-
-#data wrangling.
-col_names <- colnames(violin_data)
-col_length <- length(colnames(violin_data))
-
-violin_data <- tidyr::pivot_longer(violin_data,
-				   cols = col_names[1]:col_names[col_length],
-				   names_to = x_lab, values_to = y_lab)
-
-#data visuzalization
-
-final_plot <- ggpubr::ggviolin(violin_data,
-                               x = x_lab,
-                               y = y_lab,
-			       xlab = x_lab,
-			       ylab = y_lab,
-                               fill = x_lab,
-                               palette = "jco",
-                               add = "boxplot",
-                               add.params = list(fill = "white")) #+
-#              ggpubr::stat_compare_means(comparisons = "Cell type",
-#	                                 label = "p.signif") + #Add significance levels
-#              ggpubr::stat_compare_means(label.y = 50) # add global p-vale
-
-plot(final_plot)
-return(final_plot)
-
-}
-

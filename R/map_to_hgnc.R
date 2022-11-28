@@ -6,7 +6,7 @@
 #' @return A table containing HGNC gene IDs.
 #' @export
 
-map_data <- "~/Work/Transcriptomics/N1 N3 OE RNA-Seq/NANOS1_1_counts.tabular"
+map_data <- "~/Work/PhD/Transcriptomics/N1 N3 OE RNA-Seq/NANOS1_1_counts.tabular"
 dat <- read.table(map_data)
 
 # mapping function
